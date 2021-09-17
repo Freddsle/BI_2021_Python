@@ -2,17 +2,17 @@
 
 
 import pytest
-from .nucleid_acids_01 import *
+from .nucleid_acids_01 import get_operations, DNAOperations, RNAOperations
 
 
-def test_check_na():
-    assert isinstance(check_na('tTgggcCAAAAAaa'), DNAOperations) == 1
-    assert isinstance(check_na('AUGC'), RNAOperations) == 1
-    assert isinstance(check_na('aaaaaa'), DNAOperations) == 1
-    assert isinstance(check_na('GccccUA'), RNAOperations) == 1
-    assert isinstance(check_na('AuT'), DNAOperations) == 0
-    assert isinstance(check_na('UUUUUU'), RNAOperations) == 1
-    assert isinstance(check_na('9hg3'), DNAOperations) == 0
+def test_get_operations():
+    assert isinstance(get_operations('tTgggcCAAAAAaa'), DNAOperations) == 1
+    assert isinstance(get_operations('AUGC'), RNAOperations) == 1
+    assert isinstance(get_operations('aaaaaa'), DNAOperations) == 1
+    assert isinstance(get_operations('GccccUA'), RNAOperations) == 1
+    assert isinstance(get_operations('AuT'), DNAOperations) == 0
+    assert isinstance(get_operations('UUUUUU'), RNAOperations) == 1
+    assert isinstance(get_operations('9hg3'), DNAOperations) == 0
 
 
 def test_DNAreverse():
