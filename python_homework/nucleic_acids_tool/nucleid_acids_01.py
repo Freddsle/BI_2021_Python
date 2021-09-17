@@ -9,24 +9,16 @@ class DNAOperations:
 
     def complement(self, sequence):
         'Makes complement sequence. If u or U in sequence - works like with RNA, otherwise, like with DNA.'
-        dna_dict = {'a':'t', 't':'a', 'c':'g', 'g':'c', 'A':'T', 'T':'A', 'C':'G', 'G':'C'}
-        answer = ''
-    
-        for letter in sequence:
-                answer += dna_dict[letter]
-        
-        return answer
+        dna_dict_com = {'a':'t', 't':'a', 'c':'g', 'g':'c', 'A':'T', 'T':'A', 'C':'G', 'G':'C'}
+        dna_table_com = sequence.maketrans(dna_dict_com)        
+        return sequence.translate(dna_table_com)
 
 
     def transcribe(self, sequence):
         'Transcribes DNA sequence to RNA sequence.'
-        dna_dict = {'a':'u', 't':'a', 'c':'g', 'g':'c', 'A':'U', 'T':'A', 'C':'G', 'G':'C'}
-        answer = ''
-
-        for letter in sequence:
-            answer += dna_dict[letter]
-    
-        return answer
+        dna_dict_trans = {'a':'u', 't':'a', 'c':'g', 'g':'c', 'A':'U', 'T':'A', 'C':'G', 'G':'C'}
+        dna_table_trans = sequence.maketrans(dna_dict_trans)        
+        return sequence.translate(dna_table_trans)
 
 
     def reverse_complement(self, sequence):
@@ -44,12 +36,8 @@ class RNAOperations:
     def complement(self, sequence):
         'Makes complement sequence. If u or U in sequence - works like with RNA, otherwise, like with DNA.'
         rna_dict = {'a':'u', 'u':'a', 'c':'g', 'g':'c', 'A':'U', 'U':'A', 'C':'G', 'G':'C'}
-        answer = ''
-        
-        for letter in sequence:
-            answer += rna_dict[letter]
-        
-        return answer
+        rna_table = sequence.maketrans(rna_dict)        
+        return sequence.translate(rna_table)
 
 
     def transcribe(self, sequence):
