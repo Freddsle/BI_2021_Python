@@ -2,6 +2,8 @@
 
 class NAOperations:
 
+    COMPLEMENT_MAP = NotImplemented
+
     def reverse(self, sequence):
         'Makes reverse sequence.'
         return sequence[::-1]
@@ -10,31 +12,31 @@ class NAOperations:
         'Makes reverse complement sequence.'
         return self.complement(self.reverse(sequence))
 
+    def complement(self, sequence):
+        'Makes complement sequence.'
+        return sequence.translate(self.COMPLEMENT_MAP)
+    
+    def transcribe(self, sequence):
+        'This exception is derived from RuntimeError.'
+        raise NotImplementedError('Must be redefined in child class.')
+
 
 class DNAOperations(NAOperations):
 
-    def complement(self, sequence):
-        'Makes complement sequence.'
-        dna_dict_com = {'a':'t', 't':'a', 'c':'g', 'g':'c', 'A':'T', 'T':'A', 'C':'G', 'G':'C'}
-        dna_table_com = sequence.maketrans(dna_dict_com)        
-        return sequence.translate(dna_table_com)
-
-
+    COMPLEMENT_MAP = str.maketrans('atcgATCG',
+                                    'tagcTAGC')
+    TRANSCRIBE_MAP = str.maketrans('atcgATCG',
+                                   'uagcUAGC')
+        
     def transcribe(self, sequence):
-        'Transcribes DNA sequence into RNA sequence.'
-        dna_dict_trans = {'a':'u', 't':'a', 'c':'g', 'g':'c', 'A':'U', 'T':'A', 'C':'G', 'G':'C'}
-        dna_table_trans = sequence.maketrans(dna_dict_trans)        
-        return sequence.translate(dna_table_trans)
+        'Transcribes DNA sequence into RNA sequence.'      
+        return sequence.translate(self.TRANSCRIBE_MAP)
 
 
 class RNAOperations(NAOperations):
 
-    def complement(self, sequence):
-        'Makes complement sequence.'
-        rna_dict = {'a':'u', 'u':'a', 'c':'g', 'g':'c', 'A':'U', 'U':'A', 'C':'G', 'G':'C'}
-        rna_table = sequence.maketrans(rna_dict)        
-        return sequence.translate(rna_table)
-
+    COMPLEMENT_MAP = str.maketrans('aucgAUCG',
+                                   'uagcUAGC')
 
     def transcribe(self, sequence):
         'Can not ranscribe RNA sequence. Print "Try again".'
