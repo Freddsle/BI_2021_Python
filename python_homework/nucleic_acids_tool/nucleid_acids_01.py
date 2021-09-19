@@ -67,7 +67,7 @@ def get_sequence():
     sequence = None
 
     while True:
-        sequence = str(input('Now, please enter a sequence: '))
+        sequence = input('Now, please enter a sequence: ')
         operations = get_operations(sequence)
 
         if operations is None:
@@ -87,7 +87,7 @@ def main():
     #reads the command to work on DNA or RNA
     while True:
 
-        command = str(input('Choose command or "exit": '))
+        command = input('Choose command or "exit": ')
 
         if command not in commands_list:
             print('Oops, something wrong. Please, choose another command')
