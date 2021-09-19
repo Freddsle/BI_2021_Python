@@ -1,1 +1,0 @@
-#simple work with RNA
