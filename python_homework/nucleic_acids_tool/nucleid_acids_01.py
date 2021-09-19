@@ -5,19 +5,19 @@ class NAOperations:
     COMPLEMENT_MAP = NotImplemented
 
     def reverse(self, sequence):
-        'Makes reverse sequence.'
+        """Makes reverse sequence."""
         return sequence[::-1]
 
     def reverse_complement(self, sequence):
-        'Makes reverse complement sequence.'
+        """Makes reverse complement sequence."""
         return self.complement(self.reverse(sequence))
 
     def complement(self, sequence):
-        'Makes complement sequence.'
+        """Makes complement sequence."""
         return sequence.translate(self.COMPLEMENT_MAP)
     
     def transcribe(self, sequence):
-        'This exception is derived from RuntimeError.'
+        """This exception is derived from RuntimeError."""
         raise NotImplementedError('Must be redefined in child class.')
 
 
@@ -29,7 +29,7 @@ class DNAOperations(NAOperations):
                                    'uagcUAGC')
         
     def transcribe(self, sequence):
-        'Transcribes DNA sequence into RNA sequence.'      
+        """Transcribes DNA sequence into RNA sequence."""
         return sequence.translate(self.TRANSCRIBE_MAP)
 
 
@@ -39,12 +39,12 @@ class RNAOperations(NAOperations):
                                    'uagcUAGC')
 
     def transcribe(self, sequence):
-        'Can not ranscribe RNA sequence. Print "Try again".'
+        """Can not ranscribe RNA sequence. Print "Try again"."""
         return 'Oops, I don`t know how to transcribe RNA. Try again.'
     
 
 def get_operations(sequence):
-    'Checks that nucleic acid is DNA OR RNA. If so, returns class operations. Otherwise, returns None'
+    """Checks that nucleic acid is DNA OR RNA. If so, returns class operations. Otherwise, returns None"""
     na_letters = {'A','G', 'C'}
     dr_letter = {'T', 'U'}
 
@@ -63,7 +63,7 @@ def get_operations(sequence):
 
 
 def get_sequence():
-    'Reads the sequence and checks whether it is RNA or DNA.'
+    """Reads the sequence and checks whether it is RNA or DNA."""
     sequence = None
 
     while True:
