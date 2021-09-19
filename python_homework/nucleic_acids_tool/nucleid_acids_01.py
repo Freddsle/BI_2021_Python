@@ -82,7 +82,7 @@ def main():
     print('Now I show your available commands:')
     print('you can "reverse" - "r" or "transcribe" - "t" your sequence and make "complement" - "c" or "reverse_complement" - "rc"')
     
-    commands_list = ('reverse', 'r', 'transcribe', 't', 'complement', 'c', 'reverse_complement', 'rc', 'exit')
+    commands_list = {'reverse', 'r', 'transcribe', 't', 'complement', 'c', 'reverse_complement', 'rc', 'exit'}
     
     #reads the command to work on DNA or RNA
     while True:
