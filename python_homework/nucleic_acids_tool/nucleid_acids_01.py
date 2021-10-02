@@ -105,10 +105,10 @@ def main():
 
         elif command == 'complement' or command == 'c':
             print(operations.complement(sequence))
-    
+
         elif command == 'reverse_complement' or command == 'rc':
             print(operations.reverse_complement(sequence))
-    
+
         elif command == 'transcribe' or command == 't':
             print(operations.transcribe(sequence))
 

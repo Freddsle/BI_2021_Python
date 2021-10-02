@@ -1,6 +1,5 @@
 # pytest python_homework/nucleic_acids_tool
-
-import pytest
+import pytest # flake8: noqa
 from .nucleid_acids_01 import get_operations, DNAOperations, RNAOperations
 
 
