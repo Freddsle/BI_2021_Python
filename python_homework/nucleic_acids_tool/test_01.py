@@ -1,5 +1,4 @@
-#pytest python_homework/nucleic_acids_tool
-
+# pytest python_homework/nucleic_acids_tool
 
 import pytest
 from .nucleid_acids_01 import get_operations, DNAOperations, RNAOperations
@@ -53,7 +52,7 @@ def test_DNAtranscribe():
     assert DNAOperations().transcribe('tTgggcCAAAAAaa') == 'aAcccgGUUUUUuu'
     assert DNAOperations().transcribe('aaaaaa') == 'uuuuuu'
     assert DNAOperations().transcribe('A') == 'U'
-    
+
 
 def test_RNAtranscribe():
     assert RNAOperations().transcribe('AUGC') == 'Oops, I don`t know how to transcribe RNA. Try again.'
