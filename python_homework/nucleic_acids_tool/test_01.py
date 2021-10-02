@@ -1,5 +1,5 @@
 # pytest python_homework/nucleic_acids_tool
-import pytest # flake8: noqa
+import pytest  # noqa: F401; pylint: disable=unused-variable
 from .nucleid_acids_01 import get_operations, DNAOperations, RNAOperations
 
 
