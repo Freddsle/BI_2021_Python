@@ -69,7 +69,7 @@ def convert_temperature(converted_value_to_convert):
 
 def main():
     print('Hi! It`s simple temperature converter.')
-        
+
     # reads the command
     while True:
 
@@ -84,7 +84,7 @@ def main():
             break
 
         value_to_convert = get_value_to_convert()
-       
+
         if command == 'temperature' or command == 'T':
             # standart - Celsius
 
@@ -97,10 +97,9 @@ def main():
             final_units = ['Celsius', 'Kelvin', 'Fahrenheit', 'Rankine', 'Reaumur']
 
             print('Converted values:')
-            for value, unit in zip(final_values,final_units):
+            for value, unit in zip(final_values, final_units):
                 print(value, unit)
 
 
 if __name__ == '__main__':
     main()
-
