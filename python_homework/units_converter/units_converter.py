@@ -21,18 +21,44 @@ def value_to_standart(value_to_convert, units):
     """
 
     if units == 'Celsius' or units == 'C':
+        
+        if value_to_convert < -273.15:
+            print('Oops, something wrong. Please, enter the valid temperature. Absolute zero: −273.15 °C')
+            return None
+
         return value_to_convert
 
     if units == 'Kelvin' or units == 'K':
+
+        if value_to_convert < 0:
+            print('Oops, something wrong. Please, enter the valid temperature. Absolute zero: 0 K')
+            return None
+
         return value_to_convert - 273.15
 
     if units == 'Fahrenheit' or units == 'F':
+
+        if value_to_convert < -459.67:
+            print('Oops, something wrong. Please, enter the valid temperature. Absolute zero: −459.67 °F')
+            return None
+
         return (value_to_convert - 32) * 5 / 9
 
     if units == 'Rankine Scale' or units == 'Ra':
+
+        if value_to_convert < 0:
+            print('Oops, something wrong. Please, enter the valid temperature. Absolute zero: 0 °R')
+            return None
+
         return (value_to_convert - 491.67) * 5 / 9
 
     if units == 'Reaumur Scale' or units == 'Re':
+
+        if value_to_convert < -218.52:
+
+            print('Oops, something wrong. Please, enter the valid temperature. Absolute zero: -218.52°')
+            return None
+
         return value_to_convert * 5 / 4
 
 
@@ -75,30 +101,29 @@ def main():
 
         command = input('Please, choose convert ("T") or "exit": ')
 
-        if command != 'T':
-            print('Oops, something wrong. Please, choose valid command: "T"; or "exit"')
-            continue
-
         if command == 'exit':
             print('Goodbye!')
             break
 
-        value_to_convert = get_value_to_convert()
+        if command != 'T':
+            print('Oops, something wrong. Please, choose valid command: "T"; or "exit"')
+            continue
 
-        if command == 'temperature' or command == 'T':
-            # standart - Celsius
+        value_to_convert, standart_value = 0, 0
 
-            get_temp_units_to_convert(value_to_convert)
+        while not standart_value:
+            value_to_convert = get_value_to_convert()
+            standart_value = get_temp_units_to_convert(value_to_convert)
 
-            converted_value = convert_temperature(value_to_convert)
+        converted_value = convert_temperature(standart_value)
 
-            final_values = [round(num, 2) for num in converted_value]
+        final_values = [round(num, 2) for num in converted_value]
+        final_units = ['Celsius', 'Kelvin', 'Fahrenheit', 'Rankine', 'Reaumur']
 
-            final_units = ['Celsius', 'Kelvin', 'Fahrenheit', 'Rankine', 'Reaumur']
+        print('Converted values:')
 
-            print('Converted values:')
-            for value, unit in zip(final_values, final_units):
-                print(value, unit)
+        for value, unit in zip(final_values, final_units):
+            print(value, unit)
 
 
 if __name__ == '__main__':
