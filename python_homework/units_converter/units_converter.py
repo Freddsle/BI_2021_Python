@@ -21,7 +21,7 @@ def value_to_standart(value_to_convert, units):
     """
 
     if units == 'Celsius' or units == 'C':
-        
+
         if value_to_convert < -273.15:
             print('Oops, something wrong. Please, enter the valid temperature. Absolute zero: −273.15 °C')
             return None
