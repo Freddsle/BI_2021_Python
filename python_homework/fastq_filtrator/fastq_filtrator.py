@@ -4,7 +4,7 @@
 import argparse
 
 
-def bound_check(bound):
+def check_bound(bound):
     """
     Check type and number of elements in bounds.
     """
@@ -22,13 +22,13 @@ def bound_check(bound):
         return
 
 
-def len_bounds_maker(length_bounds):
+def make_len_bounds(length_bounds):
     '''
     Check types, number of values in length_bounds.
     Transform it to [float, float].
     '''
 
-    normalized_length_bound = bound_check(length_bounds)
+    normalized_length_bound = check_bound(length_bounds)
 
     if not normalized_length_bound:
         return
@@ -40,13 +40,13 @@ def len_bounds_maker(length_bounds):
     return normalized_length_bound
 
 
-def gc_bounds_maker(gc_bounds):
+def make_gc_bounds(gc_bounds):
     '''
     Check types, number of values in gc_bonus.
     Transform it to [float, float].
     '''
 
-    normalized_gc_bound = bound_check(gc_bounds)
+    normalized_gc_bound = check_bound(gc_bounds)
 
     if not normalized_gc_bound:
         return
@@ -58,30 +58,30 @@ def gc_bounds_maker(gc_bounds):
     return normalized_gc_bound
 
 
-def gc_filter(seq_line, read_len, gc_bounds):
+def filter_gc(seq_line, read_len, gc_bounds):
     '''
     Filter the read by GC content (in percent)
     '''
     gc_number = seq_line.count('C') + seq_line.count('G')
-    gc_content = 100 * gc_number // read_len
+    gc_content = 100 * gc_number / read_len
 
     if gc_content < gc_bounds[0] or gc_content > gc_bounds[1]:
-        return 'failed'
+        return False
 
-    return 'passed'
+    return True
 
 
-def length_filter(read_len, length_bounds):
+def filter_length(read_len, length_bounds):
     '''
     Filter the read by length.
     '''
     if read_len < length_bounds[0] or read_len > length_bounds[1]:
-        return 'failed'
+        return False
 
-    return 'passed'
+    return True
 
 
-def quality_filter(read_len, quality_line, quality_threshold):
+def filter_quality(read_len, quality_line, quality_threshold):
     '''
     Filter the read by quality
     '''
@@ -90,12 +90,12 @@ def quality_filter(read_len, quality_line, quality_threshold):
     for character in quality_line:
         quality += (ord(character) - 33)
 
-    average_quality = quality // read_len
+    average_quality = quality / read_len
 
     if average_quality < quality_threshold:
-        return 'failed'
+        return False
 
-    return 'passed'
+    return True
 
 
 def filter_fastq(lines, gc_bounds, length_bounds, quality_threshold):
@@ -103,31 +103,25 @@ def filter_fastq(lines, gc_bounds, length_bounds, quality_threshold):
     Check the quality for each read in fastq file.
     If passed - return True, else - False.
     '''
-
-    filter_tests = []
     seq_line = lines[1][::-2]
     quality_line = lines[3][::-2]
     read_len = len(seq_line)
 
     # filter the read by GC content
     if gc_bounds != [0, 100]:
-        filter_tests.append(gc_filter(seq_line, read_len, gc_bounds))
-    else:
-        filter_tests.append('passed')
+        if not filter_gc(seq_line, read_len, gc_bounds):
+            return False
 
     # filter the read by length
-    filter_tests.append(length_filter(read_len, length_bounds))
+    if not filter_length(read_len, length_bounds):
+        return False
 
     # filter the read by quality
     if quality_threshold != 0:
-        filter_tests.append(quality_filter(read_len, quality_line, quality_threshold))
-    else: 
-        filter_tests.append('passed')
+        if not filter_quality(read_len, quality_line, quality_threshold):
+            return False
 
-    # make the read filtration solution
-    if 'failed' in filter_tests:
-        return False
-
+    # True if the read passed filtration
     return True
 
 
@@ -160,7 +154,7 @@ def write_filtered_fastq(lines, quality_result, output_file_prefix, save_filtere
 
 
 def read_fatsq_for_filter(input_fastq, gc_bounds, length_bounds, quality_threshold,
-                          output_file_prefix, save_filtered):
+                          output_file_prefix, save_filtered, read_len=4):
     """
     Reads four lines from a fastq file and passes them to filtering function.
     """
@@ -171,7 +165,7 @@ def read_fatsq_for_filter(input_fastq, gc_bounds, length_bounds, quality_thresho
 
         while True:
             try:
-                lines = [next(fastq) for x in range(4)]
+                lines = [next(fastq) for x in range(read_len)]
                 quality_result = filter_fastq(lines, gc_bounds, length_bounds, quality_threshold)
 
                 # Write out fastq file after filter
@@ -184,8 +178,8 @@ def read_fatsq_for_filter(input_fastq, gc_bounds, length_bounds, quality_thresho
 def main(input_fastq, output_file_prefix, gc_bounds, length_bounds, quality_threshold, save_filtered):
 
     # Check bounds and update it
-    gc_bounds_cheked = gc_bounds_maker(gc_bounds)
-    length_bounds_cheked = len_bounds_maker(length_bounds)
+    gc_bounds_cheked = make_gc_bounds(gc_bounds)
+    length_bounds_cheked = make_len_bounds(length_bounds)
 
     # End programm if something wrong with bonds or quality
     if not gc_bounds_cheked or not length_bounds_cheked:
@@ -203,22 +197,24 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("-i", "--input_fastq", help="path to fastq file for filter")
+    parser.add_argument("-i", "--input-fastq", help="path to fastq file for filter")
     parser.add_argument("-o", "--outpref", help="path prefix of file to which the result will be written")
 
-    parser.add_argument("-g", "--gc_bounds", nargs='*', default=[0, 100],
+    parser.add_argument("-g", "--gc-bounds", nargs='*', default=[0, 100],
                         help="the GC interval (in percents) for filtering (default (0, 100))")
-    parser.add_argument("-l", "--length_bounds", nargs='*', default=[0, 2**32],
+    parser.add_argument("-l", "--length-bounds", nargs='*', default=[0, 2**32],
                         help="filtering length interval. Default is (0, 2**32)")
 
-    parser.add_argument("-q", "--quality_threshold", default=0, type=int,
+    parser.add_argument("-q", "--quality-threshold", default=0, type=int,
                         help="threshold value of average read quality for filtering. Default is 0 (phred33 scale)")
-    parser.add_argument("-s", "--save_filtered", default=False, type=bool,
+    parser.add_argument("-s", "--save-filtered", default=False, type=bool,
                         help="whether to save filtered reads. Default - False")
 
     args = parser.parse_args()
 
-    main(input_fastq=args.input_fastq, output_file_prefix=args.outpref,
-         gc_bounds=args.gc_bounds, length_bounds=args.length_bounds,
+    main(input_fastq=args.input_fastq,
+         output_file_prefix=args.outpref,
+         gc_bounds=args.gc_bounds,
+         length_bounds=args.length_bounds,
          quality_threshold=args.quality_threshold,
          save_filtered=args.save_filtered)
