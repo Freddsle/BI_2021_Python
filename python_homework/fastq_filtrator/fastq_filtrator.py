@@ -125,54 +125,49 @@ def filter_fastq(lines, gc_bounds, length_bounds, quality_threshold):
     return True
 
 
-def create_out_fastq(output_file_prefix, save_filtered):
-    '''
-    Create empty output fastq file or files
-    '''
-
-    f_passed = open(output_file_prefix+'_passed.fastq', 'w')
-    f_passed.close()
-
-    if save_filtered:
-        f_failed = open(output_file_prefix+'_failed.fastq', 'w')
-        f_failed.close()
-
-
-def write_filtered_fastq(lines, quality_result, output_file_prefix, save_filtered):
+def write_filtered_fastq(lines, quality_result, save_filtered, wons, wonf):
     '''
     Write (to the end of file) each read to the passed or (if needed) failed file.
     '''
-
     if quality_result:
-        with open(output_file_prefix+'_passed.fastq', 'a') as fastq_out:
-            fastq_out.writelines(lines)
+        wons.writelines(lines)
 
     else:
         if save_filtered:
-            with open(output_file_prefix+'_failed.fastq', 'a') as fastq_out:
-                fastq_out.writelines(lines)
+            wonf.writelines(lines)
 
 
 def read_fatsq_for_filter(input_fastq, gc_bounds, length_bounds, quality_threshold,
                           output_file_prefix, save_filtered, read_len=4):
     """
-    Reads four lines from a fastq file and passes them to filtering function.
+    Reads four lines from a fastq file and passes them to filter and write function.
     """
-
-    with open(input_fastq, 'r') as fastq:
-        # Create an empty out file or files
-        create_out_fastq(output_file_prefix, save_filtered)
-
+    read_from = open(input_fastq, 'r')
+    write_on_success_to = open(output_file_prefix + '_passed.fastq', 'w')
+    write_on_fail_to = None
+    
+    if save_filtered:
+        write_on_fail_to = open(output_file_prefix + '_failed.fastq', 'w')
+    
+    try:        
         while True:
+
             try:
-                lines = [next(fastq) for x in range(read_len)]
+                lines = [next(read_from) for x in range(read_len)]
                 quality_result = filter_fastq(lines, gc_bounds, length_bounds, quality_threshold)
 
                 # Write out fastq file after filter
-                write_filtered_fastq(lines, quality_result, output_file_prefix, save_filtered)
+                write_filtered_fastq(lines, quality_result, save_filtered, wons=write_on_success_to, wonf=write_on_fail_to)
 
             except StopIteration:
                 return
+        
+    finally:
+        read_from.close()
+        write_on_success_to.close()
+        
+        if write_on_fail_to:
+            write_on_fail_to.close()
 
 
 def main(input_fastq, output_file_prefix, gc_bounds, length_bounds, quality_threshold, save_filtered):
