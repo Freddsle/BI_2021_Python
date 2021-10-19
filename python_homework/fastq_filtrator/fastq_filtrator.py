@@ -24,7 +24,7 @@ def bound_check(bound):
 
 def len_bounds_maker(length_bounds):
     '''
-    Check types, number of values in length_bounds. 
+    Check types, number of values in length_bounds.
     Transform it to [float, float].
     '''
 
@@ -112,7 +112,7 @@ def filter_fastq(lines, gc_bounds, length_bounds, quality_threshold):
     # filter the read by GC content
     if gc_bounds != [0, 100]:
         filter_tests.append(gc_filter(seq_line, read_len, gc_bounds))
-    else: 
+    else:
         filter_tests.append('passed')
 
     # filter the read by length
@@ -159,7 +159,7 @@ def write_filtered_fastq(lines, quality_result, output_file_prefix, save_filtere
                 fastq_out.writelines(lines)
 
 
-def read_fatsq_for_filter(input_fastq, gc_bounds, length_bounds, quality_threshold, 
+def read_fatsq_for_filter(input_fastq, gc_bounds, length_bounds, quality_threshold,
                           output_file_prefix, save_filtered):
     """
     Reads four lines from a fastq file and passes them to filtering function.
