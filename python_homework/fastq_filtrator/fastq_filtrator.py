@@ -86,10 +86,56 @@ def length_filter(lines, length_bounds):
 
 
 def quality_filter(lines, quality_threshold):
+    '''
+    Filter the read by quality
+    '''
+    quality = 0
+    read_len = len(lines[1])
+
+    for character in lines[3]:
+        quality += (ord(character) - 33)
+    
+    average_quality = quality // read_len
+
+    if average_quality < quality_threshold:
+        return 'failed'
+    
+    else: return 'passed'
+
+
+def filter_fastq(lines, gc_bounds, length_bounds, quality_threshold):
+    '''
+    Check the quality for each read in fastq file.
+    If passed - return True, else - False.
+    '''
+
+    filter_tests = []
+
+    # filter the read by GC content
+    if gc_bounds != [0, 100]:
+        filter_tests.append(gc_filter(lines, gc_bounds))
+    else: filter_tests.append('passed')
+                
+    # filter the read by length
+    filter_tests.append(length_filter(lines, length_bounds))
+                
+    # filter the read by quality
+    if quality_threshold != 0:
+        filter_tests.append(quality_filter(lines, quality_threshold))
+    else: filter_tests.append('passed')
+    
+    # write passed lines to one fite, 
+    if 'failed' in filter_tests:
+        return False
+
+    return True
+
+
+def write_fastq(quality_result, ):
     pass
 
 
-def read_fatsq(input_fastq, gc_bounds, length_bounds):
+def read_fatsq_for_filter(input_fastq, gc_bounds, length_bounds, quality_threshold):
     """
     Reads four lines from a fastq file and passes them to filtering function.
     """
@@ -101,21 +147,9 @@ def read_fatsq(input_fastq, gc_bounds, length_bounds):
         while True:
             try:
                 lines = [next(fastq).removesuffix('\n') for x in range(4)]
-                filter_tests = []
+                quality_result = filter_fastq(lines, gc_bounds, length_bounds, quality_threshold)
 
-                # filter the read by GC content
-                if gc_bounds != [0, 100]:
-                    filter_tests.append(gc_filter(lines, gc_bounds))
-                else: filter_tests.append('passed')
-                
-                # filter the read by length
-                filter_tests.append(length_filter(lines, length_bounds))
-                
-                # filter the read by quality
-                filter_tests.append(quality_filter(lines, quality_threshold))
     
-
-
 
             except StopIteration:
                 return 
@@ -132,7 +166,8 @@ def main(input_fastq, output_file_prefix, gc_bounds, length_bounds, quality_thre
         return
 
     # Start reading input file and filtering it
-    read_fatsq(input_fastq, gc_bounds_cheked, length_bounds_cheked)
+    read_fatsq_for_filter(input_fastq, gc_bounds_cheked, length_bounds_cheked, quality_threshold, 
+               output_file_prefix, save_filtered)
 
 
 if __name__ == '__main__':
