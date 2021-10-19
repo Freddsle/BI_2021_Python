@@ -145,11 +145,11 @@ def read_fatsq_for_filter(input_fastq, gc_bounds, length_bounds, quality_thresho
     read_from = open(input_fastq, 'r')
     write_on_success_to = open(output_file_prefix + '_passed.fastq', 'w')
     write_on_fail_to = None
-    
+
     if save_filtered:
         write_on_fail_to = open(output_file_prefix + '_failed.fastq', 'w')
-    
-    try:        
+
+    try:
         while True:
 
             try:
@@ -157,11 +157,15 @@ def read_fatsq_for_filter(input_fastq, gc_bounds, length_bounds, quality_thresho
                 quality_result = filter_fastq(lines, gc_bounds, length_bounds, quality_threshold)
 
                 # Write out fastq file after filter
-                write_filtered_fastq(lines, quality_result, save_filtered, wons=write_on_success_to, wonf=write_on_fail_to)
+                write_filtered_fastq(lines,
+                                     quality_result,
+                                     save_filtered,
+                                     wons=write_on_success_to,
+                                     wonf=write_on_fail_to)
 
             except StopIteration:
                 return
-        
+
     finally:
         read_from.close()
         write_on_success_to.close()
