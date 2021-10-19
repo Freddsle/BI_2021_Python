@@ -169,7 +169,7 @@ def read_fatsq_for_filter(input_fastq, gc_bounds, length_bounds, quality_thresho
     finally:
         read_from.close()
         write_on_success_to.close()
-        
+
         if write_on_fail_to:
             write_on_fail_to.close()
 
