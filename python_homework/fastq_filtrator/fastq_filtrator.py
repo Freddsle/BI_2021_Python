@@ -103,8 +103,8 @@ def filter_fastq(lines, gc_bounds, length_bounds, quality_threshold):
     Check the quality for each read in fastq file.
     If passed - return True, else - False.
     '''
-    seq_line = lines[1][::-2]
-    quality_line = lines[3][::-2]
+    seq_line = lines[1][:-2]
+    quality_line = lines[3][:-2]
     read_len = len(seq_line)
 
     # filter the read by GC content
