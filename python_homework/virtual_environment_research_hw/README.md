@@ -34,6 +34,9 @@ python3.9 -m venv ./venv
 # activate virtual environment
 source ./venv/bin/activate
 
+# if you install it not from main or master, change branch
+git checkout with_requirements
+
 # Install requirements
 pip install -r ./requirements.txt
 ```
