@@ -31,7 +31,7 @@ pip install -r ./requirements.txt
 ```
 
 # Run file
-```
+```console
 python3.9 pain.py
 ```
 
