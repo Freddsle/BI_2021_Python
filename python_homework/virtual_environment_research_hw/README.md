@@ -37,7 +37,7 @@ source ./venv/bin/activate
 # if you install it not from main or master, change branch
 git checkout with_requirements
 
-# install wheel to correct work of pip
+# required by pip to build wheels
 pip install wheel==0.37.0 
 
 # Install requirements
