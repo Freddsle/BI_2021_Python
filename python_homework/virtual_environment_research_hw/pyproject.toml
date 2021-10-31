@@ -6,7 +6,7 @@ repository = "https://github.com/Freddsle/BI_2021_Python/"
 authors = ["Yuliya Burankova"]
 
 [tool.poetry.dependencies]
-python = "3.9"
+python = ">=3.9,<3.10"
 
 wheel = "0.37.0"   #required by pip to build wheels
 google = "3.0.0"
