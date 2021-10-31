@@ -6,12 +6,19 @@ You can easily reproduce the results by running scripts locally.
 
 Tested on Ubuntu 20.04.3 LTS.
 
-Required Python 3.9 nd venv.
+Required Python 3.9 and venv.
 
 You can install it with:
 ```console
 sudo apt-get install python3.9 python3.9-venv
 ```
+
+Required git:
+```console
+sudo apt install git
+```
+
+
 # Install and run with pip
 ## Installation
 
