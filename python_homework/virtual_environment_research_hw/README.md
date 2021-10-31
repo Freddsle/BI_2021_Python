@@ -66,7 +66,7 @@ cd ./BI_2021_Python/python_homework/virtual_environment_research_hw/
 # if you install it not from main or master, change branch
 git checkout with_requirements
 
-
+poetry env use python3.9
 poetry install
 
 # Run
