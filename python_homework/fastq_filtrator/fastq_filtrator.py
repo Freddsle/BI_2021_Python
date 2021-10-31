@@ -4,17 +4,28 @@
 import argparse
 
 
+def normalize_bounds(bounds):
+
+    if isinstance(bounds, list):
+        return bounds
+
+    return [bounds]
+
+
 def check_bound(bound):
     """
     Check type and number of elements in bounds.
     """
 
-    if 2 < len(bound):
+    # Normalize bounds - all to list
+    bound_list = normalize_bounds(bound)
+
+    if 2 < len(bound_list):
         print('Error. Added more than two number to bounds.')
         return
 
     try:
-        normalized_bound = [float(value) for value in bound]
+        normalized_bound = [float(value) for value in bound_list]
         return normalized_bound
 
     except ValueError:
@@ -62,23 +73,18 @@ def filter_gc(seq_line, read_len, gc_bounds):
     '''
     Filter the read by GC content (in percent)
     '''
-    gc_number = seq_line.count('C') + seq_line.count('G')
+    gc_number = gc_number = seq_line.upper().count('C') + seq_line.upper().count('G')
     gc_content = 100 * gc_number / read_len
 
-    if gc_content < gc_bounds[0] or gc_content > gc_bounds[1]:
-        return False
-
-    return True
+    return gc_bounds[0] <= gc_content <= gc_bounds[1]
 
 
 def filter_length(read_len, length_bounds):
     '''
     Filter the read by length.
     '''
-    if read_len < length_bounds[0] or read_len > length_bounds[1]:
-        return False
 
-    return True
+    return length_bounds[0] <= read_len <= length_bounds[1]
 
 
 def filter_quality(read_len, quality_line, quality_threshold):
@@ -103,8 +109,8 @@ def filter_fastq(lines, gc_bounds, length_bounds, quality_threshold):
     Check the quality for each read in fastq file.
     If passed - return True, else - False.
     '''
-    seq_line = lines[1][:-2]
-    quality_line = lines[3][:-2]
+    seq_line = lines[1].strip()
+    quality_line = lines[3].strip()
     read_len = len(seq_line)
 
     # filter the read by GC content
@@ -174,8 +180,7 @@ def read_fatsq_for_filter(input_fastq, gc_bounds, length_bounds, quality_thresho
             write_on_fail_to.close()
 
 
-def main(input_fastq, output_file_prefix, gc_bounds, length_bounds, quality_threshold, save_filtered):
-
+def main(input_fastq, output_file_prefix, gc_bounds=(0, 100), length_bounds=(0, 2**32), quality_threshold=0, save_filtered=False):
     # Check bounds and update it
     gc_bounds_cheked = make_gc_bounds(gc_bounds)
     length_bounds_cheked = make_len_bounds(length_bounds)

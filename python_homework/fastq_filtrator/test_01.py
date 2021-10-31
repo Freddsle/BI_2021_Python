@@ -3,6 +3,12 @@ import pytest  # noqa: F401; pylint: disable=unused-variable
 from fastq_filtrator import fastq_filtrator
 
 
+def test_normalize_bounds():
+    assert fastq_filtrator.normalize_bounds(52) == [52]
+    assert fastq_filtrator.normalize_bounds(52.0) == [52.0]
+    assert fastq_filtrator.normalize_bounds([1, 3]) == [1, 3]
+
+
 def test_check_bound():
     assert fastq_filtrator.check_bound(['1', '100']) == [1.0, 100.0]
     assert fastq_filtrator.check_bound(['1', '100', '35']) is None
@@ -10,11 +16,18 @@ def test_check_bound():
     assert fastq_filtrator.check_bound(['56']) == [56.0]
 
 
+def test_check_bound__single_number_bound():
+    assert fastq_filtrator.check_bound(56) == [56.0]
+    assert fastq_filtrator.check_bound(56.0) == [56.0]
+
+
 def test_make_len_bounds():
     assert fastq_filtrator.make_len_bounds(['1', '100']) == [1.0, 100.0]
     assert fastq_filtrator.make_len_bounds(['1', '100', '35']) is None
     assert fastq_filtrator.make_len_bounds(['1', 'a']) is None
     assert fastq_filtrator.make_len_bounds(['56']) == [0, 56.0]
+    assert fastq_filtrator.make_len_bounds(56) == [0, 56.0]
+    assert fastq_filtrator.make_len_bounds(56.0) == [0, 56.0]
 
 
 def test_make_gc_bounds():
@@ -22,6 +35,8 @@ def test_make_gc_bounds():
     assert fastq_filtrator.make_gc_bounds(['1', '100', '35']) is None
     assert fastq_filtrator.make_gc_bounds(['1', 'a']) is None
     assert fastq_filtrator.make_gc_bounds(['56']) == [0, 56.0]
+    assert fastq_filtrator.make_gc_bounds(56) == [0, 56.0]
+    assert fastq_filtrator.make_gc_bounds(56.0) == [0, 56.0]
 
 
 def test_filter_gc():
