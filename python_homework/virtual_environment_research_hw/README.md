@@ -60,8 +60,12 @@ curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poet
 source $HOME/.poetry/env
 
 # prepare project
-git clone git@github.com:Freddsle/BI_2021_Python.git
-cd ./python_homework/virtual_environment_research_hw/
+git clone https://github.com/Freddsle/BI_2021_Python
+cd ./BI_2021_Python/python_homework/virtual_environment_research_hw/
+
+# if you install it not from main or master, change branch
+git checkout with_requirements
+
 
 poetry install
 
