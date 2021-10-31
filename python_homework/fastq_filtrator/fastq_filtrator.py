@@ -180,7 +180,8 @@ def read_fatsq_for_filter(input_fastq, gc_bounds, length_bounds, quality_thresho
             write_on_fail_to.close()
 
 
-def main(input_fastq, output_file_prefix, gc_bounds=(0, 100), length_bounds=(0, 2**32), quality_threshold=0, save_filtered=False):
+def main(input_fastq, output_file_prefix, 
+         gc_bounds=(0, 100), length_bounds=(0, 2**32), quality_threshold=0, save_filtered=False):
     # Check bounds and update it
     gc_bounds_cheked = make_gc_bounds(gc_bounds)
     length_bounds_cheked = make_len_bounds(length_bounds)
