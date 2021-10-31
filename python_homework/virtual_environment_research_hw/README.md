@@ -23,8 +23,8 @@ sudo apt install git
 ## Installation
 
 ```console
-git clone https://github.com/Freddsle/BI_2021_Python.git
-cd ./python_homework/virtual_environment_research_hw/
+git clone https://github.com/Freddsle/BI_2021_Python
+cd ./BI_2021_Python/python_homework/virtual_environment_research_hw/
 
 # Create and activate your virtual environment
 
