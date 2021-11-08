@@ -1,1 +1,1 @@
-Here are solutions for some of the problems from the [list of 100 problems](https://github.com/rougier/numpy-100).
+Here are solutions for some of the problems from the [collection of 100 numpy exercises](https://github.com/rougier/numpy-100).
