@@ -11,9 +11,9 @@ Bioinformatics for biologist, 2021-2022.
     1. Filter reads by GC composition.
     2. Filter reads by quality.
     3. Filter reads by length.
-    4. Save results to file.
-In python_homework\fastq_filtrator.
+    4. Save results to file.\
+    In python_homework\fastq_filtrator.
 
 4. "Virtual environment research" - creating a requirement.txt file for https://github.com/krglkvrmn/Virtual_environment_research. 
 
-In python_homework\virtual_environment_research_hw.
+    In python_homework\virtual_environment_research_hw.
