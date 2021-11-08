@@ -18,3 +18,7 @@ Bioinformatics for biologist, 2021-2022.
 4. "Virtual environment research" - creating a requirement.txt file for pain.py file. 
 
     In `./python_homework/virtual_environment_research_hw`.
+
+5. Solutions for some of the problems from the [list of 100 problems](https://github.com/rougier/numpy-100).
+
+    In `./python_homework/5. numpy_challenge`.
