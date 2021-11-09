@@ -70,7 +70,7 @@ def test_compute_2d_distance():
 
 def test_compute_multidimensional_distance():
     assert numpy_challenge.compute_multidimensional_distance(np.array([-1, 7]), np.array([7, 1])) == 10
-    assert (numpy_challenge.compute_multidimensional_distance(np.array([-1, 7, 3, 5]), 
+    assert (numpy_challenge.compute_multidimensional_distance(np.array([-1, 7, 3, 5]),
                                                               np.array([7, 1, 2, 3])) - np.sqrt(105)) < 10**(-5)
     assert numpy_challenge.compute_multidimensional_distance(np.array([2, 4]), np.array([0])) is None
     assert numpy_challenge.compute_multidimensional_distance(np.array([2, 4, 0]), np.array([-1, 8])) is None

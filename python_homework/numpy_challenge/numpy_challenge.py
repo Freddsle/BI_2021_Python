@@ -54,7 +54,6 @@ def matrix_multiplication(first_matrix, second_matrix):
             print('Returns the dot product of matrices')
             return np.dot(first_matrix, second_matrix)
 
-
     except ValueError:
         print('!!!Something wrong with arrays dimensions!!!')
         print('More info:')
