@@ -95,18 +95,16 @@ def multiply_matrices(matrices_list):
     list_len = len(matrices_list)
 
     if multiplication_check(matrices_list):
-
         product = matrix_multiplication(matrices_list[0], matrices_list[1])
 
         for i in range(2, list_len):
-
             product = matrix_multiplication(product, matrices_list[i])
 
         return product
 
     else:
         if list_len == 0:
-                    print('Matrices list contain only one matrix.')
+            print('Matrices list contain only one matrix.')
 
         return None
 

@@ -19,6 +19,6 @@ Bioinformatics for biologist, 2021-2022.
 
     In `./python_homework/04_virtual_environment_research_hw`.
 
-5. Solutions for some of the problems from the [collection of 100 numpy exercises](https://github.com/rougier/numpy-100).
+5. Solutions for some of the problems from the [collection of 100 numpy exercises](https://github.com/rougier/numpy-100) in `test_challenge.py` and matrix multiplication functions in `numpy_challenge.py`.
 
     In `./python_homework/05_numpy_challenge`.
