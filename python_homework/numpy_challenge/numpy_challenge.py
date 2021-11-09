@@ -4,8 +4,8 @@ import traceback
 
 def dimension_check(first_matrix_shape, second_matrix_shape):
     '''
-    Checks if matrices can be multiplied by their shapes. 
-    If yes, it returns the True and product shape. 
+    Checks if matrices can be multiplied by their shapes.
+    If yes, it returns the True and product shape.
     If not - False.
     '''
 
@@ -17,9 +17,9 @@ def dimension_check(first_matrix_shape, second_matrix_shape):
         return True, ()
 
     if len(second_matrix_shape) == 1:
-            if first_matrix_shape[-1] == second_matrix_shape[-1]:
-                shape_to_return = (first_matrix_shape[:-1])
-                return True, shape_to_return
+        if first_matrix_shape[-1] == second_matrix_shape[-1]:
+            shape_to_return = (first_matrix_shape[:-1])
+            return True, shape_to_return
 
     if first_matrix_shape[-1] == second_matrix_shape[-2]:
         shape_to_return = (first_matrix_shape[:-1]) + (second_matrix_shape[:-2]) + tuple([second_matrix_shape[-1]])
@@ -55,7 +55,7 @@ def matrix_multiplication(first_matrix, second_matrix):
             return np.dot(first_matrix, second_matrix)
 
 
-    except ValueError: 
+    except ValueError:
         print('!!!Something wrong with arrays dimensions!!!')
         print('More info:')
         print(traceback.format_exc())
@@ -63,7 +63,7 @@ def matrix_multiplication(first_matrix, second_matrix):
 
 def multiplication_check(matrixes_list):
     '''
-    Checks if matrices in matrixes_list can be sequentially multiplied. 
+    Checks if matrices in matrixes_list can be sequentially multiplied.
     If yes, it returns the True.  If not - False.
     '''
 
@@ -94,7 +94,7 @@ def multiply_matrices(matrices_list):
 
     list_len = len(matrices_list)
 
-    if multiplication_check(matrices_list):        
+    if multiplication_check(matrices_list):
 
         product = matrix_multiplication(matrices_list[0], matrices_list[1])
 
@@ -150,7 +150,7 @@ def compute_multidimensional_distance(first_N_array, second_N_array):
 
 def compute_pair_distances(obs_2D_array):
     '''
-    Accepts a 2d array, where each row is an observation and each column is a feature. 
+    Takes a 2d array, where each row is an observation and each column is a feature.
     The function calculates and returns a matrix of pairwise distances.
     '''
 

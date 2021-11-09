@@ -9,9 +9,9 @@ a_3 = np.array([[1, 3], [-2, 4]])
 
 b = np.dtype('int32').type(2.0)
 
-a_big = np.arange(3*4*5*6).reshape((3,4,5,6))
-b_big = np.arange(3*4*5*6)[::-1].reshape((5,4,6,3))
-c_big = np.arange(5*4*5*4).reshape((5,4,4,5))
+a_big = np.arange(3 * 4 * 5 * 6).reshape((3, 4, 5, 6))
+b_big = np.arange(3 * 4 * 5 * 6)[::-1].reshape((5, 4, 6, 3))
+c_big = np.arange(5 * 4 * 5 * 4).reshape((5, 4, 4, 5))
 big_result = np.dot(a_big, b_big)
 
 
@@ -21,7 +21,7 @@ def test_matrix_multiplication():
     assert numpy_challenge.matrix_multiplication(a_1, a_1) == 14.0
     assert (numpy_challenge.matrix_multiplication(b, a_3) == np.array([[2, 6], [-4, 8]])).all()
     assert (numpy_challenge.matrix_multiplication(a_1, b) == np.array([2., 4., 6.])).all()
-    assert numpy_challenge.matrix_multiplication(a_big, b_big)[2,3,2,1,2,2] == 499128
+    assert numpy_challenge.matrix_multiplication(a_big, b_big)[2, 3, 2, 1, 2, 2] == 499128
     assert numpy_challenge.matrix_multiplication(a_1, a_2) is None
 
 
@@ -37,7 +37,7 @@ def test_dimension_check():
 
 def test_multiplication_check():
     assert numpy_challenge.multiplication_check([a_3, a_2]) is True
-    assert numpy_challenge.multiplication_check([b, b])  is  True
+    assert numpy_challenge.multiplication_check([b, b]) is True
     assert numpy_challenge.multiplication_check([b, b, b, b]) is True
     assert numpy_challenge.multiplication_check([a_1, a_1]) is True
     assert numpy_challenge.multiplication_check([b, a_3]) is True
@@ -49,7 +49,7 @@ def test_multiplication_check():
 
 
 def test_multiply_matrices():
-    assert (numpy_challenge.multiply_matrices([a_3, a_2]) == np.array([[11, 13],[ 8, 34]])).all()
+    assert (numpy_challenge.multiply_matrices([a_3, a_2]) == np.array([[11, 13], [8, 34]])).all()
     assert (numpy_challenge.multiply_matrices([b, b, b, b]) == 16).all()
     assert (numpy_challenge.multiply_matrices([a_1, a_1]) == 14.0).all()
     assert (numpy_challenge.multiply_matrices([a_1, b]) == np.array([2., 4., 6.])).all()
@@ -60,9 +60,9 @@ def test_multiply_matrices():
     assert numpy_challenge.multiply_matrices([a_1, a_2]) is None
 
 
-def test_multiply_matrices():
+def test_compute_2d_distance():
     assert numpy_challenge.compute_2d_distance(np.array([-1, 7]), np.array([7, 1])) == 10
-    assert (numpy_challenge.compute_2d_distance(np.array([0, 1]), np.array([2,-2])) - np.sqrt(13)) < 10**(-5)
+    assert (numpy_challenge.compute_2d_distance(np.array([0, 1]), np.array([2, -2])) - np.sqrt(13)) < 10**(-5)
     assert numpy_challenge.compute_2d_distance(np.array([2, 4]), np.array([0])) is None
     assert numpy_challenge.compute_2d_distance(np.array([2, 4, 0]), np.array([-1, 8])) is None
     assert numpy_challenge.compute_2d_distance(a_2, a_3) is None
@@ -70,7 +70,8 @@ def test_multiply_matrices():
 
 def test_compute_multidimensional_distance():
     assert numpy_challenge.compute_multidimensional_distance(np.array([-1, 7]), np.array([7, 1])) == 10
-    assert (numpy_challenge.compute_multidimensional_distance(np.array([-1, 7, 3, 5]), np.array([7, 1, 2, 3])) - np.sqrt(105)) < 10**(-5)
+    assert (numpy_challenge.compute_multidimensional_distance(np.array([-1, 7, 3, 5]), 
+                                                              np.array([7, 1, 2, 3])) - np.sqrt(105)) < 10**(-5)
     assert numpy_challenge.compute_multidimensional_distance(np.array([2, 4]), np.array([0])) is None
     assert numpy_challenge.compute_multidimensional_distance(np.array([2, 4, 0]), np.array([-1, 8])) is None
     assert numpy_challenge.compute_multidimensional_distance(np.array([2, 4, 0]), np.array([-1, 8])) is None
