@@ -128,7 +128,37 @@ def compute_2d_distance(first_1D_array, second_1D_array):
     return np.sqrt((first_1D_array[0] - second_1D_array[0])**2 + (first_1D_array[1] - second_1D_array[1])**2)
 
 
+def compute_multidimensional_distance(first_N_array, second_N_array):
+    '''
+    Takes 2 one-dimensional arrays with any number of values (but equal) and calculates the distance between them.
+    '''
 
+    # shape check
+    if len(first_N_array.shape) != 1 or len(second_N_array.shape) != 1:
+        print('Not 1D arrays!')
+        return None
+
+    # len check
+    if len(first_N_array) != len(second_N_array):
+        print('Matrices of unequal length!')
+        return None
+
+    return np.linalg.norm(first_N_array - second_N_array)
+
+
+def compute_pair_distances(obs_2D_array):
+
+    number_obs = obs_2D_array.shape[0]
+
+    answer_matrix = np.zeros((number_obs, number_obs))
+
+    for i in range(number_obs):
+        for j in range(number_obs):
+
+            if i != j:
+                answer_matrix[i, j] = compute_multidimensional_distance(obs_2D_array[i], obs_2D_array[j])
+    
+    return answer_matrix
 
 
 def main():
