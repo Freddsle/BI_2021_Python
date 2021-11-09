@@ -75,7 +75,3 @@ def test_compute_multidimensional_distance():
     assert numpy_challenge.compute_multidimensional_distance(np.array([2, 4, 0]), np.array([-1, 8])) is None
     assert numpy_challenge.compute_multidimensional_distance(np.array([2, 4, 0]), np.array([-1, 8])) is None
     assert numpy_challenge.compute_multidimensional_distance(a_2, a_3) is None
-    
-
-def test_compute_pair_distances():
-    assert numpy_challenge.compute_pair_distances(obs_2D_array)

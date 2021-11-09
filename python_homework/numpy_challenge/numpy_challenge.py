@@ -1,12 +1,14 @@
 import numpy as np
 import traceback
 
+
 def dimension_check(first_matrix_shape, second_matrix_shape):
     '''
     Checks if matrices can be multiplied by their shapes. 
     If yes, it returns the True and product shape. 
     If not - False.
     '''
+
     if len(first_matrix_shape) == 0 or len(second_matrix_shape) == 0:
         shape_to_return = second_matrix_shape if len(first_matrix_shape) == 0 else first_matrix_shape
         return True, shape_to_return
@@ -72,7 +74,7 @@ def multiplication_check(matrixes_list):
         status_check, product = dimension_check(matrixes_list[0].shape, matrixes_list[1].shape)
 
         for i in range(2, list_len):
-            
+
             if status_check:
                 status_check, product = dimension_check(product, matrixes_list[i].shape)
 
@@ -80,7 +82,7 @@ def multiplication_check(matrixes_list):
                 break
 
         return status_check
-    
+
     return False
 
 
@@ -89,7 +91,7 @@ def multiply_matrices(matrices_list):
     Sequentially multiplies the matrices in the list. Returns the result of the multiplication.
     If it cannot multiply, it returns None.
     '''
-    
+
     list_len = len(matrices_list)
 
     if multiplication_check(matrices_list):        
@@ -97,7 +99,7 @@ def multiply_matrices(matrices_list):
         product = matrix_multiplication(matrices_list[0], matrices_list[1])
 
         for i in range(2, list_len):
-            
+
             product = matrix_multiplication(product, matrices_list[i])
 
         return product
@@ -147,6 +149,14 @@ def compute_multidimensional_distance(first_N_array, second_N_array):
 
 
 def compute_pair_distances(obs_2D_array):
+    '''
+    Accepts a 2d array, where each row is an observation and each column is a feature. 
+    The function calculates and returns a matrix of pairwise distances.
+    '''
+
+    if len(obs_2D_array.shape) != 2:
+        print('Not 2D arrays!')
+        return None
 
     number_obs = obs_2D_array.shape[0]
 
@@ -157,7 +167,7 @@ def compute_pair_distances(obs_2D_array):
 
             if i != j:
                 answer_matrix[i, j] = compute_multidimensional_distance(obs_2D_array[i], obs_2D_array[j])
-    
+
     return answer_matrix
 
 
@@ -166,6 +176,10 @@ def main():
     array_one = np.random.rand(3, 5)
     array_two = np.linspace(0, 7, 8)
     array_three = np.eye(5)
+
+    print('First array:', array_one)
+    print('Second array:', array_two)
+    print('Therd array:', array_three)
 
 
 if __name__ == '__main__':
