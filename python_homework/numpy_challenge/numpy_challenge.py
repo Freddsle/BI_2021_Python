@@ -60,18 +60,75 @@ def matrix_multiplication(first_matrix, second_matrix):
 
 
 def multiplication_check(matrixes_list):
+    '''
+    Checks if matrices in matrixes_list can be sequentially multiplied. 
+    If yes, it returns the True.  If not - False.
+    '''
 
     list_len = len(matrixes_list)
 
     if list_len > 1:
 
         status_check, product = dimension_check(matrixes_list[0].shape, matrixes_list[1].shape)
-        
-        while status_check:
-            for i in range(2, list_len):
+
+        for i in range(2, list_len):
+            
+            if status_check:
                 status_check, product = dimension_check(product, matrixes_list[i].shape)
 
-    return status_check
+            else:
+                break
+
+        return status_check
+    
+    return False
+
+
+def multiply_matrices(matrices_list):
+    '''
+    Sequentially multiplies the matrices in the list. Returns the result of the multiplication.
+    If it cannot multiply, it returns None.
+    '''
+    
+    list_len = len(matrices_list)
+
+    if multiplication_check(matrices_list):        
+
+        product = matrix_multiplication(matrices_list[0], matrices_list[1])
+
+        for i in range(2, list_len):
+            
+            product = matrix_multiplication(product, matrices_list[i])
+
+        return product
+
+    else:
+        if list_len == 0:
+                    print('Matrices list contain only one matrix.')
+
+        return None
+
+
+def compute_2d_distance(first_1D_array, second_1D_array):
+    '''
+    Calculates the distance between two points on the coordinate plane.
+    Points are specified by two one-dimensional numpy arrays of length 2.
+    '''
+
+    # shape check
+    if len(first_1D_array.shape) != 1 or len(second_1D_array.shape) != 1:
+        print('Not 1D arrays!')
+        return None
+
+    # len check
+    if len(first_1D_array) != 2 or len(second_1D_array) != 2:
+        print('There are not two coordinates in one or two arrays.')
+        return None
+
+    return np.sqrt((first_1D_array[0] - second_1D_array[0])**2 + (first_1D_array[1] - second_1D_array[1])**2)
+
+
+
 
 
 def main():
