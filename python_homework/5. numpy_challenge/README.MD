@@ -1,1 +1,0 @@
-Here are solutions for some of the problems from the [list of 100 problems](https://github.com/rougier/numpy-100).
