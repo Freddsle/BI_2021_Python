@@ -86,7 +86,7 @@ def uniqe_words_plot(uniqe_wors):
     data['word_len'] = data['word'].str.len()
 
     plt.margins(0)
-    sns.displot(data['word_len'], stat='frequency')
+    sns.distplot(data['word_len'])
     plt.title('Distribution of lengths of unique words')
     plt.xlabel('word lenght')
     plt.gcf().set_size_inches(8, 6)
