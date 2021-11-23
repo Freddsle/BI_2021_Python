@@ -10,7 +10,7 @@ def file_dowload(url, file_reference):
     Download file from url and save it to file_output (fale_path + file_name).
     '''
     with urllib.request.urlopen(url) as response, open(file_reference, 'wb') as out_file:
-        data = response.read() # a `bytes` object
+        data = response.read()
         out_file.write(data)
 
 
@@ -72,7 +72,7 @@ def tale_parser(url):
     write_matches(file_output_ex, ex_matches)
 
     # Plot a histogram of the distribution of the lengths of unique words (case-insensitive, length from 1) in the text.
-    words_regexp =  re.compile(r'\b[A-Za-z_\']+\b|(?<=\D)\d+\.{0,1}\d*(?=\D)')
+    words_regexp = re.compile(r'\b[A-Za-z_\']+\b|(?<=\D)\d+\.{0,1}\d*(?=\D)')
     words = read_file_lines(file_tale, words_regexp)
     words = set([word.lower() for word in read_file_lines(file_tale, words_regexp)])
     uniqe_words_plot(words)
@@ -86,7 +86,7 @@ def uniqe_words_plot(uniqe_wors):
     data['word_len'] = data['word'].str.len()
 
     plt.margins(0)
-    sns.distplot(data['word_len'])
+    sns.histplot(data['word_len'], stat="density", common_norm=False)
     plt.title('Distribution of lengths of unique words')
     plt.xlabel('word lenght')
     plt.gcf().set_size_inches(8, 6)
@@ -100,7 +100,7 @@ def main():
     # # https://raw.githubusercontent.com/Serfentum/bf_course/master/15.re/references
     url = 'https://raw.githubusercontent.com/Serfentum/bf_course/master/15.re/references'
     ftp_parser(url)
-    
+
     # https://raw.githubusercontent.com/Serfentum/bf_course/master/15.re/2430AD
     url = 'https://raw.githubusercontent.com/Serfentum/bf_course/master/15.re/2430AD'
     tale_parser(url)
