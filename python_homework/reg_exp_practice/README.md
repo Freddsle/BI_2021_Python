@@ -6,4 +6,5 @@
   - all numbers from there to the `tale_numbers.txt` file.
   - all words that contain the letter a, case is not important, to the `tale_a_words.txt` file.
   - all exclamation sentences to the `tale_exclamation.txt` file.
+  
   Also a histogram of the distribution of the lengths of unique words (case-insensitive, length from 1) in the text was plot. Result is in the `.png` file in the `files` folder.
