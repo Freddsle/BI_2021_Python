@@ -22,3 +22,5 @@ Bioinformatics for biologist, 2021-2022.
 5. Solutions for some of the problems from the [collection of 100 numpy exercises](https://github.com/rougier/numpy-100) in `test_challenge.py` and matrix multiplication functions in `numpy_challenge.py`.
 
     In `./python_homework/numpy_challenge`.
+
+6. Practice with regular expressions. In `./python_homework/reg_exp_practice`.
