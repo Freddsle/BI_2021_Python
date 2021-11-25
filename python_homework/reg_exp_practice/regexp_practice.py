@@ -61,7 +61,7 @@ def tale_parser(url):
 
     # From the same tale, extract all words that contain the letter a, case is not important
     file_output_words = 'python_homework/reg_exp_practice/files/tale_a_words.txt'
-    a_word_regexp = re.compile(r'(?<=\b)\w*[aA][\w\']*(?=\b)')
+    a_word_regexp = re.compile(r'(?<=\b)\w*[aA][\w\']*\.*\S*(?=\b)')
     a_word__matches = read_file_lines(file_tale, a_word_regexp)
     write_matches(file_output_words, a_word__matches)
 

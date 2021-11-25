@@ -1,4 +1,4 @@
-A
+A.D
 and
 dawn
 and
@@ -100,7 +100,7 @@ that
 way
 that
 against
-plastic
+plastic-knit
 passed
 and
 saw
@@ -444,7 +444,7 @@ at
 chance
 and
 tolerated
-deviants
+deviants-from-norm
 all
 dreaded
 what
@@ -736,8 +736,7 @@ that
 way
 are
 an
-idealist
-can
+idealist-can
 that
 last
 many
@@ -838,8 +837,7 @@ last
 Earth
 that
 humans
-humans
-and
+humans-and
 seared
 plants
 and
@@ -889,7 +887,7 @@ had
 at
 last
 achieved
-A
+A.D
 was
 and
 had
@@ -974,7 +972,7 @@ can
 maintained
 years
 year
-A
+A.D
 human
 and
 equal
