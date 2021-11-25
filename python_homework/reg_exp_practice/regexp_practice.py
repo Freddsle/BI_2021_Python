@@ -72,9 +72,10 @@ def tale_parser(url):
     write_matches(file_output_ex, ex_matches)
 
     # Plot a histogram of the distribution of the lengths of unique words (case-insensitive, length from 1) in the text.
-    words_regexp = re.compile(r'\b[A-Za-z_\']+\b|(?<=\D)\d+\.{0,1}\d*(?=\D)')
+    words_regexp = re.compile(r'(?<=\b)[\w\']\S*(?=\b)')
     words = read_file_lines(file_tale, words_regexp)
     words = set([word.lower() for word in read_file_lines(file_tale, words_regexp)])
+    print("\n".join(words))
     uniqe_words_plot(words)
 
 
