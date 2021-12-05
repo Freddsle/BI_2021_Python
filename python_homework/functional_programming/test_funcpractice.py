@@ -35,9 +35,9 @@ def test_func_chain():
 def test_multiple_partial():
     test_array = np.array([[1, 2], [3, 4]])
     ax1_mean, ax1_max, ax1_sum = functional.multiple_partial(np.mean, np.max, np.sum, axis=1)
-    assert (ax1_mean(test_array)==np.array([1.5, 3.5])).all()
-    assert (ax1_max(test_array)==np.array([2, 4])).all()
-    assert (ax1_sum(test_array)==np.array([3, 7])).all()
+    assert (ax1_mean(test_array) == np.array([1.5, 3.5])).all()
+    assert (ax1_max(test_array) == np.array([2, 4])).all()
+    assert (ax1_sum(test_array) == np.array([3, 7])).all()
 
     test_strings = ['zbcd', 'sdfgbsdfcvc', 'poihbjn', 'aalbbbnl']
     len_min, len_max = functional.multiple_partial(min, max, key=len)

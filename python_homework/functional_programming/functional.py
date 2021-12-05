@@ -28,7 +28,8 @@ def sequential_map(*args):
     '''
     The function accepts as arguments any number of functions (positional arguments, NOT a list),
     as well as a container with some values.
-    The function returns a list of the results of sequential application of the passed functions to the values in the container.
+    The function returns a list of the results of sequential application
+    of the passed functions to the values in the container.
     For example: sequential_map(np.square, np.sqrt, lambda x: x**3, [1, 2, 3, 4, 5]) -> [1, 8, 27, 64, 125]
     '''
     new_container_values = args[-1]
@@ -59,7 +60,8 @@ def conditional_reduce(func_one, func_two, values):
     The function takes 2 functions and also a container with values.
     The first function must take 1 argument and return True or False,
     the second takes 2 arguments and returns a value (just like in a normal reduce function).
-    conditional_reduce returns one value - the result of reduce, skipping the values with which the first function returned False.
+    conditional_reduce returns one value - the result of reduce,
+    skipping the values with which the first function returned False.
     For example, conditional_reduce(lambda x: x < 5, lambda x, y: x + y, [1, 3, 5, 10]) -> 4
     '''
     new_container_values = list(filter(func_one, values))
