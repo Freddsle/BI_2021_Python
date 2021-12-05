@@ -3,12 +3,13 @@ def func_chain(*args):
     '''
     The function accepts any number of functions as arguments (positional arguments, NOT a list).
     The function returns a function that concatenates all passed in sequential execution.
-    For example, my_chain = func_chain(lambda x: x + 2, lambda x: (x/4, x//4)).
+    For example:
+    my_chain = func_chain(lambda x: x + 2, lambda x: (x/4, x//4)).
     my_chain(37) -> (9.75, 9).
     '''
     def inside_chain_func(inside_container):
         if not inside_container:
-            return
+            return inside_container
 
         if isinstance(inside_container, (int, float)):
             for function in args:
@@ -45,7 +46,7 @@ def consensus_filter(*args):
     new_container_values = args[-1]
 
     if not new_container_values:
-        return
+        return new_container_values
 
     for function in args[:-1]:
         new_container_values = list(filter(function, new_container_values))
@@ -64,7 +65,10 @@ def conditional_reduce(func_one, func_two, values):
     new_container_values = list(filter(func_one, values))
 
     if not values:
-        return
+        return values
+
+    if len(new_container_values) == 1:
+        return float(*new_container_values)
 
     for i in range(len(new_container_values)):
         if i == 0:
@@ -75,14 +79,28 @@ def conditional_reduce(func_one, func_two, values):
     return new_number
 
 
-def multiple_partial(*args):
-    '''Реализовать функцию  multiple_partial - аналог функции partial, 
-    но которая принимает неограниченное число функций в качестве аргументов и 
-    возвращает список из такого же числа "частичных функций". 
-    !!! Не используйте саму функцию partial. 
-    Например: ax1_mean, ax1_max, ax1_sum = multiple_partial(np.mean, np.max, np.sum, axis=1)
+def create_partial(func, **inside_args):
     '''
-    pass
+    Create new functions with predefined values for multiple_partial.
+    '''
+    def inside_func(*args, **kwargs):
+        return func(*args, **inside_args, **kwargs)
+    return inside_func
+
+
+def multiple_partial(*args, **inside_args):
+    '''
+    This is analogous to the partial function, which takes an unlimited number of functions as arguments
+    and returns a list of the same number of "partial functions".
+    For example:
+    ax1_mean, ax1_max, ax1_sum = multiple_partial(np.mean, np.max, np.sum, axis=1)
+    '''
+    result = []
+
+    for func in args:
+        result.append(create_partial(func, **inside_args))
+
+    return result
 
 
 def main():
