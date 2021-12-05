@@ -1,24 +1,33 @@
 
+def sequential_map(*functions):
+    '''
+    The function accepts as arguments any number of functions (positional arguments, NOT a list), 
+    as well as a container with some values.
+    The function returns a list of the results of sequential application of the passed functions to the values in the container. 
+    For example: sequential_map(np.square, np.sqrt, lambda x: x**3, [1, 2, 3, 4, 5]) -> [1, 8, 27, 64, 125]
+    !!! Дополнительно - интегрировать сюда func_chain.
+    '''
+    new_container_values = functions[-1].copy()
 
-def sequential_map():
-    '''
-    функция должна принимать в качестве аргументов любое количество функций (позиционными аргументами, НЕ списком), 
-    а также контейнер с какими-то значениями. 
-    Функция должна возвращать список результатов последовательного применения переданных функций к значениям в контейнере. 
-    Например, sequential_map(np.square, np.sqrt, lambda x: x**3, [1, 2, 3, 4, 5]) -> [1, 8, 27, 64, 125]
-    Дополнительно - интегрировать сюда func_chain.
-    '''
-    pass
+    for function in functions[:-1]:
+        new_container_values = list(map(function, new_container_values))
+
+    return new_container_values
 
 
-def consensus_filter():
+def consensus_filter(*functions):
     '''
-    Функция должна принимать в качестве аргументов любое количество функций (позиционными  аргументами, НЕ списком), 
-    возвращающих True или False, а также контейнер с какими-то значениями. 
-    Функция должна возвращать список значений, которые при передаче их во все функции дают True. 
-    Например: consensus_filter(lambda x: x > 0, lambda x: x > 5, lambda x: x < 10, [-2, 0, 4, 6, 11]) -> [6]
+    The function accepts as arguments any number of functions (positional arguments, NOT a list) 
+    that return True or False, as well as a container with some values.
+    The function returns a list of values that, when passed to all functions, give True.
+    For example: consensus_filter(lambda x: x > 0, lambda x: x > 5, lambda x: x < 10, [-2, 0, 4, 6, 11]) -> [6]
     '''
-    pass
+    new_container_values = functions[-1].copy()
+
+    for function in functions[:-1]:
+        new_container_values = list(filter(function, new_container_values))
+
+    return new_container_values
 
 
 def conditional_reduce():
@@ -33,9 +42,9 @@ def conditional_reduce():
     pass
 
 
-def func_chain():
+def func_chain(*args):
     '''
-    функция должна принимать в качестве аргументов любое количество функций (позиционными  аргументами, НЕ списком). 
+    функция должна принимать в качестве аргументов любое количество функций (позиционными аргументами, НЕ списком). 
     Функция должна возвращать функцию, объединяющую все переданные последовательным выполнением. 
     Например, 
     my_chain = func_chain(lambda x: x + 2, lambda x: x/4, x//4). 
@@ -45,7 +54,7 @@ def func_chain():
     pass
 
 
-def multiple_partial():
+def multiple_partial(*args):
     '''Реализовать функцию  multiple_partial - аналог функции partial, 
     но которая принимает неограниченное число функций в качестве аргументов и 
     возвращает список из такого же числа "частичных функций". 
