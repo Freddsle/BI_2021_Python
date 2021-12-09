@@ -202,7 +202,7 @@ def create_sierpinski():
     x = [x for (x, y) in points]
     y = [y for (x, y) in points]
 
-    plt.figure(figsize=(10,10))
+    plt.figure(figsize=(10, 10))
     plt.plot(x, y, 'b.', markersize=0.05)
     plt.title('Sierpiński Triangle')
     plt.savefig('python_homework/random_practice/Plots/Sierpiński.png', dpi=100, bbox_inches='tight')
@@ -229,14 +229,43 @@ def shuffle_text(input_text):
     return ' '.join(input_text)
 
 
-def main():
-    generate_plot_list()
-    shuff_sort_plot()
-    random_walk_visualizaton()
-    create_sierpinski()
-    input_text = 'This tool helps you create text for all your layout needs.'
-    shuffle_text(input_text)
+def carpet_sierpinski():
+    '''
+    Generate and plot Sierpiński carpet.
+    '''
+    vertices = [(0.0, 0.0), (0.0, 1.0), (1.0, 1.0), (1.0, 0.0),
+                (0.0, 0.5), (0.5, 1.0), (1.0, 0.5), (0.5, 0.0)]
+    points = []
 
+    x, y = random.choice(vertices)
+
+    for i in range(1000000):
+        vx, vy = random.choice(vertices)      
+        x = (2 * vx + x) / 3.0
+        y = (2 * vy + y) / 3.0
+        points.append((x, y))
+
+    x = [x for (x, y) in points]
+    y = [y for (x, y) in points]
+
+    plt.figure(figsize=(10, 10))
+    plt.plot(x, y, 'b.', markersize=0.2)
+    plt.title('Sierpiński carpet')
+    plt.savefig('python_homework/random_practice/Plots/Sierpiński_carpet.png', dpi=100, bbox_inches='tight')
+    plt.close()
+
+
+
+def main():
+    #generate_plot_list()
+    #shuff_sort_plot()
+    #random_walk_visualizaton()
+    #create_sierpinski()
+    input_text = 'This tool helps you create text for all your layout needs.'
+    #shuffle_text(input_text)
+    
+    # Additional tasks
+    carpet_sierpinski()
 
 if __name__ == '__main__':
     main()
