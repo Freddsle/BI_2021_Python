@@ -71,13 +71,14 @@ def generate_plot_list():
         timer_np.append(end_np)
         timer_random_loop.append(end_range_random)
         timer_np_loop.append(end_range_np)
-    
-    fig, ax = plt.subplots()
+
+    fig = plt.figure()
+    ax = fig.add_subplot()
     ax.plot(number_n, timer_random_generate, label='Generate via Random', color='blue')
-    ax.plot(number_n, timer_random_prelist, label='Generate via Random to exist list', color = 'red')
-    ax.plot(number_n, timer_np, label='Generate via Numpy in array', color = 'green')
-    ax.plot(number_n, timer_random_loop, label='Generate via Random in Range loop', color = 'orange')
-    ax.plot(number_n, timer_np_loop, label='Generate via Numpy in Range loop', color = 'black')
+    ax.plot(number_n, timer_random_prelist, label='Generate via Random to exist list', color='red')
+    ax.plot(number_n, timer_np, label='Generate via Numpy in array', color='green')
+    ax.plot(number_n, timer_random_loop, label='Generate via Random in Range loop', color='orange')
+    ax.plot(number_n, timer_np_loop, label='Generate via Numpy in Range loop', color='black')
     plt.title('Measuring time of creating random numbers')
     plt.xlabel('Number of numbers, log')
     plt.ylabel('Measured time [s], log')
@@ -106,10 +107,9 @@ def monkey_sort(list_sort):
     '''
     Sort list by shaffling (Monkey sort).
     '''
-    n = len(list_sort)
     while is_sorted(list_sort) is False:
         random.shuffle(list_sort)
-        
+
     return list_sort
 
 
@@ -135,11 +135,11 @@ def shuff_sort_plot():
     '''
     number_n = [i for i in range(1, 15, 5)]
     timer_sort = []
-    
+
     for n in number_n:
         list_sort = [random.randrange(1, 50, 1) for i in range(n)]
         timer_sort.append(measure_sort(list_sort))
-    
+
     fig = plt.figure()
     ax = fig.add_subplot()
     ax.plot(number_n, timer_sort, color='blue')
@@ -158,13 +158,13 @@ def create_walk(steps):
     '''
     x_steps = np.random.rand(steps) - 0.5
     y_steps = np.random.rand(steps) - 0.5
-    
+
     x_position = np.cumsum(x_steps)
     y_position = np.cumsum(y_steps)
-    
+
     x_position[0] = 0
     y_position[0] = 0
-    
+
     return x_position, y_position
 
 
@@ -174,7 +174,7 @@ def random_walk_visualizaton():
     '''
     steps = 1000
     x_position, y_position = create_walk(steps)
-    plt.scatter(x_position, y_position, cmap=plt.cm.Blues, c = y_position, edgecolors='none', s=50)
+    plt.scatter(x_position, y_position, cmap=plt.cm.Blues, c=y_position, edgecolors='none', s=50)
     plt.plot(x_position, y_position, alpha=0.3)
     plt.scatter(0, 0, c='red', edgecolors='none')
     plt.scatter(x_position[-1], y_position[-1], c='green', edgecolors='none')
@@ -184,42 +184,58 @@ def random_walk_visualizaton():
     plt.close()
 
 
+def create_sierpinski():
+    '''
+    Generate and plot Sierpiński triangle.
+    '''
+    vertices = [(0.0, 0.0), (0.5, 1.0), (1.0, 0.0)]
+    points = []
+    
+    x, y = random.choice(vertices)
+
+    for i in range(100000):
+        vx, vy = random.choice(vertices)
+        x = (vx + x) / 2.0
+        y = (vy + y) / 2.0
+        points.append((x, y))
+    
+    x = [x for (x, y) in points]
+    y = [y for (x, y) in points]
+
+    plt.plot(x, y, 'b.')
+    plt.title('Sierpiński Triangle')
+    plt.gcf().set_size_inches(8, 6)
+    plt.savefig('python_homework/random_practice/Plots/Sierpiński.png', dpi=100, bbox_inches='tight')
+    plt.close()
+
+
+def shuffle_text(input_text):
+    'Shuffle words in text. Shuffle from second to penultimate letter (like "word[1:-1]".'
+
+    input_text = input_text.split(' ')
+
+    for i, word in enumerate(input_text):
+        if len(word) > 2 and len(word[1:-1]) > 1:
+            if word[-1] != '.' and word[-1] != ',':
+                inside_letters = word[1:-1]
+                inside_letters = ''.join(random.sample(inside_letters, len(inside_letters)))
+                input_text[i] = word[0] + inside_letters + word[-1]
+            else:
+                inside_letters = word[1:-2]
+                inside_letters = ''.join(random.sample(inside_letters, len(inside_letters)))
+                input_text[i] = word[0] + inside_letters + word[-2:]
+
+    return ' '.join(input_text)
+
+
 def main():
-    #generate_plot_list()
+    generate_plot_list()
     shuff_sort_plot()
     random_walk_visualizaton()
+    create_sierpinski()
+    input_text = 'This tool helps you create text for all your layout needs.'
+    shuffle_text(input_text)
+
 
 if __name__ == '__main__':
     main()
-
-
-
-# 3.
-# Визуализируйте random walk (случайная прогулка, да)) в 2-мерном пространстве, где вы начинаете в (0, 0) и 
-# можете перемещаться вверх, вниз, вправо и влево Как визуализировать - скаттерплот, где по x - x, а по y - y.
-
-
-
-
-
-# 4.
-# Сгенерируйте и нарисуйте треугольник Серпинского, подсказки в прикреплённых ссылках
-
-
-
-
-
-
-# 5.
-# Сделайте программу, получающую на вход текст, и выдающую этот же текст со следующими изменениями - 
-# буквы во всех словах кроме первой и последней перемешаны. Для простоты пока будем считать, что пунктуации нет.
-
-# Пример: "По рзеузльаттам илссоевадний одонго анлигсйокго унвиертисета, не иеемт занчнеия, в каокм проякде рсапжоолены бкувы в солве. 
-# Галовне, чотбы преавя и пслонедяя бквуы блыи на мсете. осатьлыне бкувы мгоут селдовтаь в плоонм бсепордяке, 
-# все-рвано ткест чтаитсея без побрелм. Пичрионй эгото ялвятеся то, что мы не чиаетм кдаужю бкуву по отдльенотси, 
-# а все солво цлиеком."
-
-
-
-
-
