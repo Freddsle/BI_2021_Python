@@ -95,26 +95,6 @@ def uniqe_words_plot(uniqe_wors):
     plt.close()
 
 
-def shuffle_text(input_text):
-    'Shuffle words in text. Shuffle from second to penultimate letter (like "word[1:-1]".'
-
-    input_text = input_text.split(' ')
-    
-    for i, word in enumerate(input_text):
-        if len(word) > 2 and len(word[1:-1]) > 1:
-            if word[-1] != '.' and word[-1] != ',':
-                inside_letters = word[1:-1]
-                inside_letters = ''.join(random.sample(inside_letters, len(inside_letters)))
-                input_text[i] = word[0] + inside_letters + word[-1]
-            else:
-                inside_letters = word[1:-2]
-                inside_letters = ''.join(random.sample(inside_letters, len(inside_letters)))
-                input_text[i] = word[0] + inside_letters + word[-2:]
-                
-    
-    return ' '.join(input_text)
-
-
 def main():
 
     # Parse the references file and write all "ftp" links from there to the "ftps" file

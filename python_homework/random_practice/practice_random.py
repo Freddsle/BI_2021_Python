@@ -198,7 +198,7 @@ def create_sierpinski():
         x = (vx + x) / 2.0
         y = (vy + y) / 2.0
         points.append((x, y))
-    
+
     x = [x for (x, y) in points]
     y = [y for (x, y) in points]
 
