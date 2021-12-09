@@ -190,7 +190,7 @@ def create_sierpinski():
     '''
     vertices = [(0.0, 0.0), (0.5, 1.0), (1.0, 0.0)]
     points = []
-    
+
     x, y = random.choice(vertices)
 
     for i in range(100000):
