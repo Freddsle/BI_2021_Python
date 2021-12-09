@@ -193,7 +193,7 @@ def create_sierpinski():
 
     x, y = random.choice(vertices)
 
-    for i in range(100000):
+    for i in range(1000000):
         vx, vy = random.choice(vertices)
         x = (vx + x) / 2.0
         y = (vy + y) / 2.0
@@ -202,9 +202,9 @@ def create_sierpinski():
     x = [x for (x, y) in points]
     y = [y for (x, y) in points]
 
-    plt.plot(x, y, 'b.')
+    plt.figure(figsize=(10,10))
+    plt.plot(x, y, 'b.', markersize=0.05)
     plt.title('Sierpiński Triangle')
-    plt.gcf().set_size_inches(8, 6)
     plt.savefig('python_homework/random_practice/Plots/Sierpiński.png', dpi=100, bbox_inches='tight')
     plt.close()
 
