@@ -1,7 +1,3 @@
-# 1. 
-# Measures the time it takes to compute numbers from 0 to 1 from a uniform distribution using the random and numpy modules. 
-# And then it plots the dependence of the computation time on the number of computed numbers for them.
-
 import numpy as np
 import random
 import matplotlib.pyplot as plt
@@ -11,7 +7,7 @@ from timeit import default_timer as timer
 def random_list_timer(number_numbers):
     '''
     Measures time of creating random lists orr arrays.
-    For a more accurate calculation, the measurement is repeated 5 rows.
+    For a more accurate calculation, the measurement is repeated 10 rows.
     '''
     end_random_generate, end_random_prelist, end_np = 0, 0, 0
     iters = 10
@@ -37,7 +33,7 @@ def random_list_timer(number_numbers):
 def random_timer_range(number_numbers):
     '''
     Measures time of creating random numbers in "range" loop.
-    For a more accurate calculation, the measurement is repeated 5 rows.
+    For a more accurate calculation, the measurement is repeated 10 rows.
     '''
     end_random_generate, end_np = 0, 0
     iters = 10
@@ -82,7 +78,7 @@ def generate_plot_list():
     ax.plot(number_n, timer_np, label='Generate via Numpy in array', color = 'green')
     ax.plot(number_n, timer_random_loop, label='Generate via Random in Range loop', color = 'orange')
     ax.plot(number_n, timer_np_loop, label='Generate via Numpy in Range loop', color = 'black')
-    plt.title('Measuring time of creating list (or arrays) with random numbers')
+    plt.title('Measuring time of creating random numbers')
     plt.xlabel('Number of numbers, log')
     plt.ylabel('Measured time [s], log')
     plt.tight_layout()
@@ -94,19 +90,77 @@ def generate_plot_list():
     plt.close()
 
 
+def is_sorted(list_sort):
+    '''
+    Check if List is sorted - return True, if not - return False.
+    '''
+    for i in range(len(list_sort) - 1):
+        if list_sort[i] <= list_sort[i+1]:
+            continue
+        else:
+            return False
+    return True
+
+
+def monkey_sort(list_sort):
+    '''
+    Sort list by shaffling (Monkey sort).
+    '''
+    n = len(list_sort)
+    while is_sorted(list_sort) is False:
+        random.shuffle(list_sort)
+        
+    return list_sort
+
+
+def measure_sort(list_sort):
+    '''
+    Measured the time needed for Monkey sorting of input list.
+        For a more accurate calculation, the measurement is repeated 5 rows.
+    '''
+    end_sort = 0
+    iters = 5
+
+    for _ in range(iters):
+        start_sort = timer()
+        monkey_sort(list_sort)
+        end_sort += timer() - start_sort
+
+    return end_sort / iters
+
+
+def shuff_sort_plot():
+    '''
+    Create a list for measuring time needed for Monkey sort, plot the results.
+    '''
+    number_n = [i for i in range(5, 40, 5)]
+    timer_sort = []
+    
+    for n in number_n:
+        list_sort = [random.randrange(1, 50, 1) for i in range(n)]
+        timer_sort.append(measure_sort(list_sort))
+    
+    fig = plt.figure()
+    ax = fig.add_subplot()
+    ax.plot(number_n, timer_sort, color='blue')
+    plt.title('Measuring time of Monkey sort of List')
+    plt.xlabel('List Lenght')
+    plt.ylabel('Measured time [s], log')
+    ax.set_yscale('log')
+    ax.legend()
+    plt.gcf().set_size_inches(8, 6)
+    #plt.savefig('python_homework/random_practice/Plots/random_numbers.png', dpi=100, bbox_inches='tight')
+    plt.show()
+
+
+
+
 def main():
-    generate_plot_list()
+    #generate_plot_list()
+    shuff_sort_plot()
 
 if __name__ == '__main__':
     main()
-
-# 2.
-# Сделайте функцию для проверки является ли список отсортированным (без использования sorted или sort).
-# Затем реализуйте monkey sort, а потом визуализируйте следующее: распределение времени работы алгоритма от размера сортируемого списка. 
-# То есть по x идёт размер массива, а по y - среднее время нескольких прогонов и их отклонение (или дисперсия)
-
-
-
 
 
 
