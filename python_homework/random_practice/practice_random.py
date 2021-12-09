@@ -133,7 +133,7 @@ def shuff_sort_plot():
     '''
     Create a list for measuring time needed for Monkey sort, plot the results.
     '''
-    number_n = [i for i in range(5, 40, 5)]
+    number_n = [i for i in range(1, 15, 5)]
     timer_sort = []
     
     for n in number_n:
@@ -147,17 +147,47 @@ def shuff_sort_plot():
     plt.xlabel('List Lenght')
     plt.ylabel('Measured time [s], log')
     ax.set_yscale('log')
-    ax.legend()
     plt.gcf().set_size_inches(8, 6)
-    #plt.savefig('python_homework/random_practice/Plots/random_numbers.png', dpi=100, bbox_inches='tight')
-    plt.show()
+    plt.savefig('python_homework/random_practice/Plots/random_numbers.png', dpi=100, bbox_inches='tight')
+    plt.close()
 
 
+def create_walk(steps):
+    '''
+    Create a x and y positions for random walk.
+    '''
+    x_steps = np.random.rand(steps) - 0.5
+    y_steps = np.random.rand(steps) - 0.5
+    
+    x_position = np.cumsum(x_steps)
+    y_position = np.cumsum(y_steps)
+    
+    x_position[0] = 0
+    y_position[0] = 0
+    
+    return x_position, y_position
+
+
+def random_walk_visualizaton():
+    '''
+    Create a plot with Random Walk visualisation.
+    '''
+    steps = 1000
+    x_position, y_position = create_walk(steps)
+    plt.scatter(x_position, y_position, cmap=plt.cm.Blues, c = y_position, edgecolors='none', s=50)
+    plt.plot(x_position, y_position, alpha=0.3)
+    plt.scatter(0, 0, c='red', edgecolors='none')
+    plt.scatter(x_position[-1], y_position[-1], c='green', edgecolors='none')
+    plt.title('Random walk Visualisation')
+    plt.gcf().set_size_inches(8, 6)
+    plt.savefig('python_homework/random_practice/Plots/random_walk.png', dpi=100, bbox_inches='tight')
+    plt.close()
 
 
 def main():
     #generate_plot_list()
     shuff_sort_plot()
+    random_walk_visualizaton()
 
 if __name__ == '__main__':
     main()
