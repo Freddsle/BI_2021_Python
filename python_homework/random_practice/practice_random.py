@@ -116,7 +116,7 @@ def monkey_sort(list_sort):
 def measure_sort(list_sort):
     '''
     Measured the time needed for Monkey sorting of input list.
-        For a more accurate calculation, the measurement is repeated 5 rows.
+    For a more accurate calculation, the measurement is repeated 5 rows.
     '''
     end_sort = 0
     iters = 5
@@ -148,7 +148,7 @@ def shuff_sort_plot():
     plt.ylabel('Measured time [s], log')
     ax.set_yscale('log')
     plt.gcf().set_size_inches(8, 6)
-    plt.savefig('python_homework/random_practice/Plots/random_numbers.png', dpi=100, bbox_inches='tight')
+    plt.savefig('python_homework/random_practice/Plots/Monkey.png', dpi=100, bbox_inches='tight')
     plt.close()
 
 
