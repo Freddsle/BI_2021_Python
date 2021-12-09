@@ -240,7 +240,7 @@ def carpet_sierpinski():
     x, y = random.choice(vertices)
 
     for i in range(1000000):
-        vx, vy = random.choice(vertices)      
+        vx, vy = random.choice(vertices)
         x = (2 * vx + x) / 3.0
         y = (2 * vy + y) / 3.0
         points.append((x, y))
@@ -255,17 +255,17 @@ def carpet_sierpinski():
     plt.close()
 
 
-
 def main():
-    #generate_plot_list()
-    #shuff_sort_plot()
-    #random_walk_visualizaton()
-    #create_sierpinski()
+    generate_plot_list()
+    shuff_sort_plot()
+    random_walk_visualizaton()
+    create_sierpinski()
     input_text = 'This tool helps you create text for all your layout needs.'
-    #shuffle_text(input_text)
-    
+    shuffle_text(input_text)
+
     # Additional tasks
     carpet_sierpinski()
+
 
 if __name__ == '__main__':
     main()
