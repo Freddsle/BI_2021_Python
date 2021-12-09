@@ -210,8 +210,9 @@ def create_sierpinski():
 
 
 def shuffle_text(input_text):
-    'Shuffle words in text. Shuffle from second to penultimate letter (like "word[1:-1]".'
-
+    '''
+    Shuffle words in text. Shuffle from second to penultimate letter (like "word[1:-1]".
+    '''
     input_text = input_text.split(' ')
 
     for i, word in enumerate(input_text):
