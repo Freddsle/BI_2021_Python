@@ -1,5 +1,6 @@
 import numpy as np
 import random
+import re
 import matplotlib.pyplot as plt
 from timeit import default_timer as timer
 
@@ -217,7 +218,7 @@ def shuffle_text(input_text):
 
     for i, word in enumerate(input_text):
         if len(word) > 2 and len(word[1:-1]) > 1:
-            if word[-1] != '.' and word[-1] != ',':
+            if re.findall(r'\s$', word):
                 inside_letters = word[1:-1]
                 inside_letters = ''.join(random.sample(inside_letters, len(inside_letters)))
                 input_text[i] = word[0] + inside_letters + word[-1]
@@ -263,7 +264,7 @@ def main():
     input_text = 'This tool helps you create text for all your layout needs.'
     shuffle_text(input_text)
 
-    # Additional tasks
+    # Additional task
     carpet_sierpinski()
 
 
