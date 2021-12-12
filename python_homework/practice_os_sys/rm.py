@@ -38,9 +38,14 @@ if __name__ == '__main__':
 
     parser.add_argument("-r", "--recursive", help="remove directories and their contents recursively", action="store_true")
     parser.add_argument("-d", "--dir", help="remove empty directories", action="store_true")
-    parser.add_argument("path", nargs='+', default=os.getcwd(), help="PATH to the FILEs or directory.")
+    parser.add_argument("path", nargs='+', default=sys.stdin, help="PATH to the FILEs or directory.")
     args = parser.parse_args()
+
+    if not sys.stdin.isatty():
+        path = parser.parse_args().path.read().splitlines()
+    else:
+        path = args.path
 
     main(recursive=args.recursive,
          dir=args.dir,
-         paths=args.path)
+         paths=path)
