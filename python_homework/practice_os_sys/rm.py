@@ -34,7 +34,7 @@ if __name__ == '__main__':
     desc_one = 'Remove the FILE(s) or DIRs. Remove directories with option "-d".'
     desc_two = 'If directory is not empty - "-r" ortion should used to remove dir recursively.'
 
-    parser = argparse.ArgumentParser(description=desc_one + ' ' + desc_two)
+    parser = argparse.ArgumentParser(description=' '.join([desc_one, desc_two]))
 
     parser.add_argument("-r", "--recursive", help="remove directories and their contents recursively", action="store_true")
     parser.add_argument("-d", "--dir", help="remove empty directories", action="store_true")
