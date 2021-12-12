@@ -15,17 +15,17 @@ def main(all=False, directory=os.getcwd()):
     paths = sorted(os.listdir(path=directory))
 
     if os.path.exists('./') and all:
-        sys.stdout.write('.' + '\t')
+        sys.stdout.write('.' + '\n')
 
     if os.path.exists('../') and all:
-        sys.stdout.write('..' + '\t')
+        sys.stdout.write('..' + '\n')
 
     for path in paths:        
         if re.match(r'^\..*', path):
             if all:
-                sys.stdout.write(path + '\t')
+                sys.stdout.write(path + '\n')
         else:
-            sys.stdout.write(path + '\t')
+            sys.stdout.write(path + '\n')
 
     sys.stdout.write('\n')
 

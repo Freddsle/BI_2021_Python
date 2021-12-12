@@ -42,7 +42,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if not sys.stdin.isatty():
-        path = parser.parse_args().path.read().splitlines()
+        path = parser.parse_args().stdin.read().splitlines()
     else:
         path = args.path
 

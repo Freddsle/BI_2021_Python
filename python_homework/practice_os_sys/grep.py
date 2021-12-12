@@ -23,7 +23,7 @@ def find_regexp(line, patterns, search_in):
         sys.stdout.write(line + '\n')
 
 
-def main(patterns, files_lines, search_in):
+def main(patterns, files_lines, search_in=True):
     '''
     Find patterns in input. Print lines with it to stdout.
     '''
@@ -54,7 +54,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if not sys.stdin.isatty():
-        files = parser.parse_args().files.read().splitlines()
+        files = parser.parse_args().stdin.read().splitlines()
         search_in = False
     else:
         files = args.files
