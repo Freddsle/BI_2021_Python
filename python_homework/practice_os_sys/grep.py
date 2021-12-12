@@ -9,25 +9,18 @@ def find_regexp(line, patterns, search_in):
     '''
     Check for pattern in line. If present - print line to stdout.
     '''
-    print_if = False
-
-    for pattern in patterns:
-        if re.search(pattern, line):
-            print_if = True
-            break
-
-    if print_if and search_in:
-        sys.stdout.write(line)
-        
-    if print_if and not search_in:
-        sys.stdout.write(line + '\n')
+    if re.search(patterns, line):
+        if search_in:
+            sys.stdout.write(line)
+        else:
+            sys.stdout.write(line + '\n')
 
 
 def main(patterns, files_lines, search_in=True):
     '''
     Find patterns in input. Print lines with it to stdout.
     '''
-    patterns = [re.compile(x) for x in patterns.split("|")]
+    patterns = re.compile(patterns)
 
     for file in files_lines:
         if os.path.isfile(file) and search_in:
