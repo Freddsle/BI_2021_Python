@@ -45,7 +45,7 @@ if __name__ == '__main__':
     """
     desc_one = 'Print newline, word, and byte counts for each FILE.'
     desc_two = 'A word is a non-zero-length sequence of characters delimited by white space.'
-    desc_three = 'Words at the end of the file without trailing new lines are also counted.'
+    desc_three = 'Words at the end of the file without trailing "\n" are also counted.'
     desc_four = 'If multiple arguments are passed, the output is in "lines", "words", "bytes" order. Each in new line.'
 
     parser = argparse.ArgumentParser(description=' '.join([desc_one, desc_two, desc_three, desc_four]))
