@@ -16,6 +16,10 @@ def main(directories, parents=False):
 
             except FileExistsError:
                 sys.stdout.write(' '.join(['cannot create directory:', directory, ': File exists\n']))
+            
+            except FileNotFoundError:
+                sys.stdout.write(' '.join(['cannot create directory:', directory, ': No such file or directory\n']))
+                sys.stdout.write('Use "-p option.\n')
 
         else:
             os.makedirs(directory, exist_ok=True)   
