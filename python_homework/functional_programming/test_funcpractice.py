@@ -5,7 +5,7 @@ from functional_programming import functional
 
 
 def test_sequential_map():
-    #assert functional.sequential_map(np.square, np.sqrt, lambda x: x**3, [1, 2, 3, 4, 5]) == [1, 8, 27, 64, 125]
+    assert functional.sequential_map(np.square, np.sqrt, lambda x: x**3, [1, 2, 3, 4, 5]) == [1, 8, 27, 64, 125]
     assert functional.sequential_map(lambda x: x**2, [1, 2]) == [1, 4]
     assert functional.sequential_map(lambda x: x**2, 3) == 9
     assert functional.sequential_map(lambda x: x**2, []) == []
@@ -28,13 +28,12 @@ def test_func_chain():
     my_chain_one = functional.func_chain(lambda x: x + 2, lambda x: (x/4, x//4))
     assert my_chain_one(37) == (9.75, 9)
 
-    #my_chain_two = functional.func_chain(np.square, np.sqrt, lambda x: x**3)
-    #assert my_chain_two([1, 2, 3, 4, 5]) == [1, 8, 27, 64, 125]
-
+    my_chain_two = functional.func_chain(np.square, np.sqrt, lambda x: x**3)
+    assert my_chain_two([1, 2, 3, 4, 5]) == [1, 8, 27, 64, 125]
     
     func_set = [lambda x: x + [1], lambda x: x[1:], lambda x: x + [2]]
     test_args = [[1], [2], [3], [4], [5]]
-    assert list(map(functional.func_chain(*func_set), test_args))  == [[1, 2], [1, 2], [1, 2], [1, 2], [1, 2]]
+    assert list(map(functional.func_chain(*func_set), test_args)) == [[1, 2], [1, 2], [1, 2], [1, 2], [1, 2]]
 
 
 def test_multiple_partial():
