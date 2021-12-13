@@ -23,7 +23,7 @@ def main(files, n_lines=10, filenames=True):
                 if read_start < 0:
                     read_start = 0
 
-                for line in file_strings[read_start: ]:
+                for line in file_strings[read_start:]:
                     sys.stdout.write(line)
 
     else:
@@ -32,7 +32,7 @@ def main(files, n_lines=10, filenames=True):
         if read_start < 0:
             read_start = 0
 
-        for line in files[ read_start : ]:
+        for line in files[read_start:]:
             sys.stdout.write(line + '\n')
 
 

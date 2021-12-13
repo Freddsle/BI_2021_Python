@@ -16,7 +16,6 @@ def main(files_lines, search_in=True):
 
         else:
             sys.stdout.write(file + '\n')
-            
 
 
 if __name__ == '__main__':

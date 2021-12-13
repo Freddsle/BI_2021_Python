@@ -36,7 +36,10 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description=' '.join([desc_one, desc_two]))
 
-    parser.add_argument("-r", "--recursive", help="remove directories and their contents recursively", action="store_true")
+    parser.add_argument("-r", "--recursive",
+                        help="remove directories and their contents recursively",
+                        action="store_true")
+
     parser.add_argument("-d", "--dir", help="remove empty directories", action="store_true")
     parser.add_argument("path", nargs='+', default=sys.stdin, help="PATH to the FILEs or directory.")
     args = parser.parse_args()

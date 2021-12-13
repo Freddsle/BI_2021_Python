@@ -20,7 +20,7 @@ def main(all=False, directory=os.getcwd()):
     if os.path.exists('../') and all:
         sys.stdout.write('..' + '\n')
 
-    for path in paths:        
+    for path in paths:
         if re.match(r'^\..*', path):
             if all:
                 sys.stdout.write(path + '\n')

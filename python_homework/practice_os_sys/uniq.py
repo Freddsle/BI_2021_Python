@@ -8,25 +8,28 @@ def main(input_str=[], output_file=[]):
     '''
     Filter adjacent matching lines from INPUT (or standard input), writing to OUTPUT (or standard output).
     '''
-    if len(input_str) == 1:
+    if len(input_str) == 1 and os.path.isfile(input_str[0]):
+        with open(input_str[0], 'r') as f:
+            file_lines = f.readlines()
+            set_file = set(file_lines)
 
-        if os.path.isfile(input_str[0]):
-            with open(input_str[0], 'r') as f:
-                file_lines = f.readlines()
-                set_file = set(file_lines)
-        
         if output_file:
-                with open(output_file, 'w') as of:
-                    of.writelines(set_file)
+            with open(output_file, 'w') as of:
+                of.writelines(set_file)
+
         else:
             for line in set_file:
                 sys.stdout.write(line)
 
     else:
         lines_set = set(input_str)
-        
+
+        if output_file:
+            with open(output_file, 'w') as of:
+                of.writelines(lines_set)
+
         for line in lines_set:
-                sys.stdout.write(line + '\n')            
+                sys.stdout.write(line + '\n')
 
 
 if __name__ == '__main__':
