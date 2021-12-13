@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import sys
 import argparse
 import os
@@ -30,7 +30,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if not sys.stdin.isatty():
-        files = parser.parse_args().stdin.read().splitlines()
+        files = parser.parse_args().files.read().splitlines()
         search_in = False
     else:
         files = args.files
