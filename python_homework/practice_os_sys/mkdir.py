@@ -38,7 +38,7 @@ if __name__ == '__main__':
                         help="no error if existing, make parent directories as needed",
                         action="store_true")
 
-    parser.add_argument("directories", nargs='+', default=sys.stdin, help="directories names.")
+    parser.add_argument("directories", nargs='+', help="directories names.")
     args = parser.parse_args()
 
     main(parents=args.parents,

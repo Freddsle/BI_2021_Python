@@ -13,16 +13,15 @@ def main():
                './uniq.py']
 
     standart_path = '/usr/local/bin'
+    now_paths = os.environ['PATH'].split(':')
 
-    if os.path.isdir(standart_path):
+    if os.path.isdir(standart_path) and standart_path in now_paths:
         for script in scripts:
             shutil.copy(script, standart_path)
 
     else:
-        now_paths = os.environ['PATH'].split(':')
-
         for script in scripts:
-            shutil.copy(script, now_paths)
+            shutil.copy(script, now_paths[0])
 
 
 if __name__ == '__main__':

@@ -55,7 +55,7 @@ if __name__ == '__main__':
     Show help message: -h, -- help.
     """
     desc_one = 'Write sorted concatenation of all FILE(s) to standard output.\n\n'
-    desc_two = 'With no FILE, or when FILE is -, read standard input.'
+    desc_two = 'With no FILE read standard input.'
     desc_three = 'The locale specified by the environment affects sort order.'
 
     parser = argparse.ArgumentParser(description=' '.join([desc_one, desc_two, desc_three]))

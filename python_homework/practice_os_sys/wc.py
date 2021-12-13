@@ -23,7 +23,7 @@ def count_words(stdin):
     return str(words_number)
 
 
-def main(lines=False, words=False, bytes=False, stdin=[]):
+def main(stdin, lines=False, words=False, bytes=False):
     '''
     Calculate number of lines, words, byted and prints the result to standard output.
     '''
@@ -60,7 +60,7 @@ if __name__ == '__main__':
     if not sys.stdin.isatty():
         stdin = parser.parse_args().stdin.read()
     else:
-        stdin = []
+        stdin = args.stdin
 
     main(lines=args.lines,
          words=args.words,
