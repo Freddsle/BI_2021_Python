@@ -10,23 +10,16 @@ def main(sourses, dir, recursive=False):
     Copy SOURCE to DEST, or multiple SOURCE(s) to DIRECTORY.
     '''
     for sourse in sourses:
-        
         if recursive:
-            files_for_copy = os.listdir(sourse)
-            for file in files_for_copy:
-                shutil.copytree(file, dir)
+            shutil.copytree(sourse, dir)
 
         else:
             try:
-                shutil.copy(sourse, dir)
+                shutil.copy2(sourse, dir)
 
             except OSError:
                 if not os.path.isfile(sourse):
                     sys.stdout.write('SOURCE is a DIRECTORY. Use --recursive option.\n')
-
-                elif not os.path.exists(dir):
-                    os.makedirs(dir, exist_ok=True)
-                    shutil.copy(sourse, dir)
 
 
 if __name__ == '__main__':
