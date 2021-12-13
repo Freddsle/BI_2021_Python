@@ -7,13 +7,13 @@ import os
 
 def convert(text):
     if text.isdigit():
-        return float(text)  
+        return float(text)
     else:
         return text
 
 
 def alphanum(key):
-    return [convert(c) for c in re.split(r'([-+]?[0-9]*\.?[0-9]*)', key)]        
+    return [convert(c) for c in re.split(r'([-+]?[0-9]*\.?[0-9]*)', key)]
 
 
 def sort_human(stdin):
@@ -46,7 +46,7 @@ def main(reverse_order=False, numeric=False, stdin=[], file_end=False):
     for line in stdin:
         if file_end:
             sys.stdout.write(line)
-        else:        
+        else:
             sys.stdout.write(line + '\n')
 
 

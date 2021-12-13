@@ -29,7 +29,7 @@ def main(input_str=[], output_file=[]):
                 of.writelines(lines_set)
 
         for line in lines_set:
-                sys.stdout.write(line + '\n')
+            sys.stdout.write(line + '\n')
 
 
 if __name__ == '__main__':

@@ -34,8 +34,8 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description=desc_one)
 
-    parser.add_argument("-p", "--parents", 
-                        help="no error if existing, make parent directories as needed", 
+    parser.add_argument("-p", "--parents",
+                        help="no error if existing, make parent directories as needed",
                         action="store_true")
 
     parser.add_argument("directories", nargs='+', default=sys.stdin, help="directories names.")

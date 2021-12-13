@@ -22,7 +22,7 @@ def main(recursive=False, dir=False, paths=[]):
                     os.rmdir(path)
                 except OSError:
                     sys.stdout.write('cannot remove ' + path + ': Directory not empty' + '\n')
-        
+
         elif not dir and os.path.isdir(path):
             sys.stdout.write('cannot remove ' + path + ': Is a directory' + '\n')
 
