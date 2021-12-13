@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 import sys
 import argparse
 import re
@@ -54,7 +53,7 @@ if __name__ == '__main__':
     parser.add_argument("-w", "--words", help="print the word counts", action="store_true")
     parser.add_argument("-c", "--bytes", help="print the byte counts used system encoding", action="store_true")
 
-    parser.add_argument('stdin', nargs='?', type=argparse.FileType('r'), default=sys.stdin)
+    parser.add_argument('stdin', nargs='?', default=sys.stdin)
 
     args = parser.parse_args()
 

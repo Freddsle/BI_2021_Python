@@ -5,7 +5,7 @@ import shutil
 
 def main(sourses, dir):
     '''
-    Copy SOURCE to DEST, or multiple SOURCE(s) to DIRECTORY.
+    Move or Rename SOURCE to DEST, or multiple SOURCE(s) to DIRECTORY.
     '''
     for sourse in sourses:
         shutil.move(sourse, dir)
