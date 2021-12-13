@@ -26,3 +26,5 @@ Bioinformatics for biologist, 2021-2022.
 6. Practice with regular expressions. In `./python_homework/reg_exp_practice`.
 
 7. Practice with functional programming. In `./python_homework/functional_programming`.
+
+8.  Unix-like Python scripts. In `./python_homework/practice_os_sys`.
