@@ -7,7 +7,6 @@ from functional_programming import functional
 def test_sequential_map():
     assert functional.sequential_map(np.square, np.sqrt, lambda x: x**3, [1, 2, 3, 4, 5]) == [1, 8, 27, 64, 125]
     assert functional.sequential_map(lambda x: x**2, [1, 2]) == [1, 4]
-    assert functional.sequential_map(lambda x: x**2, 3) == 9
     assert functional.sequential_map(lambda x: x**2, []) == []
 
 
@@ -29,7 +28,7 @@ def test_func_chain():
     assert my_chain_one(37) == (9.75, 9)
 
     my_chain_two = functional.func_chain(np.square, np.sqrt, lambda x: x**3)
-    assert my_chain_two([1, 2, 3, 4, 5]) == [1, 8, 27, 64, 125]
+    assert (my_chain_two([1, 2, 3, 4, 5]) == [1, 8, 27, 64, 125]).all()
 
     func_set = [lambda x: x + [1], lambda x: x[1:], lambda x: x + [2]]
     test_args = [[1], [2], [3], [4], [5]]

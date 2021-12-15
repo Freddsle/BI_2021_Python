@@ -1,4 +1,7 @@
 
+from numpy import result_type
+
+
 def func_chain(*args):
     '''
     The function accepts any number of functions as arguments (positional arguments, NOT a list).
@@ -7,20 +10,10 @@ def func_chain(*args):
     my_chain = func_chain(lambda x: x + 2, lambda x: (x/4, x//4)).
     my_chain(37) -> (9.75, 9).
     '''
-    def inside_chain_func(inside_container):
-        if not inside_container:
-            return inside_container
-
-        if isinstance(inside_container, (int, float)):
-            for function in args:
-                inside_container = function(inside_container)
-
-        else:
-            for function in args:
-                inside_container = list(map(function, inside_container))
-
-        return inside_container
-
+    def inside_chain_func(f_arg):
+        for function in args:
+            f_arg = function(f_arg)
+        return f_arg
     return inside_chain_func
 
 
@@ -34,7 +27,8 @@ def sequential_map(*args):
     '''
     new_container_values = args[-1]
     now_func_chain = func_chain(*args[:-1])
-    return now_func_chain(new_container_values)
+
+    return list(map(now_func_chain, new_container_values))
 
 
 def consensus_filter(*args):
