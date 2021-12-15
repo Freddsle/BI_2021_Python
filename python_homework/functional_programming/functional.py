@@ -1,7 +1,3 @@
-
-from numpy import result_type
-
-
 def func_chain(*args):
     '''
     The function accepts any number of functions as arguments (positional arguments, NOT a list).
