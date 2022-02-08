@@ -1,4 +1,5 @@
 import datetime
+from Bio.Seq import Seq, back_transcribe
 
 # 1. Class that describes hamsters.
 # Python class for hamsters.
@@ -32,42 +33,62 @@ class Hamster:
 
     def life_stage(self):
         '''
-        Method for printing the age of a hamster: young, adult or old.
+        Method returns the age of a hamster: young, adult or old.
         '''        
-        print(f'{self.name} is an {self.stage} hamster. It\'s {self.age} months.')
+        return f"{self.name} is an {self.stage} hamster. It's {self.age} months."
 
 
     def is_active(self):
         '''
-        Checks if the hamster is probably asleep now. The system time is used.
+        Checks if the hamster is probably asleep now. The system time is used. Return the string with state.
         '''
         time_now = datetime.datetime.now().hour
         
         if time_now > 7 and time_now < 20:
-            print(f'{self.name} is probably sleeping now.')
+            return f'{self.name} is probably sleeping now.'
             
         else:
-            print(f'{self.name} is probably active now and wants treats.')
+            return f'{self.name} is probably active now and wants treats.'
 
 
     def properties(self):
         '''
-        Displays the basic parameters of the hamster.
+        Return string with the basic parameters of the hamster.
         '''
-        print(f'The hamster\'s name is {self.name}.')
-
         if self.hamster_type == 'Not defined':            
-            print(f'It\'s {self.stage} hamster, {self.age} months.')
+            return f"The hamster\'s name is {self.name}. It\'s {self.stage} hamster, {self.age} months."
         else:
-            print(f'It\'s {self.stage} {self.hamster_type} hamster, {self.age} months.')
+            return f"The hamster\'s name is {self.name}. It\'s {self.stage} {self.hamster_type} hamster, {self.age} months."
+
+
+class RNASequence():
+    '''
+    Class for operations with RNA sequences. Parent class - str.
+    '''
+    
+    def __init__(self, rna_sequence):
+        self.rna_sequence = rna_sequence
+
+
+    def RNA_translation(self):
+        '''
+        Translation - returns a string corresponding to the protein from the RNA,
+        according to the standard code, using Biopython.
+        '''
+        self.protein = Seq.translate(self.rna_sequence)
+        return self.protein
+
+
+    def RNA_to_DNA(self):
+        '''
+        Reverse transcription method - returns a string corresponding to the DNA from RNA.
+        '''
+        self.template_dna = back_transcribe(self.rna_sequence)
+        return self.template_dna
 
 
 def main():
-
-    # test output for first class Hamster.
-    Bun = Hamster('Bun', 23, 'Djungarian hamster')
-    Bun.is_active()
-    Bun.properties()
+    pass
 
 
 if __name__ == '__main__':
