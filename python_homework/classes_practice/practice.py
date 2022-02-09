@@ -61,11 +61,12 @@ class Hamster:
             return f"The hamster\'s name is {self.name}. It\'s {self.stage} {self.hamster_type} hamster, {self.age} months."
 
 
-class RNASequence():
+class RNASequence(str):
     '''
     Class for operations with RNA sequences. Parent class - str.
-    '''
-    
+    '''    
+    acid_type = 'RNA'
+
     def __init__(self, rna_sequence):
         self.rna_sequence = rna_sequence
 
