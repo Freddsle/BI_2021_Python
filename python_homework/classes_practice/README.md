@@ -1,6 +1,6 @@
-# Practice with Python classes.
+# Practice with Python classes
 
-The `practice.py` and `practice.ipynb` contain same code.
+The `practice.py` and `practice.ipynb` contain the same code. In `practice.ipynb` examples of how to use the code are given after each class.
 
 
 # Contents
