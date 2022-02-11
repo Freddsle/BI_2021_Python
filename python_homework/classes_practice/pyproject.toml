@@ -9,3 +9,4 @@ authors = ["Yuliya Burankova"]
 python = "3.10"
 biopython = "1.79"
 matplotlib = "3.5.1"
+pandas = "1.3.5"
