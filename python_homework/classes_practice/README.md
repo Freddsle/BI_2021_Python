@@ -32,10 +32,10 @@ Two methods redefined:
 - `add` - checks if number for adding is positive. If so, it adds it to the PositiveSet using the regular set `add` method.
 - `update` - update PositiveSet using positive values (PositiveSet `add` method) from the given args.
 
-## class FastaStats
+## `class FastaStats`
 
 Class for collecting statistics on FASTA files. Parse FASTA file with Biopython.\
-f you want print class instance it is a path to fasta file. Only __str__ defined, not __repr__.
+If you want print class instance it is a path to fasta file. Only __str__ defined, not __repr__.
 
 **Input parameters:** Path to FASTS file
 
