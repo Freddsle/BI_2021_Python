@@ -80,14 +80,14 @@ class RNASequence(str):
         Translation - returns a string corresponding to the protein from the RNA,
         according to the standard code, using Biopython.
         '''
-        self.protein = Bio.Seq.translate(self.rna_sequence)
+        self.protein = Seq.translate(self.rna_sequence)
         return self.protein
         
     def RNA_to_DNA(self):
         '''
         Reverse transcription method - returns a string corresponding to the DNA from RNA, using Biopython.
         '''
-        self.template_dna = Bio.Seq.back_transcribe(self.rna_sequence)
+        self.template_dna = back_transcribe(self.rna_sequence)
         return self.template_dna
 
 
@@ -349,9 +349,6 @@ class FastaStats:
             writer.writerow(['Max sequence length:', max_len])
             writer.writerow(['GC percent (%):', self.percent_GC()])
             writer.writerow(['FASTA letters:', ''.join(self.fasta_alphabet())])
-            
-
-
 
 
 def main():
