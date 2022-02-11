@@ -28,20 +28,18 @@ class Hamster:
 
         if self.age <= 4:
             self.stage = 'young'
-            
+
         elif self.age >= 12:
             self.stage = 'old'
 
         else:
             self.stage = 'adult'
 
-
     def life_stage(self):
         '''
         Method returns the age of a hamster: young, adult or old.
         '''
         return f"{self.name} is an {self.stage} hamster. It's {self.age} months."
-
 
     def is_active(self):
         '''
@@ -55,15 +53,14 @@ class Hamster:
         else:
             return f'{self.name} is probably active now and wants treats.'
 
-
     def properties(self):
         '''
         Return string with the basic parameters of the hamster.
         '''
         if self.hamster_type == 'Not defined':
-            return f"The hamster\'s name is {self.name}. It\'s {self.stage} hamster, {self.age} months."
+            return f"The hamster\'s name is {self.name}. It\'s {self.stage}, {self.age} months."
         else:
-            return f"The hamster\'s name is {self.name}. It\'s {self.stage} {self.hamster_type} hamster, {self.age} months."
+            return f"The hamster\'s name is {self.name}. It\'s {self.stage} {self.hamster_type}, {self.age} months."
 
 
 class RNASequence(str):
@@ -136,10 +133,8 @@ class FastaStats:
         self.alphabet = self.fasta_alphabet()
         self.seq_type = self.sequence_type()
 
-
     def __str__(self):
         return self.fasta_path
-
 
     def count_seq(self):
         '''
@@ -152,7 +147,6 @@ class FastaStats:
 
         return self.seq_number
 
-
     def fasta_alphabet(self):
         '''
         Return a set with "letters" found in the FASTA file.
@@ -160,7 +154,6 @@ class FastaStats:
         self.alphabet = set()
         [self.alphabet.update(set(seq_record)) for seq_record in SeqIO.parse(self.fasta_path, "fasta")]
         return self.alphabet
-
 
     def sequence_type(self):
         '''
@@ -199,7 +192,6 @@ class FastaStats:
         else:
             return 'Unknown sequences type'
 
-
     def minmax_len(self):
         '''
         Return min and max lenght of sequences in input FASTA file.
@@ -209,7 +201,6 @@ class FastaStats:
         self.max_len = max(records)
         return self.min_len, self.max_len
 
-
     def histo_length(self, save_img_path=None):
         '''
         Building a histogram of sequences lengths in input FASTA file.
@@ -217,13 +208,13 @@ class FastaStats:
         '''
         records = [len(seq_record) for seq_record in SeqIO.parse(self.fasta_path, "fasta")]
 
-        plt.figure(figsize=(10,5))
+        plt.figure(figsize=(10, 5))
         plt.style.use('seaborn-whitegrid')
         plt.hist(x=records,
-                 color = "skyblue", ec="blue",
+                 color="skyblue", ec="blue",
                  linewidth=0.5,
                  bins=self.minmax_len()[1]-self.minmax_len()[0])
-        plt.suptitle(f'Histogram of sequences lengths', fontsize=18)
+        plt.suptitle('Histogram of sequences lengths', fontsize=18)
         plt.title(f'file: "{os.path.split(self.fasta_path)[1]}"', fontsize=13)
         plt.ylabel('Number of sequences', fontsize=13)
         plt.xlabel('Sequences length', fontsize=13)
@@ -239,7 +230,6 @@ class FastaStats:
             plt.show()
 
         plt.close()
-
 
     def percent_GC(self):
         '''
@@ -257,7 +247,6 @@ class FastaStats:
 
         return self.GC
 
-
     def histo_4_mers(self, save_img_path=None):
         '''
         Plot density plot of the frequency of 4-mers.
@@ -274,8 +263,8 @@ class FastaStats:
         all_kmers_number = 0
 
         # for 4-mers with different than ATGC letters:
-        #for comb in set(itertools.combinations(list(self.alphabet) * len(self.alphabet), 4)):
-        #    kmers.append(''.join(comb))
+        # for comb in set(itertools.combinations(list(self.alphabet) * len(self.alphabet), 4)):
+        #     kmers.append(''.join(comb))
 
         for comb in set(itertools.combinations(['A', 'T', 'G', 'C'] * 4, 4)):
             kmers.append(''.join(comb))
@@ -293,12 +282,12 @@ class FastaStats:
                 kmers_dict[found_kmers] = kmers_dict[found_kmers] / all_kmers_number
 
         kmers_dict = dict(sorted(kmers_dict.items(), key=lambda item: item[1], reverse=True))
-        kmers_df = pd.DataFrame(kmers_dict.items(), columns=['kmer','dens'])
+        kmers_df = pd.DataFrame(kmers_dict.items(), columns=['kmer', 'dens'])
 
-        plt.figure(figsize=(40,30))
+        plt.figure(figsize=(40, 30))
         plt.style.use('seaborn-whitegrid')
         plt.plot(kmers_df['kmer'], kmers_df['dens'],
-                 color = "skyblue", linewidth=3.5)
+                 color="skyblue", linewidth=3.5)
         plt.xticks(rotation='vertical', fontsize=8)
         plt.title(f'4-mer frequency plot \n file: "{os.path.split(self.fasta_path)[1]}"',
                   fontsize=30)
@@ -316,7 +305,6 @@ class FastaStats:
             plt.show()
 
         plt.close()
-
 
     def run_all_metrics(self, new_path=None):
         '''
