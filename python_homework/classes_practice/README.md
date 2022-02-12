@@ -30,7 +30,7 @@ Contains only positive numbers when created and does not add non-positive number
 
 Two methods redefined:
 - `add` - checks if number for adding is positive. If so, it adds it to the PositiveSet using the regular set `add` method.
-- `update` - update PositiveSet using positive values (PositiveSet `add` method) from the given args.
+- `update` or `|=` - update PositiveSet using positive values (PositiveSet `add` method) from the given args.
 
 ## `class FastaStats`
 

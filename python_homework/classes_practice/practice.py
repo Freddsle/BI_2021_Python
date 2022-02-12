@@ -120,6 +120,13 @@ class PositiveSet(set):
                 for element in added_set:
                     self.add(element)
 
+    def __ior__(self, *args):
+        '''
+        |= - Update PositiveSet using positive values (PositiveSet 'add' method) from the given args.
+        '''
+        self.update(*args)
+        return self
+
 
 class FastaStats:
     '''
