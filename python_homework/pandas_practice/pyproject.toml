@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "pandas_practice"
+version = "0.1"
+description = "Homework 'Pandas'."
+repository = "https://github.com/Freddsle/BI_2021_Python/"
+authors = ["Yuliya Burankova"]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.11"
+pandas = "^1.4.1"
+matplotlib = "^3.5.1"
+
+[tool.poetry.dev-dependencies]
+jupyter = "^1.0.0"
