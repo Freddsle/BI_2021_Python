@@ -9,6 +9,7 @@ authors = ["Yuliya Burankova"]
 python = ">=3.10,<3.11"
 pandas = "^1.4.1"
 matplotlib = "^3.5.1"
+pandas-profiling = {extras = ["notebook"], version = "^3.1.0"}
 
 [tool.poetry.dev-dependencies]
 jupyter = "^1.0.0"
