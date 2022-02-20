@@ -3,6 +3,7 @@ venv
 
 *.pyc
 *.fastq
+*.fasta
 *.ipynb_checkpoints
 
 
