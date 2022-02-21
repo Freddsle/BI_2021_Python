@@ -1,4 +1,3 @@
-import re
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -8,7 +7,8 @@ from pandas_profiling import ProfileReport
 def plot_ATCG_hist():
     '''
     Open .csv file as Pandas DataFrame (df).
-    df contains information about the number of reads with each of the 4 nucleotides at different positions (columns A, T, G, C).
+    df contains information about the number of reads with each of the 4 nucleotides
+    at different positions (columns A, T, G, C).
     Plot a histogram of the distribution of these numbers.
     Save it to the .png file.
     '''
@@ -17,8 +17,8 @@ def plot_ATCG_hist():
 
     plt.rcParams['figure.figsize'] = 15, 10
     df[['pos', 'A', 'T', 'C', 'G']].groupby('pos').sum().plot.bar(stacked=True,
-                                                                  ylabel = 'Reads number',
-                                                                  xlabel = 'Position')
+                                                                  ylabel='Reads number',
+                                                                  xlabel='Position')
 
     plt.savefig('./data/task_1_hist.png')
 
@@ -70,17 +70,17 @@ def small_EDA():
     plt.close()
 
     # corralation with coefficients
-    vine.corr().style.background_gradient(cmap = 'PRGn')
+    vine.corr().style.background_gradient(cmap='PRGn')
 
     # correlation with scatteplots and distribution
     plt.rcParams['figure.figsize'] = 30, 30
-    sns.pairplot(vine, hue='quality', corner=True, palette = 'Set2')
+    sns.pairplot(vine, hue='quality', corner=True, palette='Set2')
     plt.savefig("./data/correlation_02.png")
     plt.close()
 
     # scatter plots
     for data in vine.columns[:-2]:
-        plt.subplots(1, 1, figsize=(9, 4))    
+        plt.subplots(1, 1, figsize=(9, 4))
         plt.scatter(y=vine[data],
                     x=vine['quality'])
         plt.grid()
@@ -112,24 +112,24 @@ def small_EDA():
     # plot distribution plots
     for data in vine.columns:
         bins = [len(set(vine[data].values)) if len(set(vine[data].values)) < 50 else 50]
-    
-        f, ax = plt.subplots(1, 1, figsize=(6, 4))    
+
+        f, ax = plt.subplots(1, 1, figsize=(6, 4))
         plt.boxplot(vine[data], vert=False)
-    
+
         plt.grid()
         plt.title(f"{data} - Boxplot analysis")
         plt.savefig(f"./data/Boxplot/{data}_Boxplot.png")
     plt.close()
 
     # html ProfileReport report saved in data folder
-    # profile = ProfileReport(vine, title="Pandas Profiling Report", explorative=True)
+    profile = ProfileReport(vine, title="Pandas Profiling Report", explorative=True)
 
 
 def read_gff(file):
     '''
     Read gff files (input - path to the file) and return Pandas DataFrame.
     Do not works with really large gff files.
-    '''    
+    '''
     colnames = ['chromosome', 'source', 'type',
                 'start', 'end', 'score',
                 'strand', 'phase', 'attributes']
@@ -140,7 +140,7 @@ def read_gff(file):
                          header=None,
                          names=colnames,
                          comment='#')
-    
+
     return df_gff
 
 
@@ -150,10 +150,10 @@ def read_bed6(file):
     Do not works with really large bed files.
     '''    
     colnames = ['chromosome', 'start', 'end', 'name', 'score', 'strand']
-    df_bed6 = pd.read_csv(file, 
-                          sep='\t', 
-                          engine='python', 
-                          header=None, 
+    df_bed6 = pd.read_csv(file,
+                          sep='\t',
+                          engine='python',
+                          header=None,
                           names=colnames)
     return df_bed6
 
@@ -171,7 +171,9 @@ def gff_bed_work():
     # Truncate attributes column - leave only info about RNA type (16S, 23S, 5S).
     gff_df['attributes'] = gff_df['attributes'].str.extract("([0-9]{1,2}S)")
     # long version:
-    # gff_df['attributes'] = gff_df['attributes'].str.replace(r'(?<=[0-9]S).*', '', regex=True).replace(r'.*=(?=[0-9]{1,2}S)', '', regex=True)
+    # gff_df['attributes'] = gff_df['attributes'].str.replace(r'(?<=[0-9]S).*', '',
+    #                                                         regex=True).replace(r'.*=(?=[0-9]{1,2}S)',
+    #                                                                             '', regex=True)
 
     # Count RNA types for each "chromosome" and plot barplot.
     gff_df.groupby(['chromosome', 'attributes']).agg({'attributes': 'count'})
@@ -180,7 +182,7 @@ def gff_bed_work():
     gff_df.groupby('attributes').chromosome.value_counts().unstack(0).plot.barh()
     plt.savefig("./data/attributes_barhplot.png")
     plt.close()
-    
+
     # Pandas as bedtools intersect
     # We want to know how much rRNA was successfully assembled during the assembly process.
     # Creates a DataFrame containing initial records about rRNA completely included in the assembly (not a fragment),
@@ -189,8 +191,8 @@ def gff_bed_work():
     bedtools_intersect = gff_df.merge(df_bed6, how='outer', on=['chromosome'])
     bedtools_intersect = bedtools_intersect[(bedtools_intersect.
                                              start_x >= bedtools_intersect.
-                                                        start_y+1) & (bedtools_intersect.
-                                                                      end_x <= bedtools_intersect.end_y+1)]
+                                             start_y+1) & (bedtools_intersect.
+                                             end_x <= bedtools_intersect.end_y+1)]
 
 
 def main():
