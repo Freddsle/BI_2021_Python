@@ -123,12 +123,12 @@ def small_EDA():
 
     # html ProfileReport report saved in data folder
     profile = ProfileReport(vine, title="Pandas Profiling Report", explorative=True)
-
+    profile.to_file("./data/EDA_report.html")
 
 def read_gff(file):
     '''
     Read gff files (input - path to the file) and return Pandas DataFrame.
-    Do not works with really large gff files.
+    Does not works with really large gff files.
     '''
     colnames = ['chromosome', 'source', 'type',
                 'start', 'end', 'score',
@@ -147,8 +147,8 @@ def read_gff(file):
 def read_bed6(file):
     '''
     Read bed6 files (input - path to the file) and return Pandas DataFrame.
-    Do not works with really large bed files.
-    '''    
+    Does not works with really large bed files.
+    '''
     colnames = ['chromosome', 'start', 'end', 'name', 'score', 'strand']
     df_bed6 = pd.read_csv(file,
                           sep='\t',
@@ -191,8 +191,7 @@ def gff_bed_work():
     bedtools_intersect = gff_df.merge(df_bed6, how='outer', on=['chromosome'])
     bedtools_intersect = bedtools_intersect[(bedtools_intersect.
                                              start_x >= bedtools_intersect.
-                                             start_y+1) & (bedtools_intersect.
-                                             end_x <= bedtools_intersect.end_y+1)]
+                                             start_y+1) & (bedtools_intersect.end_x <= bedtools_intersect.end_y+1)]
 
 
 def main():
