@@ -125,6 +125,7 @@ def small_EDA():
     profile = ProfileReport(vine, title="Pandas Profiling Report", explorative=True)
     profile.to_file("./data/EDA_report.html")
 
+
 def read_gff(file):
     '''
     Read gff files (input - path to the file) and return Pandas DataFrame.
