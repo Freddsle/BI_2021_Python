@@ -1,0 +1,12 @@
+[tool.poetry]
+name = "homework_12"
+version = "0.1"
+description = "Homework 'internet, API'."
+repository = "https://github.com/Freddsle/BI_2021_Python/"
+authors = ["Yuliya Burankova"]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.10"
+
+[tool.poetry.dev-dependencies]
+jupyter = "^1.0.0"
