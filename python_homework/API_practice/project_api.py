@@ -80,8 +80,11 @@ def taxid_search(input_taxids):
 
 def RID_request(BLAST_URL, fasta, database, taxon):
     '''
-    Send information about seqrch to tblasn server. Starts search.
-    Input 'taxon' should be in list format (list contains strings).
+    Send search (payload) to tblasn server. Starts search.
+    Input 'taxon' should be in list format (list contains strings or string).
+    The search is performed with standard parameters in the wgs database when specifying an organism.
+    Exclusion of an organism (taksaidi) from the search is not yet provided.
+    Return status code, the time the request was sent, and RID - Request ID.
     '''
 
     payload = {
@@ -151,9 +154,11 @@ def RID_request(BLAST_URL, fasta, database, taxon):
 
 def check_results(prev_time, RID, BLAST_URL, num_query):
     '''
-    Makes requests to the tblasn server until a result is received.
-    Stop when it takes more than 15 minutes.
-    Return soup object for extraction ALIGN_SEQ_LIST.
+    Requests to the tblasn server until a result is received.
+    Errors are used to check for the existence of a result.
+    Also requests will continue if the server response tatus code is 500.
+    When the search is complete, displays a message containing the status code value.
+    Return soup object and the time whrn the last request was sent.
     '''
 
     payload = {
@@ -359,7 +364,7 @@ def get_alignments(fasta, database, taxon, search_taxid=False, input_file=True):
     You can pass not the path to the file, but a string - in this case set input_file=False.
 
     At the moment, "exclusion" of organisms is not supported.
-    
+
     If input taxon not in taxid format (only numers) - search_taxid taxid=True.
     If search_taxid=False, an additional search will be performed to extract the full name of the taxon
     (only the first match will be used - as when selecting from the drop-down list in
@@ -369,14 +374,14 @@ def get_alignments(fasta, database, taxon, search_taxid=False, input_file=True):
     BLAST_URL = "https://blast.ncbi.nlm.nih.gov/Blast.cgi"
 
     alignments_list = []
-    taxon = taxid_prepare(taxon, search_taxid)  
+    taxon = taxid_prepare(taxon, search_taxid)
 
     if input_file:
         with open(fasta, 'r') as f:
             fasta = f.read()
 
     seq_number = len(fasta.strip('>').split('>'))
-    
+
     prev_time, s_code, RID = RID_request(BLAST_URL, fasta, database, taxon)
     print(f' RID: {RID}')
 
@@ -389,9 +394,9 @@ def get_alignments(fasta, database, taxon, search_taxid=False, input_file=True):
         soup, prev_time = check_results(prev_time, RID, BLAST_URL, num_query)
 
         seq_list = get_seq_list(soup)
-    
+
         algnmt_soup, prev_time = get_algnmt(RID, seq_list, prev_time, num_query)
-        
+
         if seq_number == 1:
             alignments_list = get_results_algnmnt(algnmt_soup)
 
@@ -406,7 +411,7 @@ def main(fasta, database, taxon):
     pass
 
 
-if __name__ == '__main__': 
+if __name__ == '__main__':
 
     # path to example protein sequences
     fasta = './example.fa'
@@ -422,7 +427,7 @@ if __name__ == '__main__':
     # run search
     alignments_list = get_alignments(fasta, database, taxon, search_taxid=True, input_file=True)
     
-    # example output 
+    # example output
     print('Example output (part):')
 
     if not alignments_list:
