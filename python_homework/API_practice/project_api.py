@@ -27,7 +27,7 @@ class Alignment():
         subj_id: subject sequence GenBank ID (ACCESSION, string);
         subj_len: subject sequence full length (int);
         e_value: alignment e_value (string);
-        identity: identity between query seq and subject (string), identical letters/alignment length (identity in percent);
+        identity: identity between query seq and subject (string), identical letters/alignment length (identity %);
         query_seq: query string in pairwise alignment format (with gaps);
         subj_seq: subject in pairwise alignment format (with gaps).
         '''
@@ -70,7 +70,7 @@ def taxid_search(input_taxids):
         resp = requests.get(TAXID_URL, params=query_str)
         soup = BeautifulSoup(resp.content, 'lxml')
 
-        first_taxid = re.search('(?<=taxid\:).+(?=\)\@)', soup.text.split(', ')[1]).group(0)
+        first_taxid = re.search(r'(?<=taxid:).+(?=\)\@)', soup.text.split(', ')[1]).group(0)
 
         if len(first_taxid) >= len(taxid) and str.isdecimal(taxid):
             taxid_list.append(first_taxid)
@@ -83,6 +83,7 @@ def RID_request(BLAST_URL, fasta, database, taxon):
     Send information about seqrch to tblasn server. Starts search.
     Input 'taxon' should be in list format (list contains strings).
     '''
+
     payload = {
         'QUERY': fasta,
         'db': 'protein',
@@ -189,13 +190,13 @@ def check_results(prev_time, RID, BLAST_URL, num_query):
                 print('Please wait. Searching.')
                 i += 1
                 continue
-            
+
             else:
                 if not soup.find('table', {'id': 'statInfo'}) and resp.status_code != 500:
 
                     if num_query == 0:
                         print(f'status code: {resp.status_code}, SEARCH DONE.')
-                    
+
                     break
 
                 else:
@@ -215,7 +216,7 @@ def get_seq_list(soup):
     return seq_list
 
 
-def get_algnmt(RID, seq_list, prev_time,num_query):
+def get_algnmt(RID, seq_list, prev_time, num_query):
 
     FASTA_URL = 'https://blast.ncbi.nlm.nih.gov/t2g.cgi'
     align_seq_list = ','.join(seq_list)
@@ -350,7 +351,8 @@ def taxid_prepare(taxon, search_taxid=False):
 def get_alignments(fasta, database, taxon, search_taxid=False, input_file=True):
     '''
     ...
-    Several amino acid sequences can be included in one search (one file) if their total length is up to 1,000 amino acids.
+    Several amino acid sequences can be included in one search (one file)
+    if their total length is up to 1,000 amino acids.
     Otherwise, one lookup per sequence. The length of the sequence is limited by the size of the memory
     (because the file is opened and the sequence is passed as a string).
 
@@ -360,7 +362,8 @@ def get_alignments(fasta, database, taxon, search_taxid=False, input_file=True):
     
     If input taxon not in taxid format (only numers) - search_taxid taxid=True.
     If search_taxid=False, an additional search will be performed to extract the full name of the taxon
-    (only the first match will be used - as when selecting from the drop-down list in the web version of tblastn).
+    (only the first match will be used - as when selecting from the drop-down list in
+    the web version of tblastn).
     If no significant similarity found - return the empty list.
     '''
     BLAST_URL = "https://blast.ncbi.nlm.nih.gov/Blast.cgi"
