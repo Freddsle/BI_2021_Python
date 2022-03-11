@@ -11,26 +11,29 @@ import pandas as pd
 
 
 class Alignment():
+    '''
+    Class for creation and store Alignments from tblasn Alignment output.
+    '''
 
     def __init__(self,
                  subj_name, subj_id, subj_len, subj_range,
                  score, e_value, identity,
                  query_seq, subj_seq):
         '''
-        Создает объект класса Alignment со следующими атрибутами:
-        self.score
-        self.subj_range    # tuple
-        self.subj_name
-        self.subj_id
-        self.subj_len
-        self.e_value
-        self.identity
-        self.query_seq
-        self.subj_seq
+        Create Alignment object with the following attributes:
+        score: alignment score (string);
+        subj_range: (tuple);
+        subj_name: subject sequence name (string);
+        subj_id: subject sequence GenBank ID (ACCESSION, string);
+        subj_len: subject sequence full length (int);
+        e_value: alignment e_value (string);
+        identity: identity between query seq and subject (string), identical letters/alignment length (identity in percent);
+        query_seq: query string in pairwise alignment format (with gaps);
+        subj_seq: subject in pairwise alignment format (with gaps).
         '''
 
         self.score = score
-        self.subj_range  = subj_range   # tuple
+        self.subj_range = subj_range   # tuple
         self.subj_name = subj_name
         self.subj_id = subj_id
         self.subj_len = subj_len
@@ -39,30 +42,58 @@ class Alignment():
         self.query_seq = query_seq
         self.subj_seq = subj_seq
 
-
     def __str__(self):
+        '''
+        When printing alignment object - print subj_id and score of alignment.
+        '''
         return ': '.join([self.subj_id, self.score])
 
 
-def RID_request(BLAST_URL, fasta, database, taxon, file=''):
+def taxid_search(input_taxids):
+    '''
+    Searches the database for an taxid (from list), returns the first match.
+    If the database is searched for by taxid (i.e. only numbers were used for the search)
+    and such taxid does not exist,
+    then no blast is performed for this taxid (taxid will not be added to the blast).
+    Return the list with taxid`s.
+    '''
+    TAXID_URL = 'https://blast.ncbi.nlm.nih.gov/portal/utils/autocomp.fcgi'
+    taxid_list = []
+
+    for taxid in input_taxids:
+
+        query_str = {
+            'dict': 'bdb_wgs_all_sg',
+            'q': taxid
+        }
+
+        resp = requests.get(TAXID_URL, params=query_str)
+        soup = BeautifulSoup(resp.content, 'lxml')
+
+        first_taxid = re.search('(?<=taxid\:).+(?=\)\@)', soup.text.split(', ')[1]).group(0)
+
+        if len(first_taxid) >= len(taxid) and str.isdecimal(taxid):
+            taxid_list.append(first_taxid)
+
+    return taxid_list
+
+
+def RID_request(BLAST_URL, fasta, database, taxon):
     '''
     Send information about seqrch to tblasn server. Starts search.
+    Input 'taxon' should be in list format (list contains strings).
     '''
     payload = {
         'QUERY': fasta,
         'db': 'protein',
-        'QUERYFILE': '',  # use for binary files
         'GENETIC_CODE': 1,
         'JOB_TITLE': 'fasta',
         'ADV_VIEW': 'true',
         'stype': 'nucleotide',
-        #'SUBJECTFILE': '', # use for binary files
-        'DATABASE': 'Whole_Genome_Shotgun_contigs',
+        # 'EQ_MENU' - add in range later
+        'DATABASE': database,
         'DB_GROUP': 'wgsOrg',
-        #'EQ_MENU': 'Prevotella sp. oral taxon 472 str. F0295 (taxid:619693)',  # работает если передавать полное название из выпадающего списка
-        'EQ_MENU': '619693',    # работает и просто при передаче самого айдишника
-        #'EQ_MENU': 'Prevotella sp. oral taxon 472 str. F0295',    # а так не работает
-        'NUM_ORG': 1,
+        'NUM_ORG': len(taxon),
         'MAX_NUM_SEQ': 100,
         'EXPECT': 0.05,
         'WORD_SIZE': 6,
@@ -99,7 +130,14 @@ def RID_request(BLAST_URL, fasta, database, taxon, file=''):
         'PAGE_TYPE': 'BlastSearch'
     }
 
-    prev_time = time.time()
+    # add taxons to payload:
+    for i, tax_id in enumerate(taxon):
+        if i == 0:
+            payload['EQ_MENU'] = tax_id
+        else:
+            payload['EQ_MENU'+str(i)] = tax_id
+
+    current_time = time.time()
 
     resp = requests.post(BLAST_URL, data=payload)
     soup = BeautifulSoup(resp.content, 'lxml')
@@ -107,23 +145,25 @@ def RID_request(BLAST_URL, fasta, database, taxon, file=''):
     s_code = resp.status_code
     RID = soup.find('input', {'name': 'RID'}).get('value')
 
-    return prev_time, s_code, RID
+    return current_time, s_code, RID
 
 
-def check_results(prev_time, RID, BLAST_URL):
+def check_results(prev_time, RID, BLAST_URL, num_query):
     '''
     Makes requests to the tblasn server until a result is received.
-    Stop when it takes more than 15 minutes and print RID for manual check on the website.
+    Stop when it takes more than 15 minutes.
+    Return soup object for extraction ALIGN_SEQ_LIST.
     '''
 
     payload = {
         'CMD': 'Get',
         'RID': RID,
-        'FORMAT_TYPE': 'HTML'
+        'FORMAT_TYPE': 'HTML',
+        'QUERY_INDEX': num_query,
     }
 
     delay = 10
-    wait = 10
+    wait = 0
     i = 0
 
     while True:
@@ -133,35 +173,34 @@ def check_results(prev_time, RID, BLAST_URL):
 
         if wait > 0:
             time.sleep(wait)
-            prev_time = current_time + wait
-    
-        if i * delay >= 900:
-            print(f'Oops! Try to check your resalts later (or restart). RID: {RID}.')
 
         else:
             prev_time = current_time
 
+            try:
+                resp = requests.post(BLAST_URL, data=payload)
+                soup = BeautifulSoup(resp.content, 'lxml')
 
-        try:
-            resp = requests.post(BLAST_URL, data=payload)
-            soup = BeautifulSoup(resp.content, 'lxml')
+            except (ValueError,
+                    urllib3.exceptions.InvalidChunkLength,
+                    urllib3.exceptions.ProtocolError,
+                    requests.exceptions.ChunkedEncodingError):
 
-        except (ValueError,
-                urllib3.exceptions.InvalidChunkLength,
-                urllib3.exceptions.ProtocolError,
-                requests.exceptions.ChunkedEncodingError):
-            print('Please wait. Searching.')
-            i += 1
-            continue
+                print('Please wait. Searching.')
+                i += 1
+                continue
+            
+            else:
+                if not soup.find('table', {'id': 'statInfo'}) and resp.status_code != 500:
 
-        else:
-            if not soup.find('table', {'id': 'statInfo'}):
-
-                if resp.status_code != 500:
-                    print(f'status code: {resp.status_code}, SEARCH DONE.')
+                    if num_query == 0:
+                        print(f'status code: {resp.status_code}, SEARCH DONE.')
+                    
                     break
 
                 else:
+                    print('Please wait. Searching.')
+                    i += 1
                     continue
 
     return soup, current_time
@@ -171,12 +210,12 @@ def get_seq_list(soup):
     seq_list = []
 
     for line in soup.find_all('form', attrs={"id": "formBlastDescr"})[0].find_all('input', attrs={'type': 'checkbox'}):
-        seq_list.append('gb|' + re.sub('Select seq ', '', line.next_sibling.text).split('.')[0] +'|')
+        seq_list.append('gb|' + re.sub('Select seq ', '', line.next_sibling.text).split('.')[0] + '|')
 
     return seq_list
 
 
-def get_algnmt(RID, seq_list, prev_time):
+def get_algnmt(RID, seq_list, prev_time,num_query):
 
     FASTA_URL = 'https://blast.ncbi.nlm.nih.gov/t2g.cgi'
     align_seq_list = ','.join(seq_list)
@@ -184,27 +223,21 @@ def get_algnmt(RID, seq_list, prev_time):
     params = {
         'CMD': 'Get',
         'RID': RID,
-        #'DESCRIPTIONS': 0,
-        #'NUM_OVERVIEW': 0,
         'GET_SEQUENCE': 'on',
         'DYNAMIC_FORMAT': 'on',
         'ALIGN_SEQ_LIST': align_seq_list,
-        #'HSP_SORT': 0,
         'SEQ_LIST_START': 1,
-        'QUERY_INDEX': 0,
+        'QUERY_INDEX': num_query,
         'ADV_VIEW': 'on',
         'SHOW_LINKOUT': 'on',
-        #'MASK_CHAR': 2,
-        #'MASK_COLOR': 1,
         'ALIGNMENT_VIEW': 'Pairwise',
         'LINE_LENGTH': 60,
         'BOBJSRVC': 'sra'
         }
 
-    delay = 10
-    wait = 10
-
-    i = 0
+    # wait 3 sec between downloading results
+    wait = 1
+    delay = 5
 
     while True:
 
@@ -213,10 +246,6 @@ def get_algnmt(RID, seq_list, prev_time):
 
         if wait > 0:
             time.sleep(wait)
-            prev_time = current_time + wait
-
-        if i * delay >= 900:
-            print(f'Oops! Try to check your resalts later (or restart). RID: {RID}.')
 
         else:
             prev_time = current_time
@@ -227,9 +256,12 @@ def get_algnmt(RID, seq_list, prev_time):
             print('Please, wait. Something with BLAST server.')
             continue
 
-        soup = BeautifulSoup(resp.content, 'lxml')
+        elif resp.status_code == 200:
+            break
 
-        return soup
+    soup = BeautifulSoup(resp.content, 'lxml')
+
+    return soup, prev_time
 
 
 def get_results_algnmnt(soup):
@@ -249,9 +281,9 @@ def get_results_algnmnt(soup):
 
         for align in alignments:
 
-            table_params = align.find_all('table', {'class' : "alnParams"})
+            table_params = align.find_all('table', {'class': "alnParams"})
             nember_al = len(table_params)
-            urls = align.find_all('a', {'class' : ""}, href=True)
+            urls = align.find_all('a', {'class': ""}, href=True)
 
             sequences = align.find_all('pre')
 
@@ -263,13 +295,13 @@ def get_results_algnmnt(soup):
 
                 score = df_scores['Score'][0]
                 identity = df_scores['Identities'][0]
-                e_value =  df_scores['Expect'][0]
+                e_value = df_scores['Expect'][0]
 
                 # more
-                #method = df_scores['Method'][0]
-                #positives = df_scores['Positives'][0]
-                #gaps = df_scores['Gaps'][0]
-                #frame = df_scores['Frame'][0]
+                # method = df_scores['Method'][0]
+                # positives = df_scores['Positives'][0]
+                # gaps = df_scores['Gaps'][0]
+                # frame = df_scores['Frame'][0]
 
                 value_from = int(parse_qs(parsed_url.query)['from'][0])
                 value_to = int(parse_qs(parsed_url.query)['to'][0])
@@ -301,62 +333,110 @@ def get_results_algnmnt(soup):
                                                  query_seq=query_seq,
                                                  subj_seq=subj_seq))
 
-    return  alignments_list
+    return alignments_list
 
 
-def get_alignments(fasta, database, taxon):
+def taxid_prepare(taxon, search_taxid=False):
+
+    if search_taxid:
+        taxon = taxid_search([taxon])
+
+    elif isinstance(taxon, str):
+        taxon = [taxon]
+
+    return taxon
+
+
+def get_alignments(fasta, database, taxon, search_taxid=False, input_file=True):
+    '''
+    ...
+    Several amino acid sequences can be included in one search (one file) if their total length is up to 1,000 amino acids.
+    Otherwise, one lookup per sequence. The length of the sequence is limited by the size of the memory
+    (because the file is opened and the sequence is passed as a string).
+
+    You can pass not the path to the file, but a string - in this case set input_file=False.
+
+    At the moment, "exclusion" of organisms is not supported.
+    
+    If input taxon not in taxid format (only numers) - search_taxid taxid=True.
+    If search_taxid=False, an additional search will be performed to extract the full name of the taxon
+    (only the first match will be used - as when selecting from the drop-down list in the web version of tblastn).
+    If no significant similarity found - return the empty list.
+    '''
     BLAST_URL = "https://blast.ncbi.nlm.nih.gov/Blast.cgi"
 
+    alignments_list = []
+    taxon = taxid_prepare(taxon, search_taxid)  
+
+    if input_file:
+        with open(fasta, 'r') as f:
+            fasta = f.read()
+
     seq_number = len(fasta.strip('>').split('>'))
-
-    #for i in range(seq_number):
-
+    
     prev_time, s_code, RID = RID_request(BLAST_URL, fasta, database, taxon)
+    print(f' RID: {RID}')
 
     if s_code != 200:
         print('Something wrong with request!')
         return
 
-    soup, prev_time = check_results(prev_time, RID, BLAST_URL)
+    for num_query in range(seq_number):
 
-    seq_list = get_seq_list(soup)
+        soup, prev_time = check_results(prev_time, RID, BLAST_URL, num_query)
 
-    algnmt_soup = get_algnmt(RID, seq_list, prev_time)
+        seq_list = get_seq_list(soup)
+    
+        algnmt_soup, prev_time = get_algnmt(RID, seq_list, prev_time, num_query)
+        
+        if seq_number == 1:
+            alignments_list = get_results_algnmnt(algnmt_soup)
 
-    alignments_list = get_results_algnmnt(algnmt_soup)
+        elif seq_number > 1:
+            alignments_list.append(get_results_algnmnt(algnmt_soup))
 
     return alignments_list
 
 
 def main(fasta, database, taxon):
-    #get_alignments(fasta, database, taxon)
+    # get_alignments(fasta, database, taxon)
     pass
+
 
 if __name__ == '__main__': 
 
-    # example protein sequences
-    fasta = \
-    """>sf
-MVMFGNKVSYPYMDLSPKSHWIVYEGNLKFYDKQGRDTASIK
-DAASLSFDFFTWGRNPKVAMIETTEVSKLSVESFKSTCYGYIICSYT
->line2
-MVMFGNKVSYPYMDLSPKSHWIVYEGNLKFYDKQGRDTASIKDAASLSFDFFTWGRNPKVAMIETTE
->line3
-RNPKVAMIETTEVSKLSVESFKSTCYGYIICSYT
->line4
-FTWGRNPKVAMIETTEPYMDLRNPKVAMLSFDFFTWGRNPKVAMIETTE
->line5
-ETTEVSKLSVESFKSTCYGYIICSYTYMDLRNPKVAMLSFDFFTWGRNPKVAMIETTIICSYTYMDL
-RNPEIKDAASLSFDFFTWGRNPKVAMIETTEVSKLSVESFKSTCYGYIICSYT"""
+    # path to example protein sequences
+    fasta = './example.fa'
 
     # example database - wgs (now works only with this DB)
     database = 'Whole_Genome_Shotgun_contigs'
 
     # example taxon - only taxid and full names (like in web tblastn form) accepted
-    taxon = '619693'
+    # if multiple - should be in list.
+    taxon = '619693'    # results exists
+    # taxon = ['6179', '296']   # results doesnt exists
 
     # run search
-    alignments_list = get_alignments(fasta, database, taxon)
+    alignments_list = get_alignments(fasta, database, taxon, search_taxid=True, input_file=True)
+    
+    # example output 
+    print('Example output (part):')
 
-    for i in alignments_list:
-        print(i, '\t', i.identity, '\t',  i.e_value)
+    if not alignments_list:
+        print('No significant similarity found for all sequences.')
+
+    else:
+
+        for i, result in enumerate(alignments_list):
+
+            if not result:
+                print(f'No significant similarity found for {i} sequence.')
+
+            elif len(alignments_list) == 1:
+                print(result, '\t', result.identity, '\t', result.e_value)
+
+            else:
+                for j in result:
+                    print(j, '\t', j.identity, '\t', j.e_value)
+
+            print('-----')
