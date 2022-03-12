@@ -36,7 +36,7 @@ class Alignment():
         self.subj_range = subj_range   # tuple
         self.subj_name = subj_name
         self.subj_id = subj_id
-        self.subj_len = subj_len
+        self.subj_len = subj_len    # int
         self.e_value = e_value
         self.identity = identity
         self.query_seq = query_seq
@@ -78,7 +78,25 @@ def taxid_search(input_taxids):
     return taxid_list
 
 
-def RID_request(BLAST_URL, fasta, database, taxon):
+def taxid_prepare(taxon, search_taxid=False):
+    '''
+    If set search_taxid=True, passes the list of taxons to the taxid_search function to find the first best match.
+    If set search_taxid=False, check if taxon is string, if so - wraps a string into a list.
+    Returns a list with taxid`s.
+    '''
+
+    if search_taxid:
+        taxon = taxid_search([taxon])
+
+    elif isinstance(taxon, str):
+        taxon = [taxon]
+
+    return taxon
+
+
+def RID_request(fasta, taxon, 
+                database='Whole_Genome_Shotgun_contigs', 
+                BLAST_URL="https://blast.ncbi.nlm.nih.gov/Blast.cgi"):
     '''
     Send search (payload) to tblasn server. Starts search.
     Input 'taxon' should be in list format (list contains strings or string).
@@ -141,6 +159,7 @@ def RID_request(BLAST_URL, fasta, database, taxon):
         else:
             payload['EQ_MENU'+str(i)] = tax_id
 
+    # time of first requests
     current_time = time.time()
 
     resp = requests.post(BLAST_URL, data=payload)
@@ -152,13 +171,13 @@ def RID_request(BLAST_URL, fasta, database, taxon):
     return current_time, s_code, RID
 
 
-def check_results(prev_time, RID, BLAST_URL, num_query):
+def check_results(prev_time, RID, num_query, BLAST_URL="https://blast.ncbi.nlm.nih.gov/Blast.cgi"):
     '''
     Requests to the tblasn server until a result is received.
     Errors are used to check for the existence of a result.
     Also requests will continue if the server response tatus code is 500.
     When the search is complete, displays a message containing the status code value.
-    Return soup object and the time whrn the last request was sent.
+    Return soup object (for align_seq_list) and the time when the last request was sent.
     '''
 
     payload = {
@@ -213,6 +232,12 @@ def check_results(prev_time, RID, BLAST_URL, num_query):
 
 
 def get_seq_list(soup):
+    '''
+    Parse first soup (main page of tbalstn results) for extract ACCESSION ID.
+    ACCESSION`s are needed for future request to Aliegnments sub-page.
+    To imitate ticked checkboxes.
+    Return list with ACCESSION ID.
+    '''
     seq_list = []
 
     for line in soup.find_all('form', attrs={"id": "formBlastDescr"})[0].find_all('input', attrs={'type': 'checkbox'}):
@@ -222,7 +247,11 @@ def get_seq_list(soup):
 
 
 def get_algnmt(RID, seq_list, prev_time, num_query):
-
+    '''
+    Requests to the tblasn server (using ACCESSION ID) to get a page of results with alignments.
+    Uses an QUERY_INDEX to refer to a page with alignments based on the ordinal number of the searched sequence.
+    Return soup object and the time when the last request was sent.
+    '''
     FASTA_URL = 'https://blast.ncbi.nlm.nih.gov/t2g.cgi'
     align_seq_list = ','.join(seq_list)
 
@@ -241,9 +270,9 @@ def get_algnmt(RID, seq_list, prev_time, num_query):
         'BOBJSRVC': 'sra'
         }
 
-    # wait 3 sec between downloading results
-    wait = 1
-    delay = 5
+    # wait 10 sec between downloading results
+    wait = 10
+    delay = 10
 
     while True:
 
@@ -271,6 +300,11 @@ def get_algnmt(RID, seq_list, prev_time, num_query):
 
 
 def get_results_algnmnt(soup):
+    '''
+    Parses soup object with alignments results.
+    Create Alignment object with attributes from parsed result.
+    Returns list with Alignment objects.
+    '''
 
     result = soup.find_all('div', {'class': 'oneSeqAln'})
     alignments_list = []
@@ -342,35 +376,30 @@ def get_results_algnmnt(soup):
     return alignments_list
 
 
-def taxid_prepare(taxon, search_taxid=False):
-
-    if search_taxid:
-        taxon = taxid_search([taxon])
-
-    elif isinstance(taxon, str):
-        taxon = [taxon]
-
-    return taxon
-
-
-def get_alignments(fasta, database, taxon, search_taxid=False, input_file=True):
+def get_alignments(fasta, taxon, database='Whole_Genome_Shotgun_contigs', search_taxid=False, input_file=True):
     '''
-    ...
-    Several amino acid sequences can be included in one search (one file)
+    The function that searches the tblastn database by the specified parameters (fasta, database, taxon),
+    all other parameters are used by default.
+
+    Several amino acid sequences can be included in one search (one file), 
     if their total length is up to 1,000 amino acids.
     Otherwise, one lookup per sequence. The length of the sequence is limited by the size of the memory
     (because the file is opened and the sequence is passed as a string).
 
-    You can pass not the path to the file, but a string - in this case set input_file=False.
+    You can pass not only the path to the file, but a string - in this case set input_file=False.
 
     At the moment, "exclusion" of organisms is not supported.
+    But the search can be done using several organisms (taxid`s).
 
-    If input taxon not in taxid format (only numers) - search_taxid taxid=True.
-    If search_taxid=False, an additional search will be performed to extract the full name of the taxon
-    (only the first match will be used - as when selecting from the drop-down list in
-    the web version of tblastn).
+    If input taxon not in taxid format (in taxid only numbers are allowed) - set the search_taxid=True.
+    If search_taxid=True, an additional search will be performed to extract the full taxid of taxon
+    (only the first match will be used - as when selecting from the drop-down list in the web tblastn).
+
+    Return list with Alignment objects for one fasta sequence.
+    If multiple sequences were passed, returns a list of lists of Alignment objects.
     If no significant similarity found - return the empty list.
     '''
+
     BLAST_URL = "https://blast.ncbi.nlm.nih.gov/Blast.cgi"
 
     alignments_list = []
@@ -382,7 +411,7 @@ def get_alignments(fasta, database, taxon, search_taxid=False, input_file=True):
 
     seq_number = len(fasta.strip('>').split('>'))
 
-    prev_time, s_code, RID = RID_request(BLAST_URL, fasta, database, taxon)
+    prev_time, s_code, RID = RID_request(BLAST_URL=BLAST_URL, fasta=fasta, database=database, taxon=taxon)
     print(f' RID: {RID}')
 
     if s_code != 200:
@@ -391,7 +420,7 @@ def get_alignments(fasta, database, taxon, search_taxid=False, input_file=True):
 
     for num_query in range(seq_number):
 
-        soup, prev_time = check_results(prev_time, RID, BLAST_URL, num_query)
+        soup, prev_time = check_results(prev_time, RID, num_query, BLAST_URL)
 
         seq_list = get_seq_list(soup)
 
@@ -406,12 +435,10 @@ def get_alignments(fasta, database, taxon, search_taxid=False, input_file=True):
     return alignments_list
 
 
-def main(fasta, database, taxon):
-    # get_alignments(fasta, database, taxon)
-    pass
-
-
 if __name__ == '__main__':
+
+    # Example search - you can run it witn "poetry run python project_api.py" in cmd. 
+    # Print results.
 
     # path to example protein sequences
     fasta = './example.fa'
@@ -419,14 +446,14 @@ if __name__ == '__main__':
     # example database - wgs (now works only with this DB)
     database = 'Whole_Genome_Shotgun_contigs'
 
-    # example taxon - only taxid and full names (like in web tblastn form) accepted
+    # example taxon - only taxid and full names (like in web tblastn form) accepted for post request.
     # if multiple - should be in list.
     taxon = '619693'    # results exists
     # taxon = ['6179', '296']   # results doesnt exists
 
     # run search
-    alignments_list = get_alignments(fasta, database, taxon, search_taxid=True, input_file=True)
-    
+    alignments_list = get_alignments(fasta, taxon, database, search_taxid=True, input_file=True)
+
     # example output
     print('Example output (part):')
 
