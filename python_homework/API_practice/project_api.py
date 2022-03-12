@@ -94,8 +94,8 @@ def taxid_prepare(taxon, search_taxid=False):
     return taxon
 
 
-def RID_request(fasta, taxon, 
-                database='Whole_Genome_Shotgun_contigs', 
+def RID_request(fasta, taxon,
+                database='Whole_Genome_Shotgun_contigs',
                 BLAST_URL="https://blast.ncbi.nlm.nih.gov/Blast.cgi"):
     '''
     Send search (payload) to tblasn server. Starts search.
@@ -174,13 +174,13 @@ def RID_request(fasta, taxon,
 def check_results(prev_time, RID, num_query, BLAST_URL="https://blast.ncbi.nlm.nih.gov/Blast.cgi"):
     '''
     Requests to the tblasn server until a result is received.
-    
+
     Errors (ValueError, urllib3.exceptions.InvalidChunkLength, urllib3.exceptions.ProtocolError,
     requests.exceptions.ChunkedEncodingError) are used to check for the existence of a result.
-    
+
     Also requests will continue if the server response status code is 500.
     When the search is complete, displays a message containing the status code value.
-    
+
     Return soup object (for align_seq_list) and the time when the last request was sent.
     '''
 
@@ -385,7 +385,7 @@ def get_alignments(fasta, taxon, database='Whole_Genome_Shotgun_contigs', search
     The function that searches the tblastn database by the specified parameters (fasta, database, taxon),
     all other parameters are used by default.
 
-    Several amino acid sequences can be included in one search (one file), 
+    Several amino acid sequences can be included in one search (one file),
     if their total length is up to 1,000 amino acids.
     Otherwise, one lookup per sequence. The length of the sequence is limited by the size of the memory
     (because the file is opened and the sequence is passed as a string).
@@ -441,7 +441,7 @@ def get_alignments(fasta, taxon, database='Whole_Genome_Shotgun_contigs', search
 
 if __name__ == '__main__':
 
-    # Example search - you can run it witn "poetry run python project_api.py" in cmd. 
+    # Example search - you can run it witn "poetry run python project_api.py" in cmd.
     # Print results.
 
     # path to example protein sequences
