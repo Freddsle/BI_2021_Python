@@ -1,0 +1,12 @@
+[tool.poetry]
+name = "classes_practice"
+version = "0.1"
+description = "Homework 'Classes'."
+repository = "https://github.com/Freddsle/BI_2021_Python/"
+authors = ["Yuliya Burankova"]
+
+[tool.poetry.dependencies]
+python = "3.10"
+biopython = "1.79"
+matplotlib = "3.5.1"
+pandas = "1.3.5"
