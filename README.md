@@ -32,3 +32,5 @@ Bioinformatics for biologist, 2021-2022.
 9.  Unix-like Python scripts. In `./python_homework/practice_os_sys`.
 
 10. Practice with Python classes. In `./python_homework/classes_practice`.
+
+11. Practice with Pandas library. In `./python_homework/pandas_practice`.
