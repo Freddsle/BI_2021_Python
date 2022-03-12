@@ -174,9 +174,13 @@ def RID_request(fasta, taxon,
 def check_results(prev_time, RID, num_query, BLAST_URL="https://blast.ncbi.nlm.nih.gov/Blast.cgi"):
     '''
     Requests to the tblasn server until a result is received.
-    Errors are used to check for the existence of a result.
-    Also requests will continue if the server response tatus code is 500.
+    
+    Errors (ValueError, urllib3.exceptions.InvalidChunkLength, urllib3.exceptions.ProtocolError,
+    requests.exceptions.ChunkedEncodingError) are used to check for the existence of a result.
+    
+    Also requests will continue if the server response status code is 500.
     When the search is complete, displays a message containing the status code value.
+    
     Return soup object (for align_seq_list) and the time when the last request was sent.
     '''
 
