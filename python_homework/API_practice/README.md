@@ -162,6 +162,8 @@ taxon = '619693'    # results exists
 
 ## Example run output:
 
+
+```
  RID: 2U4APSEX013
 status code: 200, SEARCH DONE.
 Example output (part):
@@ -192,3 +194,4 @@ ACZS01000173.1: 44.7 bits(104) 	 24/58(41%) 	 3e-07()
 ACZS01000173.1: 38.5 bits(88) 	 21/50(42%) 	 3e-05()
 ACZS01000174.1: 38.9 bits(89) 	 18/47(38%) 	 3e-05()
 -----
+```
