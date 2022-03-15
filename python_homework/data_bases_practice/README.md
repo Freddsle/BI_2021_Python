@@ -29,7 +29,7 @@
     
     Return DONE when done.
 
-__if__ module contains SELECT, GROUP BY, HAVING, LEFT JOIN, TRANSACTION, DELETE examples for this DB.
+`__if__` module contains SELECT, GROUP BY, HAVING, LEFT JOIN, TRANSACTION, DELETE examples for this DB.
 
 
 # Install and run with pip
