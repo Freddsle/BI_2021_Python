@@ -339,7 +339,7 @@ if __name__ == '__main__':
             DELETE FROM SNP_data
             WHERE SNP_data.SNP_Name in (
             SELECT SNP_Name FROM clin_SNP WHERE clin_SNP.Clinical_Significance = 'Not Reported in ClinVar');
-            
+
             DELETE FROM clin_SNP
             WHERE clin_SNP.Clinical_Significance = 'Not Reported in ClinVar'
     '''
