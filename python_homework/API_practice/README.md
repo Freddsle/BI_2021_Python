@@ -10,14 +10,14 @@ The delay between calls to the server is 10 seconds.
 1. **class Alignment** - Class for creation and store Alignments from tblasn Alignment output.
 
     Create Alignment object with the following attributes:
-        - score: alignment score (string);
-        - subj_range: (tuple);
-        - subj_name: subject sequence name (string);
-        - subj_id: subject sequence GenBank ID (ACCESSION, string);
-        - subj_len: subject sequence full length (int);
-        - e_value: alignment e_value (string);
-        - identity: identity between query seq and subject (string), identical letters/alignment length (identity %);
-        - query_seq: query string in pairwise alignment format (with gaps);
+        - score: alignment score (string);\
+        - subj_range: (tuple);\
+        - subj_name: subject sequence name (string);\
+        - subj_id: subject sequence GenBank ID (ACCESSION, string);\
+        - subj_len: subject sequence full length (int);\
+        - e_value: alignment e_value (string);\
+        - identity: identity between query seq and subject (string), identical letters/alignment length (identity %);\
+        - query_seq: query string in pairwise alignment format (with gaps);\
         - subj_seq: subject in pairwise alignment format (with gaps).
 
     When printing alignment object - print subj_id and score of alignment.
@@ -27,25 +27,20 @@ Functions:
 
 1. **get_alignments** function - main function.
 
-    The function that searches the tblastn database by the specified parameters (fasta, database, taxon),
-    all other parameters are used by default.
+    The function that searches the tblastn database by the specified parameters (fasta, database, taxon), all other parameters are used by default.
 
-    Several amino acid sequences can be included in one search (one file), 
-    if their total length is up to 1,000 amino acids.
-    Otherwise, one lookup per sequence. The length of the sequence is limited by the size of the memory
-    (because the file is opened and the sequence is passed as a string).
+    Several amino acid sequences can be included in one search (one file), if their total length is up to 1,000 amino acids.\
+    Otherwise, one lookup per sequence. The length of the sequence is limited by the size of the memory (because the file is opened and the sequence is passed as a string).
 
     You can pass not only the path to the file, but a string - in this case set input_file=False.
 
-    At the moment, "exclusion" of organisms is not supported.
-    But the search can be done using several organisms (taxid`s).
+    At the moment, "exclusion" of organisms is not supported. But the search can be done using several organisms (taxid`s).
 
-    If input taxon not in taxid format (in taxid only numbers are allowed) - set the search_taxid=True.
-    If search_taxid=True, an additional search will be performed to extract the full taxid of taxon
-    (only the first match will be used - as when selecting from the drop-down list in the web tblastn).
+    If input taxon not in taxid format (in taxid only numbers are allowed) - set the search_taxid=True.\
+    If search_taxid=True, an additional search will be performed to extract the full taxid of taxon (only the first match will be used - as when selecting from the drop-down list in the web tblastn).
 
-    Return list with Alignment objects for one fasta sequence.
-    If multiple sequences were passed, returns a list of lists of Alignment objects.
+    Return list with Alignment objects for one fasta sequence.\
+    If multiple sequences were passed, returns a list of lists of Alignment objects.\
     If no significant similarity found - return the empty list.
 
 
@@ -75,7 +70,7 @@ Functions:
 
     Requests to the tblasn server until a result is received.\    
     Errors (ValueError, urllib3.exceptions.InvalidChunkLength, urllib3.exceptions.ProtocolError, requests.exceptions.ChunkedEncodingError) are used to check for the existence of a result.\    
-    Also requests will continue if the server response status code is 500.
+    Also requests will continue if the server response status code is 500.\
     When the search is complete, print a `DONE` message containing the status code value.
     
     Return soup object (for align_seq_list) and the time when the last request was sent.
