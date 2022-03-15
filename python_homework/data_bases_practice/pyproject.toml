@@ -8,6 +8,9 @@ authors = ["Yuliya Burankova"]
 [tool.poetry.dependencies]
 python = ">=3.10,<3.11"
 pandas = "^1.4.1"
+requests = "^2.27.1"
+beautifulsoup4 = "^4.10.0"
+lxml = "^4.8.0"
 
 [tool.poetry.dev-dependencies]
 jupyter = "^1.0.0"
