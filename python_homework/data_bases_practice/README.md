@@ -9,7 +9,7 @@
 `__if__` module contains SELECT example for this DB.
 
 
-2. Create SQL DB with human SNP data from NCBI (It takes a very long time to download the result from NCBI (hours):
+2. Create SQL DB with human SNP data from NCBI (**WARNING!** It takes a very long time to download the result from NCBI (hours):
 
 - get_genes - Get Human Gene names from [genomics.senescence.info](genomics.senescence.info). Return list with names.
 
