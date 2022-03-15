@@ -1,7 +1,7 @@
 import sqlite3
 import pandas as pd
 import requests
-# import time
+import time
 from bs4 import BeautifulSoup
 
 
@@ -33,6 +33,9 @@ def get_scheme_df(df):
 
 
 def bid_DB(genstudio, metadata, scheme_genstudio, scheme_metadata, path='./data/bid_DB.db'):
+    '''
+    Create SQL scheme from `.scv` files
+    '''
 
     connection = sqlite3.connect(path)
 
@@ -123,7 +126,7 @@ def get_id_list(genes_list):
     id_list = []
 
     for gene_name in genes_list:
-        # time.sleep(5)
+        time.sleep(5)
 
         soup = snp_search(str(gene_name))
         rs_id = parse_soup(soup)
@@ -162,11 +165,9 @@ def get_snp_info(red_id_list):
     Wait 5 seconds between get requests.
     Return 'DONE' when done.
     '''
-    i = 1
-
     for snp_name in red_id_list:
 
-        # time.sleep(5)
+        time.sleep(5)
 
         req_url = f'https://www.ncbi.nlm.nih.gov/snp/{snp_name}#clinical_significance'
 
@@ -236,7 +237,7 @@ def create_SNP_db():
     connection.commit()
     connection.close()
 
-    ''' # Done in file
+    # Done in file
     genes_list = get_genes()
 
     id_list = get_id_list(genes_list)
@@ -245,7 +246,6 @@ def create_SNP_db():
     with open('./data/SNP_ids.txt', 'w') as output_file:
         for rsid in red_id_list:
             output_file.write(rsid + '\n')
-    '''
 
     with open('./data/SNP_ids.txt') as f:
         red_id_list = f.read().splitlines()

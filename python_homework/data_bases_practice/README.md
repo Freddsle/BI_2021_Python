@@ -1,6 +1,35 @@
+# Practise with SQLite in Python
+
+1. Create SQL db from `.scv` files:
+
+- get_scheme_df - Create SQL scheme from DataFrame colnames. Return SQL scheme and list with processed colnames.
+
+- bid_DB - Create SQL DB from `.scv` files. Create one file with two tables. Return nothing.
+
+__if__ module contains SELECT example for this DB.
 
 
+2. Create SQL DB with human SNP data from NCBI:
 
+- get_genes - Get Human Gene names from [genomics.senescence.info](genomics.senescence.info). Return list with names.
+
+- snp_search - Search first 20 SNP in ncbi snp database. Return soup object.
+
+- parse_soup - Extract SNP ID from soup. Return list with rs-id.
+
+- get_id_list - Search first 20 SNP in ncbi snp database and extract SNP ID from soup. Wait 5 seconds between get requests. Return lists with SNP ID`s for all genes.
+
+- add_to_sql - Open connection to SNP_human DB, add some info to it and close connection. Return nothing.
+
+- get_snp_info - Get info about SNP from soup object and add it to the SQL DB. Wait 5 seconds between get requests. Return 'DONE' when done.
+
+- create_SNP_db - Create DB with two tables with info about human genes SNP. Gets information about the name of human genes from the "genomics.senescence.info" site. When searching for SNPs for each gene in SNP NCBI, returns no more than 20 SNPs.
+
+    Write found SNPs to the SNP_ids.txt file. Search info about each SNP in SNP NCBI.Add info about found SNPs to SNP_human.db.
+    
+    Return DONE when done.
+
+__if__ module contains SELECT, GROUP BY, HAVING, LEFT JOIN, TRANSACTION, DELETE examples for this DB.
 
 
 # Install and run with pip
