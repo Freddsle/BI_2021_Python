@@ -63,6 +63,200 @@ def bid_DB(genstudio, metadata, scheme_genstudio, scheme_metadata, path='./data/
     connection.close()
 
 
+def get_genes():
+    '''
+    Get Human Gene names from genomics.senescence.info.
+    Return list with names.
+    '''
+    GENE_URL = 'https://genomics.senescence.info/genes/allgenes.php'
+
+    resp = requests.get(GENE_URL)
+    soup = BeautifulSoup(resp.content, 'lxml')
+
+    genes_list = []
+
+    table = soup.find("table", {"class":"results-table"} )
+    rows = table.find_all('tr')
+
+    for row in rows:
+        cols = row.find_all('td')
+        cols = [ele.text.strip() for ele in cols]
+
+        if cols:    
+            genes_list.append(cols[0])
+
+    return genes_list
+
+
+def snp_search(gene_name):
+    '''
+    Search first 20 SNP in ncbi snp database. Return soup object.
+    '''
+    SNP_URL = 'https://www.ncbi.nlm.nih.gov/snp/'
+    query_str = {'term': gene_name + '[Gene Name]'}
+
+    resp = requests.get(SNP_URL, params=query_str)
+    soup = BeautifulSoup(resp.content, 'lxml')
+
+    return soup
+
+
+def parse_soup(soup):
+    '''
+    Extract SNP ID from soup.
+    Return list with rs-id.
+    '''
+    rs_id = []
+
+    for result in soup.find_all('div', {'class': 'rprt'}):
+        rs_id.append(result.find('div', {'class': 'supp'}).find('a').text)
+
+    return rs_id
+
+
+def get_id_list(genes_list):
+    '''
+    Search first 20 SNP in ncbi snp database and extract SNP ID from soup.
+    Wait 5 seconds between get requests.
+    Return lists with SNP ID`s for all genes.
+    '''
+    id_list = []
+
+    for gene_name in genes_list:
+        #time.sleep(5)
+
+        soup = snp_search(str(gene_name))
+        rs_id = parse_soup(soup)
+
+        if rs_id:
+            id_list.append(rs_id)
+
+    return id_list
+
+
+def add_to_sql(snp_name, position, chromosome, alleles, db_build, assembly_build,
+               clin_sig, n_publications):
+    '''
+    Open connection to SNP_human DB, add some info to it and close connection.
+    Return nothing.
+    '''
+    connection = sqlite3.connect('./data/SNP_human.db')
+
+    query_1 = '''INSERT INTO SNP_data (SNP_Name, Alleles, Position, Chr, dbSNP_Build, Assembly_Build)
+                                       VALUES (?, ?, ?, ?, ?, ?)'''
+
+    connection.execute(query_1, [snp_name, alleles, position, chromosome, db_build, assembly_build])
+
+    query_2 = '''INSERT INTO clin_SNP (SNP_Name, Clinical_Significance, N_Publications)
+                                       VALUES (?, ?, ?)'''
+
+    connection.execute(query_2, [snp_name, clin_sig, n_publications]) 
+
+    connection.commit()
+    connection.close()
+
+
+def get_snp_info(red_id_list):
+    '''
+    Get info about SNP from soup object and add it to the SQL DB.
+    Wait 5 seconds between get requests.
+    Return 'DONE' when done.
+    '''
+    i = 1
+
+    for snp_name in red_id_list:
+
+        print(f'{i} gene')
+
+        #time.sleep(5)
+
+        req_url = f'https://www.ncbi.nlm.nih.gov/snp/{snp_name}#clinical_significance'
+
+        resp = requests.get(req_url, params={'horizontal_tab': 'true'})
+        soup = BeautifulSoup(resp.content, 'lxml')
+
+        db_build = soup.find('div', {'class': 'accession usa-width-one-third'}).text.split()[2]
+
+        snp_info = soup.find_all('dl', {'class': 'usa-width-one-half'})
+        dd_info = snp_info[0].find_all('dd')
+        build_chr_pos = dd_info[1].find_all('span') 
+
+        assembly_build = build_chr_pos[1].text.strip()
+        position = build_chr_pos[0].text.split(':')[1]
+        chromosome = build_chr_pos[0].text.split(':')[0]
+
+        alleles = ''.join(dd_info[2].text.split())
+
+        clin_sig = snp_info[1].find('dd').text.strip()
+
+        publ_info = snp_info[1].find('a', {'id': 'snp_pub_count'})
+
+        if publ_info:
+            n_publications = publ_info.text.split()[0]
+        else:
+            n_publications=0
+
+        add_to_sql(snp_name,
+                   position,
+                   chromosome,
+                   alleles,
+                   db_build,
+                   assembly_build,
+                   clin_sig,
+                   n_publications)
+
+        i += 1
+
+    return 'DONE'
+
+
+def create_SNP_db():
+    '''
+    Create DB with two tables with info about human genes SNP.
+    Gets information about the name of human genes from the "genomics.senescence.info" site.
+    When searching for SNPs for each gene in SNP NCBI, returns no more than 20 SNPs.
+    Write found SNPs to the SNP_ids.txt file.
+    Search info about each SNP in SNP NCBI.
+    Add info about found SNPs to SNP_human.db.
+    Return DONE when done.
+    '''
+
+    connection = sqlite3.connect('./data/SNP_human.db')
+
+    connection.execute(f'''CREATE TABLE IF NOT EXISTS SNP_data ( 
+                           SNP_Name TEXT, 
+                           Alleles TEXT, 
+                           Position TEXT, 
+                           Chr TEXT,
+                           dbSNP_Build TEXT,
+                           Assembly_Build TEXT)''')
+
+    connection.execute(f'''CREATE TABLE IF NOT EXISTS clin_SNP (
+                           SNP_Name TEXT,
+                           Clinical_Significance TEXT,
+                           N_Publications TEXT,
+                           FOREIGN KEY (SNP_Name) REFERENCES SNP_data (SNP_Name))''')
+
+    connection.commit()
+    connection.close()
+    
+    ''' # Done in file
+    genes_list = get_genes()
+
+    id_list = get_id_list(genes_list)
+    red_id_list = list(set([j for sub in id_list for j in sub]))
+
+    with open('./data/SNP_ids.txt', 'w') as output_file:
+        for rsid in red_id_list:
+            output_file.write(rsid + '\n')
+    '''
+
+    with open('./data/SNP_ids.txt') as f:
+        red_id_list = f.read().splitlines()
+
+    return get_snp_info(red_id_list)
+
+
 if __name__ == '__main__':
 
     # Create sql from csv:
@@ -106,3 +300,8 @@ if __name__ == '__main__':
     connection.execute(query)
     connection.commit()
     connection.close()
+
+    # Second part
+    # Create and add from web
+    # Prints log
+    create_SNP_db()
