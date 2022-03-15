@@ -247,8 +247,10 @@ def create_SNP_db():
         for rsid in red_id_list:
             output_file.write(rsid + '\n')
 
+    '''
     with open('./data/SNP_ids.txt') as f:
         red_id_list = f.read().splitlines()
+    '''
 
     return get_snp_info(red_id_list)
 
