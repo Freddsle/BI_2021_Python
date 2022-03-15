@@ -36,13 +36,13 @@ def bid_DB(genstudio, metadata, scheme_genstudio, scheme_metadata, path='./data/
 
     connection = sqlite3.connect(path)
 
-    connection.execute(f'''CREATE TABLE IF NOT EXISTS SNP_AG_data (
-                           Sample_ID TEXT, 
-                           SNP_Name TEXT, 
-                           SNP TEXT, 
-                           Position TEXT, 
-                           Chr TEXT,
-                           sex TEXT)''')
+    connection.execute('''CREATE TABLE IF NOT EXISTS SNP_AG_data (
+                          Sample_ID TEXT,
+                          SNP_Name TEXT,
+                          SNP TEXT,
+                          Position TEXT,
+                          Chr TEXT,
+                          sex TEXT)''')
 
     connection.execute(f'''CREATE TABLE IF NOT EXISTS metadata ({scheme_metadata},
                            FOREIGN KEY (sex) REFERENCES SNP_data (sex))''')
@@ -75,14 +75,14 @@ def get_genes():
 
     genes_list = []
 
-    table = soup.find("table", {"class":"results-table"} )
+    table = soup.find("table", {"class": "results-table"})
     rows = table.find_all('tr')
 
     for row in rows:
         cols = row.find_all('td')
         cols = [ele.text.strip() for ele in cols]
 
-        if cols:    
+        if cols:
             genes_list.append(cols[0])
 
     return genes_list
@@ -123,7 +123,7 @@ def get_id_list(genes_list):
     id_list = []
 
     for gene_name in genes_list:
-        #time.sleep(5)
+        # time.sleep(5)
 
         soup = snp_search(str(gene_name))
         rs_id = parse_soup(soup)
@@ -150,7 +150,7 @@ def add_to_sql(snp_name, position, chromosome, alleles, db_build, assembly_build
     query_2 = '''INSERT INTO clin_SNP (SNP_Name, Clinical_Significance, N_Publications)
                                        VALUES (?, ?, ?)'''
 
-    connection.execute(query_2, [snp_name, clin_sig, n_publications]) 
+    connection.execute(query_2, [snp_name, clin_sig, n_publications])
 
     connection.commit()
     connection.close()
@@ -168,7 +168,7 @@ def get_snp_info(red_id_list):
 
         print(f'{i} gene')
 
-        #time.sleep(5)
+        # time.sleep(5)
 
         req_url = f'https://www.ncbi.nlm.nih.gov/snp/{snp_name}#clinical_significance'
 
@@ -179,7 +179,7 @@ def get_snp_info(red_id_list):
 
         snp_info = soup.find_all('dl', {'class': 'usa-width-one-half'})
         dd_info = snp_info[0].find_all('dd')
-        build_chr_pos = dd_info[1].find_all('span') 
+        build_chr_pos = dd_info[1].find_all('span')
 
         assembly_build = build_chr_pos[1].text.strip()
         position = build_chr_pos[0].text.split(':')[1]
@@ -224,9 +224,9 @@ def create_SNP_db():
     connection = sqlite3.connect('./data/SNP_human.db')
 
     connection.execute(f'''CREATE TABLE IF NOT EXISTS SNP_data ( 
-                           SNP_Name TEXT, 
-                           Alleles TEXT, 
-                           Position TEXT, 
+                           SNP_Name TEXT,
+                           Alleles TEXT,
+                           Position TEXT,
                            Chr TEXT,
                            dbSNP_Build TEXT,
                            Assembly_Build TEXT)''')
@@ -239,7 +239,7 @@ def create_SNP_db():
 
     connection.commit()
     connection.close()
-    
+
     ''' # Done in file
     genes_list = get_genes()
 
@@ -260,9 +260,9 @@ def create_SNP_db():
 if __name__ == '__main__':
 
     # Create sql from csv:
-    genstudio = pd.read_csv('./data/genstudio.csv', dtype={'Position':str})
+    genstudio = pd.read_csv('./data/genstudio.csv', dtype={'Position': str})
     metadata = pd.read_csv('./data/metadata.csv')
-    #print(genstudio.shape, metadata.shape)
+    # print(genstudio.shape, metadata.shape)
 
     # Create SQL scheme
     scheme_genstudio, new_names = get_scheme_df(genstudio)
@@ -272,13 +272,13 @@ if __name__ == '__main__':
     metadata.columns = new_names
 
     # Create SQL DB and add data from pandas
-    path='./data/bid_DB.db'
+    path = './data/bid_DB.db'
     bid_DB(genstudio, metadata, scheme_genstudio, scheme_metadata, path)
 
     # Select from SQL DB
     connection = sqlite3.connect('./data/bid_DB.db')
 
-    query = '''SELECT metadata.dna_chip_id, genstudio.SNP_Name, genstudio.SNP, genstudio.Position, genstudio.Chr, 
+    query = '''SELECT metadata.dna_chip_id, genstudio.SNP_Name, genstudio.SNP, genstudio.Position, genstudio.Chr,
             metadata.sex
             FROM genstudio, metadata
             WHERE metadata.dna_chip_id = genstudio.Sample_ID AND genstudio.SNP = '[A/G]'
@@ -292,9 +292,9 @@ if __name__ == '__main__':
     connection = sqlite3.connect('./data/bid_DB.db')
 
     query = '''INSERT INTO SNP_AG_data (Sample_ID, SNP_Name, SNP, Position, Chr, sex)
-    SELECT genstudio.Sample_ID, genstudio.SNP_Name, genstudio.SNP, genstudio.Position, genstudio.Chr, 
-    metadata.sex 
-    FROM genstudio, metadata 
+    SELECT genstudio.Sample_ID, genstudio.SNP_Name, genstudio.SNP, genstudio.Position, genstudio.Chr,
+    metadata.sex
+    FROM genstudio, metadata
     WHERE metadata.dna_chip_id = genstudio.Sample_ID AND genstudio.SNP = '[A/G]'''
 
     connection.execute(query)
