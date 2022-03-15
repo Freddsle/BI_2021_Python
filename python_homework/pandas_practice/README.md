@@ -3,7 +3,7 @@
 ## Task 1. Plot hists.
 df contains information about the number of reads with each of the 4 nucleotides at different positions (columns A, T, G, C). Plot a histogram of the distribution of these numbers.
 
-Resultuing plot in `./data/task_1_hist.png`.
+Resulting plot in `./data/task_1_hist.png`.
 
 ## Task 2. Select data.
 
@@ -19,7 +19,7 @@ Resulting DataFrame in `./data/train_part.csv`.
 
 EDA of DataFrame of Vine Data: correlation plot, distribution plots, EDA with pandas_profiling.
 
-Results in `./data/correlation_01.png`, `./data/correlation_02.png`, `./data/Scatter/`, `./data/Histogram/`, `./data/Boxplot/`, and .html report created with pandas_profiling library in `./data/EDA_report.html`.
+Results (plots and report) in `./data/correlation_01.png`, `./data/correlation_02.png`, `./data/Scatter/`, `./data/Histogram/`, `./data/Boxplot/`, and .html report created with pandas_profiling library in `./data/EDA_report.html`.
 
 ## Task 4. Work with bioinf data
 
