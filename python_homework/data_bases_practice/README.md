@@ -6,7 +6,7 @@
 
 - bid_DB - Create SQL DB from `.scv` files. Create one file with two tables. Return nothing.
 
-__if__ module contains SELECT example for this DB.
+`__if__` module contains SELECT example for this DB.
 
 
 2. Create SQL DB with human SNP data from NCBI (It takes a very long time to download the result from NCBI (hours):
