@@ -238,6 +238,7 @@ def create_SNP_db():
     connection.close()
 
     # Done in file
+    '''
     genes_list = get_genes()
 
     id_list = get_id_list(genes_list)
@@ -246,11 +247,10 @@ def create_SNP_db():
     with open('./data/SNP_ids.txt', 'w') as output_file:
         for rsid in red_id_list:
             output_file.write(rsid + '\n')
-
     '''
+
     with open('./data/SNP_ids.txt') as f:
         red_id_list = f.read().splitlines()
-    '''
 
     return get_snp_info(red_id_list)
 
@@ -338,14 +338,27 @@ if __name__ == '__main__':
 
     query = '''BEGIN TRANSACTION;
 
-            DELETE FROM SNP_data
-            WHERE SNP_data.SNP_Name in (
-            SELECT SNP_Name FROM clin_SNP WHERE clin_SNP.Clinical_Significance = 'Not Reported in ClinVar');
+               DELETE FROM SNP_data
+               WHERE SNP_data.SNP_Name in (
+               SELECT SNP_Name FROM clin_SNP WHERE clin_SNP.Clinical_Significance = "Not Reported in ClinVar");
 
-            DELETE FROM clin_SNP
-            WHERE clin_SNP.Clinical_Significance = 'Not Reported in ClinVar'
+               DELETE FROM clin_SNP
+               WHERE clin_SNP.Clinical_Significance = "Not Reported in ClinVar";
+
+               COMMIT'''
+
+    connection.executescript(query)
+    connection.close()
+
+    connection = sqlite3.connect('./data/SNP_human.db')
+
+    query = '''SELECT Chr, COUNT(SNP_Name)
+            FROM SNP_data
+            GROUP BY Chr
+            HAVING COUNT(SNP_Name) BETWEEN 20 AND 50
     '''
 
-    connection.execute(query)
-    connection.commit()
+    res = connection.execute(query)
+    result = res.fetchall()
     connection.close()
+    print(result)
