@@ -159,20 +159,29 @@ def add_to_sql(snp_name, position, chromosome, alleles, db_build, assembly_build
     connection.close()
 
 
+def get_snp_soup(req_url):
+    '''
+    Get info about SNP from URL.
+    Wait 10 seconds between get requests.
+    '''
+    time.sleep(10)
+    
+    with requests.Session() as s:
+        resp = s.get(req_url, params={'horizontal_tab': 'true'})
+        soup = BeautifulSoup(resp.content, 'lxml')
+        
+    return soup
+
+
 def get_snp_info(red_id_list):
     '''
     Get info about SNP from soup object and add it to the SQL DB.
-    Wait 5 seconds between get requests.
     Return 'DONE' when done.
     '''
     for snp_name in red_id_list:
 
-        time.sleep(5)
-
-        req_url = f'https://www.ncbi.nlm.nih.gov/snp/{snp_name}#clinical_significance'
-
-        resp = requests.get(req_url, params={'horizontal_tab': 'true'})
-        soup = BeautifulSoup(resp.content, 'lxml')
+        req_url = f'https://www.ncbi.nlm.nih.gov/snp/{snp_name}'
+        soup =  get_snp_soup(req_url)
 
         db_build = soup.find('div', {'class': 'accession usa-width-one-third'}).text.split()[2]
 
@@ -193,7 +202,7 @@ def get_snp_info(red_id_list):
         if publ_info:
             n_publications = publ_info.text.split()[0]
         else:
-            n_publications = 0
+            n_publications = 'no info'
 
         add_to_sql(snp_name,
                    position,

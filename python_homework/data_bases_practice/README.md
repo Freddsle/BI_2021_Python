@@ -21,6 +21,8 @@
 
 - add_to_sql - Open connection to SNP_human DB, add some info to it and close connection. Return nothing.
 
+- get_snp_soup - Get info about SNP from URL. Wait 10 seconds between get requests.
+
 - get_snp_info - Get info about SNP from soup object and add it to the SQL DB. Wait 5 seconds between get requests. Return 'DONE' when done.
 
 - create_SNP_db - Create DB with two tables with info about human genes SNP. Gets information about the name of human genes from the "genomics.senescence.info" site. When searching for SNPs for each gene in SNP NCBI, returns no more than 20 SNPs.
