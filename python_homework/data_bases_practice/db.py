@@ -165,11 +165,11 @@ def get_snp_soup(req_url):
     Wait 10 seconds between get requests.
     '''
     time.sleep(10)
-    
+
     with requests.Session() as s:
         resp = s.get(req_url, params={'horizontal_tab': 'true'})
         soup = BeautifulSoup(resp.content, 'lxml')
-        
+
     return soup
 
 
@@ -181,7 +181,7 @@ def get_snp_info(red_id_list):
     for snp_name in red_id_list:
 
         req_url = f'https://www.ncbi.nlm.nih.gov/snp/{snp_name}'
-        soup =  get_snp_soup(req_url)
+        soup = get_snp_soup(req_url)
 
         db_build = soup.find('div', {'class': 'accession usa-width-one-third'}).text.split()[2]
 
