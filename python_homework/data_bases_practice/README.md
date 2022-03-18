@@ -1,5 +1,7 @@
 # Practise with SQLite in Python
 
+Databases and other files in [google drive](https://drive.google.com/drive/folders/14LX658TB-JXZM_IyJiTzvJi-8GymwAEK?usp=sharing).
+
 1. Create SQL db from `.scv` files:
 
 - get_scheme_df - Create SQL scheme from DataFrame colnames. Return SQL scheme and list with processed colnames.

@@ -334,7 +334,7 @@ if __name__ == '__main__':
     query = '''SELECT Chr, COUNT(SNP_Name)
             FROM SNP_data
             GROUP BY Chr
-            HAVING COUNT(SNP_Name) BETWEEN 2 AND 20
+            HAVING COUNT(SNP_Name)
     '''
 
     res = connection.execute(query)
@@ -362,8 +362,8 @@ if __name__ == '__main__':
     connection = sqlite3.connect('./data/SNP_human.db')
 
     query = '''SELECT Chr, COUNT(SNP_Name)
-            FROM SNP_data
-            GROUP BY Chr
+               FROM SNP_data
+               GROUP BY Chr
             HAVING COUNT(SNP_Name) BETWEEN 20 AND 50
     '''
 
