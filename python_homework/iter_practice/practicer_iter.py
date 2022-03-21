@@ -1,16 +1,28 @@
-
-# 1. Сделайте генератор, который принимает на вход путь к фаста файлу и 
-# выдаёт по очереди пары id последовательности (то, что после ">") и последовательности. (5 баллов)
-# Пример использования на рисунке Example1. 
-# Обратите внимание, что функция должна возвращать НЕ список, а генератор! 
-# Биопитон и другие библиотеки не используем.
+import re
 
 
-def generator_idfasta(fasta_path='../data/sequences.fasta'):
+def fasta_reader(file_path):
+    """
+    Generetor. 
+    Takes as input the path to the FASTA file and outputs pairs sequence id and sequence in turn.
+    Args:
+        file_path: Path to the FASTA file.
+    Yields:
+        seq_id, sequence.
+    """
+    temp_list = []
 
+    with open(file_path) as inf:
+        for line in inf:
+            line = line.rstrip()
 
-    return 
+            if re.match('^>', line):
+                if temp_list:
+                    yield temp_list[0], ''.join(temp_list[1:])
 
+                    temp_list = []
+
+            temp_list.append(line)
 
 
 # 2. Напишите класс, производящий чтение последовательностей с небольшими изменениями. (15 баллов)
@@ -43,5 +55,9 @@ def generator_idfasta(fasta_path='../data/sequences.fasta'):
 
 
 
-if __init __:
-    pass
+if __name__ == '__main__':
+    path_fasta ='./data/sequences.fasta'
+    reader = fasta_reader(path_fasta)
+    print(type(reader))
+    for id_, seq in reader:
+        print(id_, seq[:50])
