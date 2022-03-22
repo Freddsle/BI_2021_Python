@@ -2,7 +2,7 @@
 import random
 
 
-class AASequenceChanger():
+class AASequenceChanger:
     '''Read a file with amino acid sequnces and make deletions,
     substitutions and insertions during iteration.
     If the file is end, then the iteration continues from its beginning.
@@ -36,14 +36,14 @@ class AASequenceChanger():
         """
         try:
             result = self.text[self.index]
-        
+
         except IndexError:
             self.index = 0
             result = self.text[self.index]
-        
+
         self.index += 1
         return self.random_changes(result)
-    
+
     def random_changes(self, sequence):
         """Make random change in sequence with 50% probability for each letter.
         Args:
@@ -86,7 +86,7 @@ class AASequenceChanger():
         Return:
             string: randomly selected letter from AA_ALPHABET.
         """
-        return random.choice(AA_ALPHABET)
+        return random.choice(self.AA_ALPHABET)
 
     def make_insertion(self, letter):
         """Insert a random amino acid in a sequence.
@@ -97,7 +97,7 @@ class AASequenceChanger():
         Return:
             string: initial letter plus randomly selected letter from AA_ALPHABET.
         """
-        return ''.join([letter, random.choice(AA_ALPHABET)])
+        return ''.join([letter, random.choice(self.AA_ALPHABET)])
 
     def read_sequences(self, file_path):
         """Takes as input the path to the FASTA file and outputs list with sequence.
@@ -124,7 +124,7 @@ class AASequenceChanger():
 
 
 def fasta_reader(file_path):
-    """Generetor. 
+    """Generetor.
     Takes as input the path to the FASTA file and outputs pairs sequence id and sequence in turn.
     Args:
         file_path: Path to the FASTA file.
@@ -145,40 +145,23 @@ def fasta_reader(file_path):
             temp_list.append(line)
 
 
-
-# 1. Напишите генератор iter_append(iterable, item), который "добавляет" элемент item в "конец" iterable. (5 доп баллов)
-# То есть при итерации по iter_append(iterable, item) мы сначала будем получать данные из iterable, а в самом конце одно значение item. 
-# Пример использования на рисунке Example3
-# Напишите этот генератор без явных циклов (без конструкций while, for и list comprehensions)
-# Не используйте никакие другие функции в теле iter_append
-
-
-
-
-
-
-# 2. Сделайте функцию, которая "распаковывает" вложенные списки (5 доп баллов)
-# Уровень вложенности списков может быть любым. Пример использования на рисунке Example2.
-# Подсказка: используйте генераторы и синтаксис из предыдущего задания
-
-
-
-
 if __name__ == '__main__':
-
     # test print for first task - read fasta file from data folder.
-    # Print type of fasta_reader object
-    # Print seq ID and first 50 letter of sequence for each sequence. 
-    path_fasta_long ='./data/sequences.fasta'
+    # Print type of fasta_reader object.
+    # Print seq ID and first 50 letter of sequence for each sequence.
+    path_fasta_long = './data/sequences.fasta'
     reader = fasta_reader(path_fasta_long)
     print(type(reader))
 
     for id_, seq in reader:
         print(id_, seq[:50])
 
-    # example for class
-    # print 20 rows with changed sequneces from fasta file.
-    path_fasta_short ='./data/seq.fasta'
+    # separator
+    print('----------------------')
+
+    # Example for class
+    # Print 20 rows with changed sequneces from fasta file.
+    path_fasta_short = './data/seq.fasta'
     seq_for_change = AASequenceChanger(path_fasta_short)
 
     j = 0
