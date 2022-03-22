@@ -119,7 +119,4 @@ poetry install
 
 # Run
 poetry run python practicer_iter.py
-
-# or for run .ipynb files
-poetry run jupyter notebook
 ```
