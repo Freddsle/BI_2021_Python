@@ -145,6 +145,19 @@ def fasta_reader(file_path):
             temp_list.append(line)
 
 
+def iter_append(iterable, item):
+    """A generator that "adds" an item element to the "end" of an iterable.
+    Args:
+        iterable: something iterable.
+        item: object to add at the end of iterable.
+    Yields:
+        from iterable.
+        item.
+    """
+    yield from iterable
+    yield item
+
+
 if __name__ == '__main__':
     # test print for first task - read fasta file from data folder.
     # Print type of fasta_reader object.

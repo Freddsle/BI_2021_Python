@@ -54,6 +54,16 @@
     Example for class in `if __name__ == '__main__` block. Print 20 rows with changed sequneces from fasta file.
 
 
+3. Generetor `iter_append`
+
+A generator that "adds" an item element to the "end" of an iterable.\
+    Args:\
+        iterable: something iterable.\
+        item: object to add at the end of iterable.\
+    Yields:\
+        from iterable.\
+        item.
+
 
 # Install and run with pip
 ## Installation
