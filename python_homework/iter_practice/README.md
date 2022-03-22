@@ -4,6 +4,7 @@
     Takes as input the path to the FASTA file and outputs pairs sequence id and sequence in turn.\
     Arg: file_path: Path to the FASTA file.
     Yield: seq_id, sequence.\
+    
     Test print in `if __name__ == '__main__` block - read fasta file from data folder. Print type of fasta_reader object. Print seq ID and first 50 letter of sequence for each sequence.
    
 2. **class AASequenceChanger:**\
