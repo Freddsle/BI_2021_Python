@@ -67,6 +67,24 @@ A generator that "adds" an item element to the "end" of an iterable.\
 Example for generetor in `if __name__ == '__main__` block.
 
 
+4. Function `nested_list_unpacker` for "unpacks" nested lists.
+
+    Function for "unpacks" nested lists.  Uses unpack_generator for it. Lists can be nested at any level.
+    
+    Args:\
+        iterable: iterable for unpacking.\
+        resulting: list for result, empty when unpacking starts.
+    
+    Returns:\
+        resulting: resulting list with unpacked iterable.
+
+    Uses `unpack_generator` for unpacking. Function for unpacking iterable. When iterable is list, unpack it. When not, yield iterable.\
+    Args:\
+        iterable: iterable for unpacking.\
+    Yields:\
+        i: all elements from i if iterable of i if not.
+
+
 # Install and run with pip
 ## Installation
 

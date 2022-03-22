@@ -16,7 +16,7 @@ class AASequenceChanger:
         Read file from path and add all sequences to list self.text.
         Args:
             file_path: Path to the FASTA file with amino acid sequnces.
-        Return:
+        Returns:
             nothing.
         """
         self.fasta_path = fasta_path
@@ -31,7 +31,7 @@ class AASequenceChanger:
         Newer stop iteration. When elements end, then the iteration continues from its beginning.
         Args:
             self.
-        Return:
+        Returns:
             string: string with altered amino acid sequence.
         """
         try:
@@ -49,7 +49,7 @@ class AASequenceChanger:
         Args:
             self
             sequence: amino acid sequence for changes.
-        Return:
+        Returns:
             new_seq: string with altered amino acid sequence.
         """
         new_seq = []
@@ -72,7 +72,7 @@ class AASequenceChanger:
         Args:
             self
             letter: letter for changes.
-        Return:
+        Returns:
             '': empty string.
         """
         return ''
@@ -83,7 +83,7 @@ class AASequenceChanger:
         Args:
             self
             letter: letter for changes.
-        Return:
+        Returns:
             string: randomly selected letter from AA_ALPHABET.
         """
         return random.choice(self.AA_ALPHABET)
@@ -94,7 +94,7 @@ class AASequenceChanger:
         Args:
             self
             letter: letter for changes.
-        Return:
+        Returns:
             string: initial letter plus randomly selected letter from AA_ALPHABET.
         """
         return ''.join([letter, random.choice(self.AA_ALPHABET)])
@@ -103,7 +103,7 @@ class AASequenceChanger:
         """Takes as input the path to the FASTA file and outputs list with sequence.
         Args:
             file_path: Path to the FASTA file.
-        Return:
+        Returns:
             list with sequences strings.
         """
         temp_list = []
@@ -151,11 +151,46 @@ def iter_append(iterable, item):
         iterable: something iterable.
         item: object to add at the end of iterable.
     Yields:
-        from iterable.
+        from iterable: all elements from iterable.
         item.
     """
     yield from iterable
     yield item
+
+
+def unpack_generator(iterable):
+    """Function for unpacking iterable.
+    When iterable is list, unpack it. When not, yield iterable.
+    Args:
+        iterable: iterable for unpacking.
+    Yields:
+        i: all elements from i if iterable of i if not.
+    """
+    for i in iterable:
+        if isinstance(i, list):
+            yield from i
+
+        else:
+            yield i
+
+
+def nested_list_unpacker(iterable, resulting=[]):
+    """Function for "unpacks" nested lists.  Uses unpack_generator for it.
+    Lists can be nested at any level.
+    Args:
+        iterable: iterable for unpacking.
+        resulting: list for result, empty when unpacking starts.
+    Returns:
+        resulting: resulting list with unpacked iterable.
+    """
+    for i in iterable:
+        if isinstance(i, list):
+            nested_list_unpacker(unpack_generator(i), resulting)
+
+        else:
+            resulting.append(i)
+
+    return resulting
 
 
 if __name__ == '__main__':
