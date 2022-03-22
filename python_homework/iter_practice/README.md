@@ -1,49 +1,39 @@
 # Practise with iterators in Python
 
 1. Generetor `fasta_reader`.
-    Takes as input the path to the FASTA file and outputs pairs sequence id and sequence in turn.
-
+    Takes as input the path to the FASTA file and outputs pairs sequence id and sequence in turn.\
     Args:
-        file_path: Path to the FASTA file.
-
+        - file_path: Path to the FASTA file.
     Yields:
-        seq_id, sequence.
-    
+        - seq_id, sequence.\
     Test print in `if __name__ == '__main__` block - read fasta file from data folder. Print type of fasta_reader object. Print seq ID and first 50 letter of sequence for each sequence.
    
-2. class AASequenceChanger:
-
-    Read a file with amino acid sequnces and make deletion, substitutions and insertions during iteration. 
+2. class AASequenceChanger:\
+    Read a file with amino acid sequnces and make deletion, substitutions and insertions during iteration. \    
+    If the file is end, then the iteration continues from its beginning.\
+    Any change in the sequence occurs with a probability of 50%. Which change will occur is chosen randomly.\
     
-    If the file is end, then the iteration continues from its beginning.
-
-    Any change in the sequence occurs with a probability of 50%. Which change will occur is chosen randomly.
-
-    Contain methods:
+    Contains methods:
     
     - `__init__` - Create AASequenceChanger object. Read file from path and add all sequences to list self.text.\
-        Args:\
-            file_path: Path to the FASTA file with amino acid sequnces.\
-        Return:\
-            nothing.
+        Args: \t file_path: Path to the FASTA file with amino acid sequnces.\
+        Return: \t nothing.
     
     - `__next__` - Return next element from self.text - list with AA sequnces. Newer stops iteration. When elements end, then the iteration continues from its beginning.\
         Return:\
-            string: string with altered amino acid sequence.
+            - string: string with altered amino acid sequence.
 
     - `random_changes` - Make random change in sequence with 50% probability for each letter.\
         Return:
-            new_seq: string with altered amino acid sequence.
+            - new_seq: string with altered amino acid sequence.
 
     - `make_deletion` - Remove an amino acid from a sequence. Take one letter from `random_changes`. Return empty string for this.
 
     - `make_substitution` - Replaces an amino acid in a sequence with a random amino acid. Take one letter from `random_changes`. Return random letter for this.
-        Return:
-            string: randomly selected letter from AA_ALPHABET.
+        Return: \t string: randomly selected letter from AA_ALPHABET.
 
     - `make_insertion` - Insert a random amino acid in a sequence. Take one letter from `random_changes`. Return random letter and initial letter for this.
-        Return:
-            string: initial letter plus randomly selected letter from AA_ALPHABET.
+        Return: \t string: initial letter plus randomly selected letter from AA_ALPHABET.
       
     - `read_sequences` - Takes as input the path to the FASTA file and outputs list with sequence.\
         Args:\
