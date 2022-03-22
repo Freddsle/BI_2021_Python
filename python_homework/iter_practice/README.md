@@ -69,7 +69,7 @@ Example for generetor in `if __name__ == '__main__` block.
 
 4. Function `nested_list_unpacker` for "unpacks" nested lists.
 
-    Function for "unpacks" nested lists.  Uses unpack_generator for it. Lists can be nested at any level.
+    Function for "unpacks" nested lists. Uses unpack_generator for it. Lists can be nested at any level. Creates empty list when starts.
     
     Args:\
         iterable: iterable for unpacking.\
@@ -84,6 +84,7 @@ Example for generetor in `if __name__ == '__main__` block.
     Yields:\
         i: all elements from i if iterable of i if not.
 
+Example for `nested_list_unpacker` in `if __name__ == '__main__` block.
 
 # Install and run with pip
 ## Installation

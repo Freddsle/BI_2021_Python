@@ -174,15 +174,18 @@ def unpack_generator(iterable):
             yield i
 
 
-def nested_list_unpacker(iterable, resulting=[]):
+def nested_list_unpacker(iterable, resulting=None):
     """Function for "unpacks" nested lists.  Uses unpack_generator for it.
-    Lists can be nested at any level.
+    Lists can be nested at any level.  Creates empty list when starts.
     Args:
         iterable: iterable for unpacking.
         resulting: list for result, empty when unpacking starts.
     Returns:
         resulting: resulting list with unpacked iterable.
     """
+    if not resulting:
+        resulting = list()
+
     for i in iterable:
         if isinstance(i, list):
             nested_list_unpacker(unpack_generator(i), resulting)
@@ -220,6 +223,9 @@ if __name__ == '__main__':
             break
         j += 1
 
+    # separator
+    print('----------------------')
+
     # Example print for iter_append generator
     filt = filter(lambda x: x % 2 == 0, [1, 2, 3, 4])
     generator = iter_append(filt, [5, 6, 7, 8])
@@ -227,3 +233,12 @@ if __name__ == '__main__':
 
     for i in generator:
         print(i)
+
+    # separator
+    print('----------------------')
+
+    # Example for `nested_list_unpacker`:
+    a = [1, 2, 3, [1, 2, [3, 4, []], [1], [], 12, 3], [1, [5, 6]]]
+    print(nested_list_unpacker(a))
+    b = [1, 3, [4, 5, 6, [7, 8, []]]]
+    print(nested_list_unpacker(b))
