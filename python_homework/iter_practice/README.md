@@ -7,9 +7,9 @@
     Test print in `if __name__ == '__main__` block - read fasta file from data folder. Print type of fasta_reader object. Print seq ID and first 50 letter of sequence for each sequence.
    
 2. **class AASequenceChanger:**\
-    Read a file with amino acid sequnces and make deletion, substitutions and insertions during iteration. \    
+    Read a file with amino acid sequnces and make deletion, substitutions and insertions during iteration. \
     If the file is end, then the iteration continues from its beginning.\
-    Any change in the sequence occurs with a probability of 50%. Which change will occur is chosen randomly.\
+    Any change in the sequence occurs with a probability of 50%. Which change will occur is chosen randomly.
     
     Contains methods:
     
