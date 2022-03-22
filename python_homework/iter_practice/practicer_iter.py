@@ -184,3 +184,11 @@ if __name__ == '__main__':
         else:
             break
         j += 1
+
+    # Example print for iter_append generator
+    filt = filter(lambda x: x % 2 == 0, [1, 2, 3, 4])
+    generator = iter_append(filt, [5, 6, 7, 8])
+    print(type(generator))
+
+    for i in generator:
+        print(i)

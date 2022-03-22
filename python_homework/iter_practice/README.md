@@ -64,6 +64,8 @@ A generator that "adds" an item element to the "end" of an iterable.\
         from iterable.\
         item.
 
+Example for generetor in `if __name__ == '__main__` block.
+
 
 # Install and run with pip
 ## Installation
