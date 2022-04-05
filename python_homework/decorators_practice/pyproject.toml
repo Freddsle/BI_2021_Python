@@ -1,0 +1,10 @@
+[tool.poetry]
+name = "Decorators practice"
+version = "0.1"
+description = "Homework 'Decorators'."
+repository = "https://github.com/Freddsle/BI_2021_Python/"
+authors = ["Yuliya Burankova"]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.11"
+requests = "^2.27.1"
