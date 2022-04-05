@@ -116,6 +116,21 @@ def make_request(url):
     return requests.get(url)
 
 
+# Реализуйте декоратор аналогичный staticmethod без использования любых модулей
+def staticmethod_analog(func):
+    def inner_function(*args, **kwargs):
+        
+        return func(*args, **kwargs)
+    return inner_function
+
+
+class Apple:
+
+    @staticmethod_analog
+    def about_apple():
+        print('Apple is good for you.')
+
+
 if __name__ == '__main__':
     # Example run for measure_time decorator
     #print(some_function(1, 2, 3, 4, e=5, f=6, g='9999'))
@@ -129,3 +144,7 @@ if __name__ == '__main__':
     # Example run for russian_roulette_decorator decorator
     #for _ in range(10):
     #    print(make_request('https://google.com'))
+
+    
+    Apple.about_apple()
+    Apple().about_apple()
