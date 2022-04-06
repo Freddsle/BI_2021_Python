@@ -116,19 +116,34 @@ def make_request(url):
     return requests.get(url)
 
 
-# Реализуйте декоратор аналогичный staticmethod без использования любых модулей
 def staticmethod_analog(func):
+    """
+    Decorator similar to staticmethod.
+    """
     def inner_function(*args, **kwargs):
-        
-        return func(*args, **kwargs)
+
+        if args:
+            if '__main__' in str(args[0]):
+                return func(*args[1:], **kwargs)
+        else:
+            return func(*args, **kwargs)
+
     return inner_function
 
 
 class Apple:
+    """
+    Example class for staticmethod_analog decorator.
+    """
+
+    def __init__(self, ap_type, number):
+        self.ap_type = ap_type
+        self.number = number
 
     @staticmethod_analog
-    def about_apple():
+    def about_apple(first=1, second=2):
         print('Apple is good for you.')
+        print(first, second)
 
 
 if __name__ == '__main__':
@@ -145,6 +160,6 @@ if __name__ == '__main__':
     #for _ in range(10):
     #    print(make_request('https://google.com'))
 
-    
-    Apple.about_apple()
-    Apple().about_apple()
+    # Example run for staticmethod_analog decorator
+    #Apple('gold', 5).about_apple()
+    #Apple.about_apple()
