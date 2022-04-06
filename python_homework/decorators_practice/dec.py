@@ -21,7 +21,7 @@ def staticmethod_analog(func: Callable) -> Callable:
     return inner_function
 
 
-def dataclass_analog(cls):
+def dataclass_analog(cls: object) -> object:
     """
     Decorator similar to Python defaul dataclass decorator.
     If the class already defines __repr__, __eq__ or __match_args__,
@@ -205,7 +205,7 @@ def func4(a: Any = None, b: Any = None) -> dict[Any, Any]:
     return {a: b}
 
 
-def russian_roulette_decorator(probability: float = 0.2, 
+def russian_roulette_decorator(probability: float = 0.2,
                                return_value: Any = 'Ooops, your output has been stolen!') -> Callable:
     """
     Decorator, Russian roulette, which replaces the returned value of decorated function
