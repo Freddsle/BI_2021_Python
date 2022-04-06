@@ -59,7 +59,7 @@ def dataclass_analog(cls):
 
         def __match_args__(self) -> tuple[str, ...]:
             if '__match_args__' not in cls.__dict__.keys():
-                return  tuple(self.__dict__.keys())
+                return tuple(self.__dict__.keys())
             else:
                 return super().__match_args__()
 
@@ -205,7 +205,8 @@ def func4(a: Any = None, b: Any = None) -> dict[Any, Any]:
     return {a: b}
 
 
-def russian_roulette_decorator(probability: float = 0.2, return_value: Any = 'Ooops, your output has been stolen!') -> Callable:
+def russian_roulette_decorator(probability: float = 0.2, 
+                               return_value: Any = 'Ooops, your output has been stolen!') -> Callable:
     """
     Decorator, Russian roulette, which replaces the returned value of decorated function
     with the one passed to the decorator with a given probability.
@@ -251,16 +252,18 @@ if __name__ == '__main__':
         print(make_request('https://google.com'))
 
     # Example run for staticmethod_analog decorator.
+    print('\n')
     Apple('gold', 5).about_apple()
     Apple.about_apple()
 
     # Example run for dataclass_analog decorator.
+    print('\n')
     invemtory = InventoryItem('pen', 23.0, 3)
-    print(f'invemtory.name: \t {invemtory.name}')
-    print(f'invemtory.unit_price: \t {invemtory.unit_price}')
+    print(f'invemtory.name: \t\t {invemtory.name}')
+    print(f'invemtory.unit_price: \t\t {invemtory.unit_price}')
     print(f'invemtory.quantity_on_hand: \t {invemtory.quantity_on_hand}')
-    print(f'invemtory.total_cost: \t {invemtory.total_cost()}')
-    print(f'invemtory: \t {invemtory}')
+    print(f'invemtory.total_cost: \t\t {invemtory.total_cost()}')
+    print(f'invemtory: {invemtory}')
 
     invemtory2 = InventoryItem('pen', 15.0, 2)
     print(f'invemtory: \t {invemtory.__eq__(invemtory2)}')
