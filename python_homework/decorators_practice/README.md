@@ -1,27 +1,21 @@
 # Practise with decorators in Python
 
-1. `staticmethod_analog` - Decorator similar to Python defaul staticmethod decorator.
-
+1. ```staticmethod_analog``` - Decorator similar to Python defaul staticmethod decorator.\
     Class `Apple` - Example class for staticmethod_analog decorator. Create Apple object with `about_apple` staticmethod - it prints 'Apple is good for you.'
 
-2. `dataclass_analog` - Decorator similar to Python defaul dataclass decorator. 
-
-    Args: cls - a class to decorate.\
-    Returns: NEW_CLASS - a class that create the object of passed class.
-
-    If the class already defines `__repr__`, `__eq__` or `__match_args__`, this method do not overwrite.
-
+2. ```dataclass_analog``` - Decorator similar to Python defaul dataclass decorator.\
+        Args: cls - a class to decorate.\
+        Returns: NEW_CLASS - a class that create the object of passed class.\
+    If the class already defines `__repr__`, `__eq__` or `__match_args__`, this method do not overwrite.\
     Class `InventoryItem` - Example class for dataclass_analog decorator. Class for keeping track of an item in inventory.
 
-3. `measure_time` - decorator that replaces the return value of the function being decorated for the duration of its execution.
-
+3. ```measure_time``` - decorator that replaces the return value of the function being decorated for the duration of its execution.\
     `some_function` - Example function for `measure_time` decorator.
 
-4. `function_logging` - The decorator that allows you to log function runs by printing out the input data and return type.
-
+4. ```function_logging``` - The decorator that allows you to log function runs by printing out the input data and return type.\
     `func1`, `func2`, `func3`, `func4 - Example functions for `function_logging` decorator.
 
-5. `russian_roulette_decorator` - Decorator, Russian roulette, which replaces the returned value of decorated function with the one passed to the decorator with a given probability.
+5. ```russian_roulette_decorator``` - Decorator, Russian roulette, which replaces the returned value of decorated function with the one passed to the decorator with a given probability.
 
     Args inner_function:\
         - probability: a probability for replace.\
