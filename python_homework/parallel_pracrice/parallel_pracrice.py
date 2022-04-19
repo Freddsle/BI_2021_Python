@@ -6,12 +6,12 @@ from Bio import SeqIO
 
 # This version would work if reading files was a problem. The problem is the calculations.
 # def parallel_requests(fasta_path, threads=1):
-#     with open(fasta_path) as fd, ThreadPoolExecutor(threads) as pool:     
+#     with open(fasta_path) as fd, ThreadPoolExecutor(threads) as pool:
 #         for record in SeqIO.parse(fd, 'fasta'):
 #             pool.submit(symbol_counter, record)
 
 
-def parallel_counter(fasta_path: str, threads: int=1) -> None:
+def parallel_counter(fasta_path: str, threads: int = 1) -> None:
     """
     Read FASTA file by record and run symbol_counter func for each record in multiprocessing mode.
     Args:
@@ -46,4 +46,4 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     parallel_counter(fasta_path=args.input_fasta,
-                      threads=args.threads)
+                     threads=args.threads)
