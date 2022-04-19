@@ -7,7 +7,4 @@ authors = ["Yuliya Burankova"]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.11"
-
-
-[tool.poetry.dev-dependencies]
-jupyter = "^1.0.0"
+biopython = "^1.79"
