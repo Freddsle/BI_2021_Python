@@ -1,0 +1,10 @@
+[tool.poetry]
+name = "Iterators practice"
+version = "0.1"
+description = "Homework 'Iterators'."
+repository = "https://github.com/Freddsle/BI_2021_Python/"
+authors = ["Yuliya Burankova"]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.11"
+biopython = "^1.79"
