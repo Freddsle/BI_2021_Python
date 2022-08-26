@@ -38,3 +38,4 @@ Bioinformatics for biologist, 2021-2022.
 12.  Practice with html pages parse and requests. API function for tblasn WGS search with example run in `python_homework/API_practice`.
 
 13. Practise with SQLite in Python. In `python_homework/data_bases_practice`.
+
