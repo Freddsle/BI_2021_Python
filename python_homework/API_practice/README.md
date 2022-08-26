@@ -45,7 +45,7 @@ Functions:
     (only the first match will be used - as when selecting from the drop-down list in the web tblastn).
 
     Return list with Alignment objects for one fasta sequence.
-    If multiple sequences were passed, returns a list of lists of Alignment objects.
+    If multiple sequences were passed, returns a list of lists of Alignment objects.  
     If no significant similarity found - return the empty list.
 
 
@@ -74,8 +74,8 @@ Functions:
 4. **check_results** function.
 
     Requests to the tblasn server until a result is received.\    
-    Errors (ValueError, urllib3.exceptions.InvalidChunkLength, urllib3.exceptions.ProtocolError, requests.exceptions.ChunkedEncodingError) are used to check for the existence of a result.\    
-    Also requests will continue if the server response status code is 500.
+    Errors (ValueError, urllib3.exceptions.InvalidChunkLength, urllib3.exceptions.ProtocolError, requests.exceptions.ChunkedEncodingError) are used to check for the existence of a result.\      
+    Also requests will continue if the server response status code is 500.  
     When the search is complete, print a `DONE` message containing the status code value.
     
     Return soup object (for align_seq_list) and the time when the last request was sent.
@@ -166,7 +166,7 @@ taxon = '619693'    # results exists
 ```
 
 ## Example run output:
-
+```
  RID: 2U4APSEX013
 status code: 200, SEARCH DONE.
 Example output (part):
@@ -197,3 +197,4 @@ ACZS01000173.1: 44.7 bits(104) 	 24/58(41%) 	 3e-07()
 ACZS01000173.1: 38.5 bits(88) 	 21/50(42%) 	 3e-05()
 ACZS01000174.1: 38.9 bits(89) 	 18/47(38%) 	 3e-05()
 -----
+```
