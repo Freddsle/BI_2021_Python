@@ -39,3 +39,4 @@ Bioinformatics for biologist, 2021-2022.
 
 13. Practise with SQLite in Python. In `python_homework/data_bases_practice`.
 
+14. Practise with decorators in Python in `python_homework/decorators_practice`.
